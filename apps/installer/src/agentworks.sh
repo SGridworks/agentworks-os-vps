@@ -223,13 +223,29 @@ cmd_update() {
     return 0
   fi
 
-  log_step "Updating source clone to v${latest_version}..."
-  git -C "$SOURCE_DIR" fetch --tags --depth=1 origin "v${latest_version}" 2>&1 | sed 's/^/  /'
-  git -C "$SOURCE_DIR" checkout -q FETCH_HEAD
+  log_step "Updating source to v${latest_version}..."
+  if [[ -d "${SOURCE_DIR}/.git" ]]; then
+    git -C "$SOURCE_DIR" fetch --tags --depth=1 origin "v${latest_version}" 2>&1 | sed 's/^/  /'
+    git -C "$SOURCE_DIR" checkout -q FETCH_HEAD
+  else
+    local tmp_source backup_source
+    tmp_source="$(mktemp -d "${AGENTWORKS_DIR}/source-update.XXXXXX")"
+    backup_source="${SOURCE_DIR}.previous"
+    git clone --depth=1 --branch "v${latest_version}" "https://github.com/${REPO}.git" "${tmp_source}/source" 2>&1 | sed 's/^/  /'
+    rm -rf "$backup_source"
+    mv "$SOURCE_DIR" "$backup_source"
+    mv "${tmp_source}/source" "$SOURCE_DIR"
+    rm -rf "$tmp_source" "$backup_source"
+  fi
 
-  log_step "Pulling and rebuilding services..."
-  AGENTWORKS_VERSION="$latest_version" compose pull || true
-  AGENTWORKS_VERSION="$latest_version" compose up -d --build
+  log_step "Pulling and restarting services..."
+  AGENTWORKS_VERSION="$latest_version" compose pull agentos-d scanner-worker admin-ui || true
+  if [[ "${AGENTWORKS_BUILD_IMAGES:-0}" == "1" ]]; then
+    AGENTWORKS_VERSION="$latest_version" compose up -d --build
+  else
+    AGENTWORKS_VERSION="$latest_version" compose up -d --no-build postgres agentos-d scanner-worker admin-ui
+    AGENTWORKS_VERSION="$latest_version" compose up -d --build n8n
+  fi
 
   # Persist the new version to .env so subsequent `agentworks restart` or
   # `agentworks status` invocations don't drift back to the previous tag.
@@ -769,7 +785,7 @@ cmd_install() {
     return 0
   fi
 
-  local installer_url="${INSTALLER_URL:-https://get.agentworks.os/install.sh}"
+  local installer_url="${INSTALLER_URL:-https://github.com/SGridworks/agentworks-os-vps/releases/download/v${AGENTWORKS_VERSION}/install.sh}"
   log_info "Downloading installer from: ${installer_url}"
 
   if command -v curl &>/dev/null; then

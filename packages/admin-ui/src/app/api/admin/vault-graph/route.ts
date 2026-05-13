@@ -1,144 +1,93 @@
 /**
  * GET /api/admin/vault-graph
  *
- * Walks the operator tenant's vault subtree and returns a graph of pages
- * and their [[wikilinks]] for rendering in the Graph view.
- *
- * Resolution strategy: a wikilink `[[X]]` resolves to the first .md file
- * whose stem (basename without .md) equals X (case-insensitive). If no
- * match, the link is dropped.
+ * Proxies the daemon's tenant-scoped memory graph. If no tenantId query
+ * parameter is supplied, the first tenant from GET /api/tenants is used.
  */
-
-import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
 
 export const dynamic = 'force-dynamic';
 
-const VAULT_ROOT = process.env.VAULT_ROOT;
-const TENANT_ID = process.env.AGENTOS_TENANT_ID;
+const AGENTOS_API_URL = process.env.AGENTOS_API_URL ?? 'http://127.0.0.1:7710';
 
-const WIKILINK_RE = /\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|[^\]]*)?\]\]/g;
-const SKIP_DIRS = new Set(['.git', '.obsidian', 'node_modules', 'legacy-tenants']);
-
-interface VaultNode {
-  id: string; // relative path
-  title: string; // stem
-  dir: string; // parent dir (relative)
+interface TenantRow {
+  id: string;
 }
 
-interface VaultEdge {
-  source: string;
-  target: string;
+interface MemoryGraphNote {
+  id: string;
+  title: string;
+  dir: string;
+  kind: string;
+  tags: string[];
+  chars: number;
+  edited: string;
+  outgoing: number;
+  backlinks: number;
 }
 
-function walkMarkdown(root: string): string[] {
-  const out: string[] = [];
-  const stack = [root];
-  while (stack.length) {
-    const dir = stack.pop()!;
-    let entries: string[] = [];
-    try {
-      entries = readdirSync(dir);
-    } catch {
-      continue;
-    }
-    for (const name of entries) {
-      if (SKIP_DIRS.has(name)) continue;
-      const full = join(dir, name);
-      let st;
-      try {
-        st = statSync(full);
-      } catch {
-        continue;
-      }
-      if (st.isDirectory()) {
-        stack.push(full);
-      } else if (st.isFile() && name.endsWith('.md')) {
-        out.push(full);
-      }
-    }
+interface MemoryGraphData {
+  tenantId: string;
+  notes: MemoryGraphNote[];
+  edges: [string, string][];
+  dirs: Array<{ dir: string; count: number; hue: number }>;
+  generatedAt: string;
+}
+
+interface MemoryGraphResponse {
+  ok: boolean;
+  data?: MemoryGraphData;
+  error?: string;
+}
+
+function isTenantRow(value: unknown): value is TenantRow {
+  return typeof value === 'object' && value !== null && typeof (value as TenantRow).id === 'string';
+}
+
+async function resolveTenantId(req: Request): Promise<string | null> {
+  const url = new URL(req.url);
+  const explicit = url.searchParams.get('tenantId');
+  if (explicit) return explicit;
+
+  const tenantsRes = await fetch(`${AGENTOS_API_URL}/api/tenants`, { cache: 'no-store' });
+  if (!tenantsRes.ok) {
+    throw new Error(`tenant list failed: HTTP ${tenantsRes.status}`);
   }
-  return out;
+  const tenants = await tenantsRes.json() as unknown;
+  if (!Array.isArray(tenants)) return null;
+  const first = tenants.find(isTenantRow);
+  return first?.id ?? null;
 }
 
-function stem(path: string): string {
-  const base = path.split('/').pop()!;
-  return base.replace(/\.md$/i, '');
-}
-
-export async function GET(): Promise<Response> {
-  // Default install runs the admin-ui container with no vault mount
-  // and no tenant pinned, so the documented Memory Vault Viewer should
-  // degrade gracefully (200, empty graph) rather than return 500. Operators
-  // who want a populated graph wire VAULT_ROOT + AGENTOS_TENANT_ID via
-  // docker-compose.yml.
-  if (!VAULT_ROOT || !TENANT_ID) {
-    return Response.json({
-      tenantId: null,
-      tenantRoot: null,
-      nodes: [],
-      edges: [],
-      stats: { nodeCount: 0, edgeCount: 0, unresolvedWikilinks: 0 },
-      notice:
-        'Memory Vault Viewer is unwired in the default v0.1.9 docker-compose install. ' +
-        'To enable: bind-mount the vault path into admin-ui and set VAULT_ROOT + AGENTOS_TENANT_ID. ' +
-        'See docs/install-runbook.md.',
-    });
-  }
+export async function GET(req: Request): Promise<Response> {
   try {
-    const tenantRoot = join(VAULT_ROOT, TENANT_ID);
-    const files = walkMarkdown(tenantRoot);
-
-    // Build index: lowercased stem → relative path (first match wins)
-    const stemIndex = new Map<string, string>();
-    const nodes: VaultNode[] = [];
-    for (const abs of files) {
-      const rel = relative(tenantRoot, abs);
-      const s = stem(abs);
-      const lower = s.toLowerCase();
-      if (!stemIndex.has(lower)) stemIndex.set(lower, rel);
-      nodes.push({
-        id: rel,
-        title: s,
-        dir: rel.split('/').slice(0, -1).join('/') || '/',
+    const tenantId = await resolveTenantId(req);
+    if (!tenantId) {
+      return Response.json({
+        tenantId: null,
+        nodes: [],
+        edges: [],
+        notes: [],
+        stats: { nodeCount: 0, edgeCount: 0 },
+        generatedAt: new Date().toISOString(),
       });
     }
 
-    // Parse wikilinks
-    const edgeSet = new Set<string>(); // dedup as "src→tgt"
-    const edges: VaultEdge[] = [];
-    for (const abs of files) {
-      const rel = relative(tenantRoot, abs);
-      let body = '';
-      try {
-        body = readFileSync(abs, 'utf-8');
-      } catch {
-        continue;
-      }
-      WIKILINK_RE.lastIndex = 0;
-      let match: RegExpExecArray | null;
-      while ((match = WIKILINK_RE.exec(body)) !== null) {
-        const target = match[1].trim();
-        const targetStem = target.split('/').pop()!.toLowerCase();
-        const targetRel = stemIndex.get(targetStem);
-        if (!targetRel || targetRel === rel) continue;
-        const key = `${rel}→${targetRel}`;
-        if (edgeSet.has(key)) continue;
-        edgeSet.add(key);
-        edges.push({ source: rel, target: targetRel });
-      }
+    const graphRes = await fetch(
+      `${AGENTOS_API_URL}/api/memory/graph?tenantId=${encodeURIComponent(tenantId)}`,
+      { cache: 'no-store' },
+    );
+    if (!graphRes.ok) {
+      throw new Error(`memory graph failed: HTTP ${graphRes.status}`);
     }
-
+    const graph = await graphRes.json() as MemoryGraphResponse;
+    if (!graph.ok || !graph.data) {
+      throw new Error(graph.error ?? 'memory graph response missing data');
+    }
+    const data = graph.data;
     return Response.json({
-      tenantId: TENANT_ID,
-      tenantRoot,
-      nodes,
-      edges,
-      stats: {
-        nodeCount: nodes.length,
-        edgeCount: edges.length,
-        unresolvedWikilinks: 0, // not tracked
-      },
+      ...data,
+      nodes: data.notes,
+      stats: { nodeCount: data.notes.length, edgeCount: data.edges.length },
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);

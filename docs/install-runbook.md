@@ -21,6 +21,7 @@ If you are migrating from an existing setup with vault data or agent memory, fol
 ### Software
 
 - **Docker Desktop** (macOS) or **Docker Engine** (Linux)
+- **git**, **curl**, and **openssl**
 - At least one agent to connect: Claude Desktop, Cursor, Codex, or a custom REST integration
 
 Check Docker is installed and running:
@@ -31,6 +32,19 @@ docker ps           # should list running containers (header row is fine)
 ```
 
 If `docker ps` returns a connection error, open Docker Desktop and wait for it to finish starting before proceeding.
+
+Install missing prerequisites on Debian/Ubuntu:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y git curl openssl
+```
+
+Install missing prerequisites on macOS with Homebrew:
+
+```bash
+brew install git curl openssl
+```
 
 ---
 
@@ -47,12 +61,12 @@ cd agentworks-os-vps
 
 The script will:
 
-1. Run pre-flight (Docker daemon up, ports 7710/3101/5678 free, ≥10 GB disk, ≥4 GB RAM, internet to github.com).
-2. Create `~/.agentworks/` with `data/`, `config/`, and `logs/` subdirs (and pre-chmod `data/n8n` + `data/scanner` to 777 for the n8n+scanner uid mismatch).
+1. Run pre-flight (Docker daemon up, ports 7710/3101/5678/3000 free, ≥10 GB disk, ≥4 GB RAM, internet to GitHub, GHCR, and npm).
+2. Create `~/.agentworks/` with `data/`, `data/vault`, `config/`, and `logs/` subdirs (and pre-chmod `data/n8n` + `data/scanner` to 777 for the n8n+scanner uid mismatch).
 3. Re-use the local checkout if you ran from one; otherwise `git clone` into `~/.agentworks/source`.
 4. Generate secrets (admin password, session secret, hex DB password) into `~/.agentworks/config/{.env,secrets.json}` mode 600. **The admin password is in `~/.agentworks/config/secrets.json`.**
-5. `docker compose pull` (best effort — falls through to local build).
-6. `docker compose up -d --build`. First build is 5-15 minutes.
+5. Pull published `agentos-d`, `scanner-worker`, and `admin-ui` images from GHCR.
+6. Start those runtime images without rebuilding, then build and start the local n8n image with bundled AgentWorks custom nodes.
 7. Wait up to 120s for `/api/health` to return 200, then run the end-to-end smoke test (create/delete disposable tenant + POST /api/policy/check + scanner/n8n/admin health assertions).
 
 If the script fails, see [Common Errors](#common-errors) at the end of this document.

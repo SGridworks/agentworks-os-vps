@@ -126,7 +126,7 @@
    126|
    127|## Installer String Map
    128|
-   129|The installer (`curl -fsSL https://get.agentworks.os/install.sh | bash`) prints these strings:
+   129|The installer (`curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash -s -- --unattended`) prints these strings:
    130|
    131|| Old (AgentWorks) | New (AgentWorks OS) |
    132||---|---|

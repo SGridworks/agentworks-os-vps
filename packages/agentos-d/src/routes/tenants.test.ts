@@ -8,7 +8,7 @@ import { createApp } from "../app.js";
 import { loadConfig } from "../config.js";
 import { getDb, initDb, resetDb } from "../db/index.js";
 import { migrate } from "../db/migrations/index.js";
-import { tenantRulePackAssignments, tenants } from "../db/schema.js";
+import { policyDecisions, tenantRulePackAssignments, tenants } from "../db/schema.js";
 
 describe("tenant routes", () => {
   let vaultRoot: string;
@@ -48,6 +48,25 @@ describe("tenant routes", () => {
     expect(typeof create.body.id).toBe("string");
     expect(existsSync(join(vaultRoot, create.body.id))).toBe(true);
 
+    const policy = await request(app)
+      .post("/api/policy/check")
+      .send({
+        tenantId: create.body.id,
+        actionKind: "smoke.test",
+        payload: { sample: "value" },
+        actorId: "tenant-test",
+        actorLabel: "tenant route test",
+        actorType: "system",
+        summary: "tenant cleanup policy row",
+      });
+    expect(policy.status).toBe(200);
+    const decisionsBeforeDelete = getDb()
+      .select({ id: policyDecisions.id })
+      .from(policyDecisions)
+      .where(eq(policyDecisions.tenantId, create.body.id))
+      .all();
+    expect(decisionsBeforeDelete.length).toBeGreaterThan(0);
+
     const remove = await request(app).delete(`/api/tenants/${create.body.id}`);
     expect(remove.status).toBe(204);
     expect(existsSync(join(vaultRoot, create.body.id))).toBe(false);
@@ -64,5 +83,11 @@ describe("tenant routes", () => {
       .where(eq(tenantRulePackAssignments.tenantId, create.body.id))
       .all();
     expect(assignments).toEqual([]);
+    const decisionsAfterDelete = getDb()
+      .select({ id: policyDecisions.id })
+      .from(policyDecisions)
+      .where(eq(policyDecisions.tenantId, create.body.id))
+      .all();
+    expect(decisionsAfterDelete).toEqual([]);
   });
 });

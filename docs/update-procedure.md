@@ -57,9 +57,9 @@ In v0.1.9, update:
 
 1. fetches the latest semver tag from GitHub
 2. updates `~/.agentworks/source` to that tag
-3. pulls available images from GHCR when present
-4. rebuilds services from the release source when needed
-5. starts the stack with `docker compose up -d --build`
+3. refreshes non-git archive installs by replacing `~/.agentworks/source` with a shallow clone of the release tag
+4. pulls published `agentos-d`, `scanner-worker`, and `admin-ui` images from GHCR
+5. starts those runtime images without rebuilding, then builds and starts the local n8n custom-node image
 
 After update:
 

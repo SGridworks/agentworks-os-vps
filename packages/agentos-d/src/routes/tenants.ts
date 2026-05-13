@@ -24,6 +24,9 @@ import { homedir } from "node:os";
 import { eq, desc } from "drizzle-orm";
 import { getDb } from "../db/index.js";
 import {
+  actionLog,
+  approvalQueue,
+  policyDecisions,
   tenantProviderConfigs,
   tenantRulePackAssignments,
   tenantWebhooks,
@@ -168,6 +171,9 @@ export function createTenantsRouter(_config: Config): Router {
       .delete(tenantProviderConfigs)
       .where(eq(tenantProviderConfigs.tenantId, id))
       .run();
+    db.delete(actionLog).where(eq(actionLog.tenantId, id)).run();
+    db.delete(approvalQueue).where(eq(approvalQueue.tenantId, id)).run();
+    db.delete(policyDecisions).where(eq(policyDecisions.tenantId, id)).run();
     db.delete(tenants).where(eq(tenants.id, id)).run();
 
     res.status(204).send();

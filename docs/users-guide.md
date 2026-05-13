@@ -207,7 +207,7 @@ If `docker ps` cannot connect, start Docker before installing.
 Run the installer on the machine that will host AgentWorks OS:
 
 ```bash
-curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash
+curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash -s -- --unattended
 ```
 
 The installer creates `~/.agentworks/`, generates secrets, starts services, and creates the first tenant.
@@ -1242,7 +1242,7 @@ Review:
 
 | Symptom | First check |
 |---|---|
-| Admin UI will not load | Check `docker compose ps admin-ui`, then `docker compose logs admin-ui --tail 100` |
+| Admin UI will not load | Run `agentworks status`, then `agentworks logs admin-ui` |
 | Daemon is down | `agentworks status` |
 | Agent cannot read vault | Confirm MCP config, restart agent client, test `memory.hot` |
 | Policy checks all allow | Confirm rule packs are assigned and enforcing |

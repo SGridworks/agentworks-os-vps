@@ -16,7 +16,10 @@ If your lawyer has ever asked “who approved that outbound?” or “how do we 
 
 ## Quick install
 
-Requires Docker Desktop (macOS) or Docker Engine (Linux), git, ~10 GB free disk, and ~4 GB RAM. About 10‑20 minutes on a clean machine, mostly the first build.
+Requires Docker Desktop (macOS) or Docker Engine (Linux), `git`, `curl`,
+`openssl`, ~10 GB free disk, and ~4 GB RAM. About 10-20 minutes on a clean
+machine; release installs pull the published runtime images and locally build
+only the n8n image with AgentWorks custom nodes.
 
 **One-liner (recommended):**
 

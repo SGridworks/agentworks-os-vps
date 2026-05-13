@@ -11,6 +11,7 @@
 - macOS or Linux machine you control
 - Docker Desktop on macOS, or Docker Engine on Linux
 - `git`, `curl`, `openssl`, and `python3`
+- Optional for repo-developer E2E: Node.js 22+ with Corepack/pnpm enabled
 - 4 GB RAM minimum, 8 GB recommended
 - 10 GB free disk minimum, 20 GB recommended
 
@@ -60,7 +61,6 @@ AgentWorks OS smoke test PASSED
 ## Step 2 - Verify Services
 
 ```bash
-agentworks status
 agentworks status
 ```
 
@@ -120,8 +120,15 @@ For the full VPS workflow gate after install:
 
 ```bash
 cd ~/.agentworks/source
+corepack enable
+corepack prepare pnpm@9 --activate
+pnpm install --frozen-lockfile
 pnpm test:vps-e2e
 ```
+
+That full workflow gate is for release/developer verification. It requires
+host Node/Corepack/pnpm because it drives the installed Docker stack from the
+source checkout.
 
 ---
 

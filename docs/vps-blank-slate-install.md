@@ -139,6 +139,10 @@ find . -name '*.db' -o -name '*.db-wal' -o -name '*.db-shm'
 
 The `find` command should print nothing.
 
+The archive intentionally has no `.git` directory. `agentworks update` handles
+that by replacing `~/.agentworks/source` with a shallow clone of the target
+release tag on the first update.
+
 ## Install blank slate
 
 Run from the extracted source root:

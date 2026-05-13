@@ -5,7 +5,9 @@
 **Operator hand-off:** point the agent at the repo root and say *"follow `docs/AI-AGENT-INSTALL-GUIDE.md` to install AgentWorks OS on this machine."*
 
 **Target version:** v0.1.9.
-**Estimated wall-clock:** 10-20 minutes on a clean machine, mostly the first Docker build of agentos-d (TypeScript compile + `pnpm deploy`) and scanner-worker (sentence-transformers download).
+**Estimated wall-clock:** 10-20 minutes on a clean machine. Release installs
+pull the published `agentos-d`, `scanner-worker`, and `admin-ui` images from
+GHCR and locally build only the n8n image with AgentWorks custom nodes.
 
 ---
 
@@ -18,7 +20,12 @@ The install is **two scripts**. Run them in order. If both exit 0, you are done.
   && ./apps/installer/scripts/smoke-test.sh
 ```
 
-`install.sh` runs every pre-flight check, builds the images, brings up the stack, and finishes by invoking `smoke-test.sh` itself. The standalone invocation above is a safety net — if `install.sh` exits 0 but for some reason did not run the smoke test, you have an explicit second gate. Both scripts print PASS/FAIL lines an LLM agent can grep.
+`install.sh` runs every pre-flight check, pulls the published runtime images,
+builds the local n8n custom-node image, brings up the stack, and finishes by
+invoking `smoke-test.sh` itself. The standalone invocation above is a safety
+net — if `install.sh` exits 0 but for some reason did not run the smoke test,
+you have an explicit second gate. Both scripts print PASS/FAIL lines an LLM
+agent can grep.
 
 You should:
 
@@ -80,12 +87,12 @@ The `--unattended` flag suppresses the "press enter to continue" prompt. Everyth
 
 **What the installer does:**
 
-1. Pre-flight: docker daemon up, ports 7710/3101/5678 free, ≥10 GB disk, ≥4 GB RAM, internet to github.com.
-2. Creates `$AGENTWORKS_DIR/{data,config,logs}` and pre-chmods `data/n8n` + `data/scanner` to 777 (n8n runs as uid 1000, scanner as root — host uid mismatch otherwise blocks writes).
+1. Pre-flight: docker daemon up, ports 7710/3101/5678/3000 free, ≥10 GB disk, ≥4 GB RAM, internet to GitHub, GHCR, and npm.
+2. Creates `$AGENTWORKS_DIR/{data,config,logs}`, including `data/vault`, and pre-chmods `data/n8n` + `data/scanner` to 777 (n8n runs as uid 1000, scanner as root — host uid mismatch otherwise blocks writes).
 3. Re-uses the local checkout if you ran from one; otherwise `git clone`s into `$AGENTWORKS_DIR/source`.
 4. Generates secrets (admin password, session secret, hex DB password) into `$AGENTWORKS_DIR/config/{.env,secrets.json}` mode 600. Idempotent — re-running preserves the operator's saved password.
-5. `docker compose pull` (best effort — v0.1 publishes nothing, falls through).
-6. `docker compose up -d --build`. First build is 5-15 minutes — the agentos-d TypeScript compile and the scanner-worker Python+sentence-transformers download dominate.
+5. Pulls published `agentos-d`, `scanner-worker`, and `admin-ui` images from GHCR.
+6. Starts those runtime images with `docker compose up -d --no-build`, then builds and starts the local n8n custom-node image.
 7. Waits up to 120s for `/api/health` to return 200.
 8. Installs the `agentworks` CLI wrapper (symlink at `/usr/local/bin/agentworks` when writable, otherwise `~/.local/bin/agentworks`).
 9. Extracts the MCP stdio bridge from the running `agentos-d` container into `$AGENTWORKS_DIR/config/mcp-stdio-bridge.js` so `agentworks mcp configure` has a real file to point clients at.
@@ -216,7 +223,7 @@ Every failure message printed by `install.sh` and `smoke-test.sh` is enumerated 
 | `openssl is required to generate session secrets` | openssl missing from PATH. | macOS: ships with the system; check `which openssl`. Linux: `apt install openssl` or `dnf install openssl`. Re-run. |
 | `git is required to fetch the AgentWorks source` | git missing. | Install git (Xcode Command Line Tools on macOS, `apt install git` on Debian/Ubuntu). Re-run. |
 | `agentos-d did not respond at .../api/health within 90s` | Daemon failed to come up. | Run `agentworks logs agentos-d (last 100 lines)`. Common: SQLite migration failure (look for `migration` in logs), pnpm symlink issue (build was incomplete — re-run `docker compose build agentos-d`), or OOM. |
-| `POST /api/tenants failed` | Daemon is up but rejecting writes. | Same `docker compose logs agentos-d --tail 100`. Check for `EACCES` (permission on data dir) or `SQLITE_READONLY` (data/agentworks.db readonly). |
+| `POST /api/tenants failed` | Daemon is up but rejecting writes. | Run `agentworks logs agentos-d`. Check for `EACCES` (permission on data dir) or `SQLITE_READONLY` (data/agentworks.db readonly). |
 | `policy.check returned an unexpected decision` | Decision was something other than `allow`/`block`/`route_to_review`. | Schema drift between the installer's smoke test and the running daemon version. The smoke test should be updated to match. Surface to the operator. |
 | `scanner-worker /health unreachable` | Scanner sidecar down, or real embedding mode still downloading model weights. | Fatal by default. Diagnose with `agentworks logs scanner-worker (last 100 lines)`. Only use `SMOKE_SCANNER_OPTIONAL=1` for daemon-only debugging. |
 | `n8n /healthz unreachable` | n8n down or still booting. | Fatal by default. Wait once if first boot is slow, then diagnose with `agentworks logs n8n (last 100 lines)`. Only use `SMOKE_N8N_OPTIONAL=1` for daemon-only debugging. |

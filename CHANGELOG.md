@@ -167,6 +167,56 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
   `agentworks restore --input <file>` form, and agent-facing doc headers now
   target v0.1.9.
 
+### Fixed (audit round 10)
+
+- Admin UI Docker builds now copy every workspace package manifest before
+  `pnpm install`, so clean Docker builds do not fail on workspace package
+  discovery.
+- Default dispatch uses the no-op stub adapter unless operators explicitly set
+  `AWOS_ADAPTER` and matching provider credentials.
+- `agentworks mcp configure` no longer depends on host Python to write JSON MCP
+  client config.
+- n8n workflow seeding now uses the n8n v1 API with `N8N_API_KEY` and is
+  idempotent by workflow name.
+- Installer smoke-test compose diagnostics now resolve the installer-created
+  compose project instead of assuming the caller's current directory.
+
+### Fixed (audit round 11)
+
+- Customer docs now use the stdio bridge MCP shape emitted by
+  `agentworks mcp configure` instead of raw HTTP `url` configs or
+  `agentworks.local`.
+- Update docs use the supported `agentworks --help | head -1` version check
+  and describe the wrapper's update path accurately.
+- Scanner-watch docs now state that watch directories are disabled by default
+  and must be configured with `SCANNER_WATCH_DIRS`.
+- Error-message docs route diagnostics through `agentworks status`,
+  `agentworks logs`, and loopback URLs that match the default compose stack.
+
+### Fixed (audit round 12)
+
+- Piped installer runs no longer block on `read -r` from the script pipe. The
+  prompt reads from `/dev/tty` when available and otherwise continues as
+  unattended.
+- Release installs now pull published GHCR images for `agentos-d`,
+  `scanner-worker`, and `admin-ui` by default, and locally build only the n8n
+  image that bundles AgentWorks custom nodes. Source-build installs are still
+  available with `AGENTWORKS_BUILD_IMAGES=1`.
+- Admin UI vault graph BFF now proxies the daemon's tenant-scoped
+  `/api/memory/graph` endpoint. The smoke test writes a real smoke memory page
+  and verifies the dashboard BFF can see it.
+- `DELETE /api/tenants/:id` now also removes tenant-scoped action log,
+  approval queue, and policy decision rows created by disposable smoke runs.
+- `agentworks update` can refresh archive-based installs that do not contain a
+  `.git` directory by replacing `~/.agentworks/source` with a shallow clone of
+  the target release tag.
+- The default compose stack now drains daemon wakeup dispatches every 250 ms
+  with the built-in stub consumer, so validation does not depend on any
+  host-side worker claiming the queue first.
+- Install docs now list `git`, `curl`, `openssl`, GitHub, GHCR, npm, and the
+  optional Node/Corepack/pnpm requirements on the paths that actually need
+  them.
+
 ### Known limitations
 
 - Real-VPS install verification for this release was performed against a

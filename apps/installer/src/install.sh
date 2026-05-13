@@ -2,8 +2,8 @@
 #
 # agentworks install — one-command setup for AgentWorks OS
 # Usage:
-#   curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash
 #   curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash -s -- --unattended
+#   curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash
 #
 # To install a different release, override INSTALLER_REF:
 #   curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.2.0/install.sh \
@@ -28,10 +28,9 @@ readonly LOG_DIR="${AGENTWORKS_DIR}/logs"
 readonly ENV_FILE="${CONFIG_DIR}/.env"
 readonly SECRETS_FILE="${CONFIG_DIR}/secrets.json"
 
-# SOURCE_DIR holds the AgentWorks source tree. We need the source — not just
-# docker-compose.yml — because compose has `build:` directives and v0.1
-# publishes no public images. Either we clone, or (when run from a checkout)
-# we use the checkout in place.
+# SOURCE_DIR holds the AgentWorks source tree. We need the source for
+# docker-compose.yml, the n8n custom-node image build, and fallback developer
+# builds. Release installs pull the published GHCR runtime images by default.
 SOURCE_DIR="${AGENTWORKS_SOURCE_DIR:-${AGENTWORKS_DIR}/source}"
 
 # Color codes (disabled if not a TTY)
@@ -258,12 +257,24 @@ check_memory() {
 }
 
 check_internet() {
-  # github.com is the source clone target and the GHCR auth path.
-  if ! curl -fsSL -m 10 -o /dev/null https://github.com/ 2>/dev/null; then
-    log_error "Cannot reach https://github.com — install needs internet access to clone the source."
-    log_error "If the host is behind a proxy, set HTTPS_PROXY and re-run."
-    exit 1
+  local required_urls=(
+    "https://github.com/"
+    "https://ghcr.io/v2/"
+    "https://registry.npmjs.org/"
+  )
+  if [[ "${AGENTWORKS_BUILD_IMAGES:-0}" == "1" ]]; then
+    required_urls+=("https://pypi.org/simple/")
   fi
+  local url
+  for url in "${required_urls[@]}"; do
+    local status
+    status="$(curl -sSL -m 10 -o /dev/null -w '%{http_code}' "$url" 2>/dev/null || true)"
+    if [[ "$status" != "200" && "$status" != "401" ]]; then
+      log_error "Cannot reach ${url} — install needs outbound HTTPS for source, images, and the n8n custom-node build."
+      log_error "If the host is behind a proxy, set HTTPS_PROXY and re-run."
+      exit 1
+    fi
+  done
   log_info "Internet reachable."
 }
 
@@ -313,7 +324,7 @@ preflight_check() {
 # -----------------------------------------------------------------------------
 create_directories() {
   log_step "Creating AgentWorks directories..."
-  mkdir -p "${DATA_DIR}" "${CONFIG_DIR}" "${LOG_DIR}"
+  mkdir -p "${DATA_DIR}" "${CONFIG_DIR}" "${LOG_DIR}" "${DATA_DIR}/vault"
 
   # n8n runs inside its container as uid 1000 (`node`); the scanner-worker
   # writes as root. Both bind-mount subdirs of $DATA_DIR. If the host process
@@ -493,25 +504,49 @@ EOF
 }
 
 # -----------------------------------------------------------------------------
-# Pull images (best-effort — v0.1 ships nothing pullable on Docker Hub)
+# Pull images
 # -----------------------------------------------------------------------------
 pull_images() {
-  log_step "Pulling Docker images (will fall through to local build on miss)..."
-  # `|| true` because v0.1 publishes nothing under the docker-compose `image:`
-  # paths. The build path below covers the failure.
-  compose pull 2>&1 | tee "${LOG_DIR}/docker-pull.log" || true
+  log_step "Pulling published AgentWorks runtime images..."
+  if ! compose pull agentos-d scanner-worker admin-ui 2>&1 | tee "${LOG_DIR}/docker-pull.log"; then
+    if [[ "${AGENTWORKS_BUILD_IMAGES:-0}" == "1" ]]; then
+      log_warn "Published runtime images were not pullable; AGENTWORKS_BUILD_IMAGES=1 will build them locally."
+      return 0
+    fi
+    log_error "Could not pull one or more published GHCR images."
+    log_error "Check GitHub/GHCR reachability, or set AGENTWORKS_BUILD_IMAGES=1 for a source-build development install."
+    exit 1
+  fi
 }
 
 # -----------------------------------------------------------------------------
 # Start services
 # -----------------------------------------------------------------------------
 start_services() {
-  log_step "Building and starting AgentWorks services (first build ~5-15 min)..."
+  log_step "Starting AgentWorks services..."
 
   docker volume create agentworks-postgres-data &>/dev/null || true
 
-  # --build forces a fresh local build for any image that wasn't pullable.
-  if ! compose up -d --build 2>&1 | tee "${LOG_DIR}/docker-up.log"; then
+  if [[ "${AGENTWORKS_BUILD_IMAGES:-0}" == "1" ]]; then
+    log_info "AGENTWORKS_BUILD_IMAGES=1: building all services from local source."
+    if ! compose up -d --build 2>&1 | tee "${LOG_DIR}/docker-up.log"; then
+      log_error "Failed to build/start services. Check ${LOG_DIR}/docker-up.log"
+      exit 1
+    fi
+    log_info "Services started."
+    return 0
+  fi
+
+  # Release path: use published runtime images for agentos-d, scanner-worker,
+  # and admin-ui. n8n is the only local build in v0.1.9 because it layers the
+  # AgentWorks custom nodes onto the upstream n8n image and is not published as
+  # a GHCR artifact.
+  if ! compose up -d --no-build postgres agentos-d scanner-worker admin-ui 2>&1 | tee "${LOG_DIR}/docker-up.log"; then
+    log_error "Failed to start published runtime images. Check ${LOG_DIR}/docker-up.log"
+    log_error "If you are testing before the GHCR images exist, re-run with AGENTWORKS_BUILD_IMAGES=1."
+    exit 1
+  fi
+  if ! compose up -d --build n8n 2>&1 | tee -a "${LOG_DIR}/docker-up.log"; then
     log_error "Failed to start services. Check ${LOG_DIR}/docker-up.log"
     exit 1
   fi
@@ -740,16 +775,25 @@ main() {
     unattended=true
   fi
 
+  if [[ "$unattended" != "true" && ! -t 0 && ! -r /dev/tty ]]; then
+    log_warn "Installer stdin is not interactive; continuing as --unattended."
+    unattended=true
+  fi
+
   if [[ "$unattended" != "true" ]]; then
     echo "This will install AgentWorks OS on this machine."
     echo "Docker is required. The installer will:"
     echo "  1. Create ~/.agentworks/ directory"
     echo "  2. Clone the AgentWorks OS source (~50 MB) into ~/.agentworks/source"
     echo "  3. Generate secure credentials"
-    echo "  4. Build and start AgentWorks Docker services"
+    echo "  4. Pull published images and start AgentWorks Docker services"
     echo ""
     echo -n "Press Enter to continue, or Ctrl+C to cancel: "
-    read -r
+    if [[ -r /dev/tty ]]; then
+      read -r </dev/tty
+    else
+      read -r
+    fi
   fi
 
   preflight_check

@@ -43,6 +43,9 @@ services:
       # Default install verifies the dispatch queue with the no-op adapter.
       # Set AWOS_ADAPTER=router/spec/kimi plus KIMI_API_KEY to run real LLM work.
       AWOS_ADAPTER: ${AWOS_ADAPTER:-stub}
+      # Drain wakeup dispatches promptly in the default stub install so
+      # validation does not depend on any host-side worker claiming the queue.
+      AGENTOS_DISPATCH_CONSUMER_INTERVAL_MS: ${AGENTOS_DISPATCH_CONSUMER_INTERVAL_MS:-250}
       # Daemon reads AGENTOS_DATA_DIR (see packages/agentos-d/src/config.ts:50).
       # Without this, the daemon writes SQLite to /app/data (ephemeral inside the
       # container layer) instead of /data (the bind mount), and loses every tenant,
@@ -196,9 +199,12 @@ services:
     environment:
       AGENTOS_API_URL: http://agentos-d:7710
       NEXT_PUBLIC_API_URL: ""
+      VAULT_ROOT: /data/vault
     depends_on:
       agentos-d:
         condition: service_healthy
+    volumes:
+      - ${AGENTWORKS_DATA_DIR:-./data}/vault:/data/vault:ro
     healthcheck:
       test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3000/mission-control').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
       interval: 30s

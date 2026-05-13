@@ -46,6 +46,15 @@ extract_json_string() {
   sed -n 's/.*"'"$key"'"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1
 }
 
+diagnose_service() {
+  local service="$1"
+  if command -v agentworks &>/dev/null; then
+    fail "Diagnose: agentworks logs ${service}"
+  else
+    fail "Diagnose: cd ~/.agentworks/source && COMPOSE_PROJECT_NAME=${compose_project:-<project>} docker compose logs ${service} --tail 100"
+  fi
+}
+
 compose_project="${SMOKE_COMPOSE_PROJECT:-}"
 detect_compose_project() {
   if [[ -n "$compose_project" ]]; then
@@ -99,7 +108,7 @@ elapsed=0
 until curl -sf -m 3 "${DAEMON_URL}/api/health" >/dev/null 2>&1; do
   if (( elapsed >= TIMEOUT_SECS )); then
     fail "agentos-d did not respond at ${DAEMON_URL}/api/health within ${TIMEOUT_SECS}s."
-    fail "Diagnose: docker compose logs agentos-d --tail 100"
+    diagnose_service agentos-d
     fail "Common causes: container OOMed, migration crash, or port 7710 blocked by another process."
     exit 1
   fi
@@ -123,7 +132,7 @@ tenant_resp=$(curl -fsS -X POST "${DAEMON_URL}/api/tenants" \
   -H 'content-type: application/json' \
   -d '{"name":"Installer Smoke Test","description":"Disposable tenant created by apps/installer/scripts/smoke-test.sh","industry":"other"}' 2>&1) || {
   fail "POST /api/tenants failed: $tenant_resp"
-  fail "Diagnose: docker compose logs agentos-d --tail 100"
+  diagnose_service agentos-d
   exit 1
 }
 
@@ -154,7 +163,7 @@ policy_resp=$(curl -sS -X POST "${DAEMON_URL}/api/policy/check" \
 EOF
 )" 2>&1) || {
   fail "POST /api/policy/check failed: $policy_resp"
-  fail "Diagnose: docker compose logs agentos-d --tail 100"
+  diagnose_service agentos-d
   exit 1
 }
 
@@ -192,11 +201,11 @@ until curl -sf -m 3 "${scanner_url}/health" >/dev/null 2>&1; do
   if (( elapsed >= scanner_timeout )); then
     if [[ "$scanner_optional" == "1" ]]; then
       warn "scanner-worker /health unreachable on ${scanner_url} after ${scanner_timeout}s. SMOKE_SCANNER_OPTIONAL=1, continuing."
-      warn "Investigate: docker compose logs scanner-worker --tail 50"
+      warn "Investigate: agentworks logs scanner-worker"
       break
     fi
     fail "scanner-worker /health unreachable on ${scanner_url} after ${scanner_timeout}s."
-    fail "Diagnose: docker compose logs scanner-worker --tail 100"
+    diagnose_service scanner-worker
     fail "If you're running EMBEDDING_MODE=real, the sidecar may still be downloading model weights;"
     fail "re-run with SMOKE_SCANNER_OPTIONAL=1 to make this a warning instead of a failure."
     exit 1
@@ -224,7 +233,7 @@ until curl -sf -m 3 "${n8n_url}/healthz" >/dev/null 2>&1; do
       break
     fi
     fail "n8n /healthz unreachable on ${n8n_url} after ${n8n_timeout}s."
-    fail "Diagnose: docker compose logs n8n --tail 100"
+    diagnose_service n8n
     exit 1
   fi
   sleep 5
@@ -249,7 +258,7 @@ until curl -sf -m 5 "${admin_url}/mission-control" >/dev/null 2>&1; do
       break
     fi
     fail "admin-ui /mission-control unreachable on ${admin_url} after ${admin_timeout}s."
-    fail "Diagnose: docker compose logs admin-ui --tail 100"
+    diagnose_service admin-ui
     exit 1
   fi
   sleep 5
@@ -273,17 +282,29 @@ if ! docker exec "$pg_container" pg_isready -U agentworks -d agentworks &>/dev/n
 fi
 pass "postgres is accepting connections."
 
-# Sanity-check the admin BFF endpoints that back documented first-run features.
-# A 500 here means the admin shell renders but the page returns broken data.
+# Sanity-check the admin BFF endpoint that backs documented vault graph data.
+# It must see a real note for the disposable tenant, not merely return HTTP 200
+# with an empty graph.
 if [[ "$admin_optional" != "1" ]]; then
-  for endpoint in /api/admin/vault-graph; do
-    if ! curl -fsS -m 5 "${admin_url}${endpoint}" >/dev/null 2>&1; then
-      fail "admin-ui BFF endpoint ${endpoint} returned non-200."
-      fail "Diagnose: curl -i ${admin_url}${endpoint} ; agentworks logs admin-ui"
-      exit 1
-    fi
-  done
-  pass "admin-ui BFF endpoints respond 200."
+  smoke_key="smoke/admin-vault-graph"
+  write_resp=$(curl -fsS -X POST "${DAEMON_URL}/api/memory/write" \
+    -H 'content-type: application/json' \
+    -d "{\"tenantId\":\"${tenant_id}\",\"key\":\"${smoke_key}\",\"body\":\"# Admin Vault Graph Smoke\\n\\nLinked from installer smoke.\",\"mode\":\"replace\"}" 2>&1) || {
+    fail "POST /api/memory/write failed: $write_resp"
+    diagnose_service agentos-d
+    exit 1
+  }
+  graph_resp=$(curl -fsS -m 5 "${admin_url}/api/admin/vault-graph?tenantId=${tenant_id}" 2>&1) || {
+    fail "admin-ui BFF endpoint /api/admin/vault-graph returned non-200: $graph_resp"
+    fail "Diagnose: curl -i ${admin_url}/api/admin/vault-graph?tenantId=${tenant_id} ; agentworks logs admin-ui"
+    exit 1
+  }
+  if ! printf '%s' "$graph_resp" | grep -q "\"id\":\"${smoke_key}\""; then
+    fail "admin-ui vault graph did not include the smoke memory page."
+    fail "Response: $graph_resp"
+    exit 1
+  fi
+  pass "admin-ui vault graph sees tenant memory data."
 fi
 
 # -----------------------------------------------------------------------------
