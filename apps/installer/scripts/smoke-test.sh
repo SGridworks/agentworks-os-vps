@@ -211,6 +211,19 @@ until curl -sf -m 5 "${admin_url}/mission-control" >/dev/null 2>&1; do
 done
 [[ "$admin_optional" == "1" && $elapsed -ge $admin_timeout ]] || pass "admin-ui /mission-control is up."
 
+# Sanity-check the admin BFF endpoints that back documented first-run features.
+# A 500 here means the admin shell renders but the page returns broken data.
+if [[ "$admin_optional" != "1" ]]; then
+  for endpoint in /api/admin/vault-graph; do
+    if ! curl -fsS -m 5 "${admin_url}${endpoint}" >/dev/null 2>&1; then
+      fail "admin-ui BFF endpoint ${endpoint} returned non-200."
+      fail "Diagnose: curl -i ${admin_url}${endpoint} ; agentworks logs admin-ui"
+      exit 1
+    fi
+  done
+  pass "admin-ui BFF endpoints respond 200."
+fi
+
 # -----------------------------------------------------------------------------
 # Step 8 — n8n custom nodes are actually loadable
 #

@@ -263,14 +263,29 @@ Dashboard → **Storage** shows current usage.
 
 ### Test Backups Before You Need Them
 
-Run a restore test every quarter:
+Run a restore test every quarter against a scratch install — never restore
+into production to verify a backup:
 
 ```bash
-# The substrate has a one-command restore-test
-~/.agentworks/scripts/restore-test.sh
+# 1. Take a fresh backup
+agentworks backup ~/.agentworks/data/backups/test-$(date +%Y%m%d).tar.gz
+
+# 2. Spin up a disposable install pointed at a scratch dir
+AGENTWORKS_DIR=/tmp/awos-restore-test \
+  ~/.agentworks/source/apps/installer/src/install.sh --unattended
+
+# 3. Restore the backup into the scratch install
+AGENTWORKS_DIR=/tmp/awos-restore-test agentworks restore \
+  --input ~/.agentworks/data/backups/test-*.tar.gz
+
+# 4. Verify it came up healthy
+AGENTWORKS_DIR=/tmp/awos-restore-test agentworks status
+
+# 5. Tear it down
+AGENTWORKS_DIR=/tmp/awos-restore-test agentworks uninstall
 ```
 
-This runs against a scratch directory and confirms the backup is valid without touching your production data.
+A bundled `restore-test.sh` wrapper is on the v0.2 roadmap.
 
 ### Watch the Approval Queue Daily
 

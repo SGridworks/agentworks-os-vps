@@ -67,11 +67,23 @@ function stem(path: string): string {
 }
 
 export async function GET(): Promise<Response> {
+  // Default install runs the admin-ui container with no vault mount
+  // and no tenant pinned, so the documented Memory Vault Viewer should
+  // degrade gracefully (200, empty graph) rather than return 500. Operators
+  // who want a populated graph wire VAULT_ROOT + AGENTOS_TENANT_ID via
+  // docker-compose.yml.
   if (!VAULT_ROOT || !TENANT_ID) {
-    return Response.json(
-      { error: 'config_missing', message: 'VAULT_ROOT and AGENTOS_TENANT_ID env vars are required' },
-      { status: 500 },
-    );
+    return Response.json({
+      tenantId: null,
+      tenantRoot: null,
+      nodes: [],
+      edges: [],
+      stats: { nodeCount: 0, edgeCount: 0, unresolvedWikilinks: 0 },
+      notice:
+        'Memory Vault Viewer is unwired in the default v0.1.9 docker-compose install. ' +
+        'To enable: bind-mount the vault path into admin-ui and set VAULT_ROOT + AGENTOS_TENANT_ID. ' +
+        'See docs/install-runbook.md.',
+    });
   }
   try {
     const tenantRoot = join(VAULT_ROOT, TENANT_ID);

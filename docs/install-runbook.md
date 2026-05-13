@@ -235,17 +235,28 @@ A clean first scan shows zero findings.
 
 ---
 
-## Step 7 — n8n Workflow Automation
+## Step 7 — n8n Workflow Automation (optional)
 
-n8n is pre-configured with AgentWorks custom nodes and two starter workflows.
+n8n ships with the AgentWorks custom nodes (Policy Check, Memory Read,
+Memory Write, Dispatch, Automation Action) loaded as a built-in extension,
+but **starter workflows are not auto-seeded** in v0.1.9 — you create the
+owner account, then seed by hand.
 
 **Access:** `http://localhost:5678`
 
-On first launch, n8n prompts you to create an owner account. After that, the seed script populates the workflows:
+1. On first launch, n8n prompts you to create an owner account. Pick an
+   email and password and save them somewhere — the seed script needs them.
+
+2. After the owner account is created, seed the two starter workflows
+   (`workflows/01-lead-intake.json` and `workflows/02-outbound-dispatch.json`):
 
 ```bash
+N8N_ADMIN_EMAIL="you@example.com" \
+N8N_ADMIN_PASSWORD="<your-n8n-owner-password>" \
 node ~/.agentworks/source/scripts/n8n-workflow-seed.js
 ```
+
+The script is idempotent — re-running updates workflows with the same name.
 
 ### AgentWorks Nodes in n8n
 

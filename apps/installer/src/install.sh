@@ -176,13 +176,31 @@ check_ports_free() {
         log_warn "Falling back to whatever wrapper bytes are on disk."
       fi
 
+      # `agentworks update` returns early when the latest tag == installed
+      # version, so a partial-failure re-install would just no-op. Run
+      # `agentworks restart` (recreates services with current compose) then
+      # `smoke-test.sh` so the operator sees a real PASS/FAIL, not silence.
       local update_script="${existing_source}/apps/installer/src/agentworks.sh"
-      if [[ -r "$update_script" ]]; then
-        exec bash "$update_script" update
-      fi
-      if command -v agentworks &>/dev/null; then
-        exec agentworks update
-      fi
+      local smoke_script="${existing_source}/apps/installer/scripts/smoke-test.sh"
+      local repair_one_shot
+      repair_one_shot=$(cat <<REPAIR
+set -e
+if [[ -r "$update_script" ]]; then
+  bash "$update_script" update || true
+  bash "$update_script" restart
+elif command -v agentworks &>/dev/null; then
+  agentworks update || true
+  agentworks restart
+else
+  echo "[ERROR] no agentworks wrapper found at $update_script" >&2
+  exit 1
+fi
+if [[ -r "$smoke_script" ]]; then
+  bash "$smoke_script"
+fi
+REPAIR
+)
+      exec bash -c "$repair_one_shot"
       log_error "Existing install detected but update entry point not found:"
       log_error "  ${update_script}"
       log_error "Run manually:"

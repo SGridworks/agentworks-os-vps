@@ -150,9 +150,13 @@ Reads the active platform's Claude config (`~/Library/Application Support/Claude
 
 ### 2.2 DECISION: vault layout (optional)
 
-**Default:** `$HOME/vault/wiki/<tenant_id>/`.
+**Default:** `~/.agentworks/data/vault/<tenant_id>/`.
 
-Each tenant's content lives at `<VAULT_ROOT>/<tenant_id>/`. The default `VAULT_ROOT` is `$HOME/vault/`. Three layouts make sense:
+Each tenant's content lives at `<VAULT_ROOT>/<tenant_id>/`. The shipped
+compose file bind-mounts `${AGENTWORKS_DATA_DIR}/vault` (default
+`~/.agentworks/data/vault`) into the daemon container at `/data/vault`, and
+the daemon's `VAULT_ROOT` is `/data/vault`. From the operator's machine
+that's `~/.agentworks/data/vault`. Three layouts make sense:
 
 > *"Three vault layouts. Which fits your situation?
 > A) Fresh vault, no shared content. I create a clean tenant dir and that's it. Default.

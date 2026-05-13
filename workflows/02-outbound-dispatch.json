@@ -1,5 +1,5 @@
 {
-  "name": "AgentWorks — Outbound Dispatch",
+  "name": "AgentWorks \u2014 Outbound Dispatch",
   "nodes": [
     {
       "parameters": {},
@@ -7,7 +7,10 @@
       "name": "Manual Trigger",
       "type": "n8n.nodes.manualTrigger",
       "typeVersion": 1,
-      "position": [250, 300]
+      "position": [
+        250,
+        300
+      ]
     },
     {
       "parameters": {
@@ -22,7 +25,10 @@
       "name": "Policy Check",
       "type": "agentworks.policy_check",
       "typeVersion": 1,
-      "position": [500, 300]
+      "position": [
+        500,
+        300
+      ]
     },
     {
       "parameters": {
@@ -35,7 +41,10 @@
       "name": "Dispatch to Agent",
       "type": "agentworks.dispatch",
       "typeVersion": 1,
-      "position": [750, 200]
+      "position": [
+        750,
+        200
+      ]
     },
     {
       "parameters": {
@@ -48,7 +57,10 @@
       "name": "Audit (Allow)",
       "type": "agentworks.memory.write",
       "typeVersion": 1,
-      "position": [750, 100]
+      "position": [
+        750,
+        100
+      ]
     },
     {
       "parameters": {
@@ -61,7 +73,10 @@
       "name": "Route to Review",
       "type": "agentworks.memory.write",
       "typeVersion": 1,
-      "position": [750, 400]
+      "position": [
+        750,
+        400
+      ]
     },
     {
       "parameters": {
@@ -74,20 +89,47 @@
       "name": "Audit (Block)",
       "type": "agentworks.memory.write",
       "typeVersion": 1,
-      "position": [750, 600]
+      "position": [
+        750,
+        600
+      ]
     }
   ],
   "connections": {
     "Policy Check": {
       "main": [
-        [{ "node": "Dispatch to Agent", "type": "main", "index": 0 }],
-        [{ "node": "Route to Review", "type": "main", "index": 0 }],
-        [{ "node": "Audit (Block)", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Dispatch to Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audit (Block)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route to Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Dispatch to Agent": {
       "main": [
-        [{ "node": "Audit (Allow)", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Audit (Allow)",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -96,5 +138,9 @@
     "executionOrder": "v1"
   },
   "staticData": null,
-  "tags": ["agentworks", "starter", "dispatch"]
+  "tags": [
+    "agentworks",
+    "starter",
+    "dispatch"
+  ]
 }

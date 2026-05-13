@@ -58,9 +58,14 @@ Run before any cleanup. Capture a snapshot of where the vault is right now.
 ### 1.1 Tenant scope
 
 ```bash
-TENANT_ID=$(grep -o '"id":"[^"]*"' $HOME/.agentworks/data/tenant-bootstrap.json 2>/dev/null | head -1 | cut -d\" -f4)
-VAULT_DIR=$(docker compose -f $HOME/.agentworks/docker-compose.yml exec -T agentos-d env 2>/dev/null | grep VAULT_ROOT | cut -d= -f2 | tr -d '\r')
-VAULT_DIR=${VAULT_DIR:-$HOME/vault/wiki}
+# Discover the tenant from the daemon API (no tenant-bootstrap.json file
+# exists in v0.1.9 — the installer registers the tenant via REST).
+TENANT_ID=$(curl -s http://127.0.0.1:7710/api/tenants \
+  | python3 -c 'import sys, json; data=json.load(sys.stdin); items=data.get("items", data) if isinstance(data, dict) else data; print(items[0]["id"]) if items else exit(1)')
+
+# In v0.1.9 the daemon's VAULT_ROOT is bind-mounted from the host at
+# ~/.agentworks/data/vault. That's where each tenant's directory lives.
+VAULT_DIR="$HOME/.agentworks/data/vault"
 echo "Tenant:  $TENANT_ID"
 echo "Vault:   $VAULT_DIR/$TENANT_ID/"
 ls -la "$VAULT_DIR/$TENANT_ID/" | head -30
