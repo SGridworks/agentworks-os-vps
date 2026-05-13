@@ -16,10 +16,6 @@ import {
 } from 'lucide-react';
 import {
   initializeOnboarding,
-  detectEditors,
-  writeEditorConfigs,
-  type DetectedEditor,
-  type WriteConfigResult,
 } from '@/lib/api';
 
 const STEPS = [
@@ -37,7 +33,6 @@ interface OnboardingState {
   tenantName: string;
   tenantDescription: string;
   selectedPack: string; // 'blank' | 'minimal' | 'standard'
-  selectedEditors: string[]; // editor IDs selected for pairing
   completed: boolean;
 }
 
@@ -46,7 +41,6 @@ const DEFAULT_STATE: OnboardingState = {
   tenantName: '',
   tenantDescription: '',
   selectedPack: 'minimal',
-  selectedEditors: [],
   completed: false,
 };
 
@@ -108,23 +102,6 @@ export default function OnboardingPage() {
           : {}),
         selectedPack: state.selectedPack as 'minimal' | 'standard' | 'blank',
       });
-
-      // Step 2: Write MCP config to selected editors (after tenant exists)
-      if (state.selectedEditors.length > 0) {
-        const writeResult = await writeEditorConfigs(
-          state.tenantName.trim(), // reviewerId — use tenant name as admin identifier
-          state.selectedEditors,
-        );
-        // Surface write failures as warnings but don't block launch
-        const failures = writeResult.results.filter((r: WriteConfigResult) => !r.written);
-        if (failures.length > 0) {
-          setError(
-            `Editor pairing partially failed: ${failures.map((f: WriteConfigResult) => `${f.id} (${f.message})`).join('; ')}. Tenant created — you can retry from Settings.`,
-          );
-          setLoading(false);
-          return;
-        }
-      }
 
       updateState({ completed: true });
       // Mark onboarding done
@@ -229,10 +206,7 @@ export default function OnboardingPage() {
           />
         )}
         {step === 3 && (
-          <PairStep
-            selectedEditors={state.selectedEditors}
-            onUpdate={updateState}
-          />
+          <PairStep />
         )}
         {step === 4 && (
           <LaunchStep
@@ -605,48 +579,7 @@ function LaunchStep({
   );
 }
 
-function PairStep({
-  selectedEditors,
-  onUpdate,
-}: {
-  selectedEditors: string[];
-  onUpdate: (partial: Partial<OnboardingState>) => void;
-}) {
-  const [editors, setEditors] = useState<DetectedEditor[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [detecting, setDetecting] = useState(false);
-
-  useEffect(() => {
-    setDetecting(true);
-    detectEditors()
-      .then((res) => {
-        setEditors(res.editors);
-        // Pre-select any editors that are present
-        const presentIds = res.editors
-          .filter((e) => e.present)
-          .map((e) => e.id);
-        onUpdate({ selectedEditors: presentIds });
-      })
-      .catch(() => {
-        // Non-fatal — editor detection is best-effort
-        setEditors([]);
-      })
-      .finally(() => {
-        setLoading(false);
-        setDetecting(false);
-      });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  function toggleEditor(id: string) {
-    const next = selectedEditors.includes(id)
-      ? selectedEditors.filter((e) => e !== id)
-      : [...selectedEditors, id];
-    onUpdate({ selectedEditors: next });
-  }
-
-  const presentEditors = editors.filter((e) => e.present);
-
+function PairStep() {
   return (
     <div className="space-y-5">
       <div className="space-y-1">
@@ -660,97 +593,20 @@ function PairStep({
         </p>
       </div>
 
-      {detecting || loading ? (
-        <div className="flex items-center gap-3 py-6 text-sm text-muted-foreground">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          Detecting installed editors...
-        </div>
-      ) : presentEditors.length === 0 ? (
-        <div className="flex items-start gap-3 rounded-lg border border-border bg-muted/40 p-4">
-          <AlertTriangle className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
-          <div>
-            <p className="text-sm font-medium text-foreground">No editors detected</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              No supported editors were found. You can pair manually from
-              Settings after setup, or install Claude Code, Claude Desktop,
-              or Cursor first.
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {editors.map((editor) => {
-            const isSelected = selectedEditors.includes(editor.id);
-            return (
-              <button
-                key={editor.id}
-                onClick={() => editor.present && toggleEditor(editor.id)}
-                disabled={!editor.present}
-                className={`w-full text-left rounded-lg border p-4 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${
-                  !editor.present
-                    ? 'opacity-50 cursor-not-allowed border-border'
-                    : isSelected
-                    ? 'border-brand-primary bg-brand-primary/5'
-                    : 'border-border hover:border-accent'
-                }`}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-foreground">
-                        {editor.label}
-                      </span>
-                      {editor.present ? (
-                        <span className="text-xs px-1.5 py-0.5 rounded bg-success/10 text-success font-medium">
-                          Detected
-                        </span>
-                      ) : (
-                        <span className="text-xs text-muted-foreground">
-                          Not found
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-xs text-muted-foreground font-mono">
-                      {editor.configPath}
-                    </p>
-                  </div>
-                  <div
-                    className={`w-4 h-4 rounded-full border-2 shrink-0 mt-0.5 transition-colors ${
-                      !editor.present
-                        ? 'border-muted-foreground/30'
-                        : isSelected
-                        ? 'border-brand-primary bg-brand-primary'
-                        : 'border-muted-foreground'
-                    }`}
-                  >
-                    {isSelected && editor.present && (
-                      <div className="w-full h-full rounded-full bg-brand-primary-foreground scale-[0.4]" />
-                    )}
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      )}
-
-      {selectedEditors.length > 0 && (
-        <div className="flex items-start gap-2.5 rounded-lg bg-success/5 border border-success/20 p-3.5">
-          <CheckCircle className="w-4 h-4 text-success shrink-0 mt-0.5" />
-          <p className="text-xs text-foreground leading-relaxed">
-            <strong>Pairing {selectedEditors.length} editor{selectedEditors.length > 1 ? 's' : ''}.</strong>{' '}
-            On launch, the <code className="text-xs bg-muted px-1 rounded">agentworks</code> MCP
-            entry will be written to each editor&apos;s config (existing entries
-            are preserved — this is idempotent).
-          </p>
-        </div>
-      )}
+      <div className="flex items-start gap-2.5 rounded-lg bg-success/5 border border-success/20 p-3.5">
+        <CheckCircle className="w-4 h-4 text-success shrink-0 mt-0.5" />
+        <p className="text-xs text-foreground leading-relaxed">
+          After launch, run <code className="text-xs bg-muted px-1 rounded">agentworks mcp configure</code>{' '}
+          on the host to pair Claude Code or Claude Desktop with the bridge at{' '}
+          <code className="text-xs bg-muted px-1 rounded">~/.agentworks/config/mcp-stdio-bridge.js</code>.
+        </p>
+      </div>
 
       <div className="flex items-start gap-2.5 rounded-lg bg-muted/40 p-3.5">
         <AlertTriangle className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Editor pairing writes to local config files only. AgentWorks OS
-          never sends your editor config to external servers.
+          Dockerized onboarding cannot write host editor configs from inside
+          the daemon container. The host wrapper performs that step.
         </p>
       </div>
     </div>

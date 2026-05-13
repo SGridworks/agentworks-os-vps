@@ -112,11 +112,12 @@ n8n initialises its internal SQLite DB on first boot and may take up to 2 minute
 
 ### Rule-packs not loading
 
-Rule-packs are copied to `${AGENTWORKS_DATA_DIR}/rule-packs/` and mounted into the `agentos-d` container at `/opt/agentworks/rule-packs`. Verify:
+Rule packs stay in the installed source checkout and are mounted into the
+`agentos-d` container. Verify:
 
 ```bash
-ls ~/.agentworks/rule-packs/
-docker exec agentos-d ls /opt/agentworks/rule-packs/
+ls ~/.agentworks/source/rule-packs/
+docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml exec agentos-d ls /app/rule-packs/
 ```
 
 ## Architecture

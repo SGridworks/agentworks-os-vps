@@ -36,9 +36,6 @@ interface EditorTarget {
   configPath: string;
 }
 
-const SERVER_KEY = "agentworks";
-const STDIO_BIN = "agentos-mcp-stdio";
-
 function editorTargets(): EditorTarget[] {
   const home = os.homedir();
   return [
@@ -67,36 +64,6 @@ async function pathExists(p: string): Promise<boolean> {
   } catch {
     return false;
   }
-}
-
-interface McpConfigShape {
-  mcpServers?: Record<string, { command?: string; args?: string[] }>;
-}
-
-async function mergeServerEntry(configPath: string): Promise<{ written: boolean; message: string }> {
-  await fs.mkdir(path.dirname(configPath), { recursive: true });
-  let existing: McpConfigShape = {};
-  if (await pathExists(configPath)) {
-    try {
-      const raw = await fs.readFile(configPath, "utf8");
-      existing = raw.trim() ? (JSON.parse(raw) as McpConfigShape) : {};
-    } catch (err) {
-      return { written: false, message: `parse_failed: ${(err as Error).message}` };
-    }
-  }
-  const servers = existing.mcpServers ?? {};
-  const desired = { command: STDIO_BIN, args: [] as string[] };
-  const current = servers[SERVER_KEY];
-  const alreadyEqual =
-    current && current.command === desired.command &&
-    JSON.stringify(current.args ?? []) === JSON.stringify(desired.args);
-  if (alreadyEqual) {
-    return { written: false, message: "already_present" };
-  }
-  servers[SERVER_KEY] = desired;
-  existing.mcpServers = servers;
-  await fs.writeFile(configPath, JSON.stringify(existing, null, 2) + "\n", "utf8");
-  return { written: true, message: current ? "updated" : "added" };
 }
 
 const WriteConfigBody = z.object({
@@ -133,22 +100,19 @@ export function createOnboardingRouter(_config: Config): Router {
       res.status(400).json({ error: "unknown_editor_ids" });
       return;
     }
-    const results = await Promise.all(
-      requested.map(async (t) => {
-        try {
-          const r = await mergeServerEntry(t.configPath);
-          return { id: t.id, configPath: t.configPath, ...r };
-        } catch (err) {
-          return {
-            id: t.id,
-            configPath: t.configPath,
-            written: false,
-            message: `write_failed: ${(err as Error).message}`,
-          };
-        }
-      }),
-    );
-    res.json({ results });
+    res.status(409).json({
+      error: "host_editor_config_unsupported",
+      message:
+        "Dockerized onboarding cannot write host editor config files from inside the agentos-d container. Run `agentworks mcp configure` on the host after install.",
+      command: "agentworks mcp configure",
+      bridgePath: "~/.agentworks/config/mcp-stdio-bridge.js",
+      results: requested.map((t) => ({
+        id: t.id,
+        configPath: t.configPath,
+        written: false,
+        message: "use_host_agentworks_mcp_configure",
+      })),
+    });
   });
 
   // ---------------------------------------------------------------------------

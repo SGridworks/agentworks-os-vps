@@ -162,7 +162,7 @@ print('AGENTOS_URL=' + (env.get('AGENTOS_URL') or 'NOT SET (will default to http
 | `json ok` fails | The config is malformed JSON. Common cause: trailing commas. Show the operator the parse error and which line. |
 | `BAD PATH` | Claude Desktop in particular does NOT expand `~` or `$HOME`. Replace with the absolute path from `echo $HOME`. |
 | `MISSING:` | The bridge file moved or was never copied. See §2. |
-| `TENANT MISSING` | The bridge can't address a tenant. Get the UUID from `~/.agentworks/data/tenant-bootstrap.json` and add it. |
+| `TENANT MISSING` | The bridge can't address a tenant. Get the UUID from `GET http://127.0.0.1:7710/api/tenants` and add it. |
 
 ### §3.3 Other servers in the same file
 
@@ -219,7 +219,7 @@ The bridge expects MCP-protocol input on stdin; with `/dev/null` it will hand-sh
 | Error | Cause |
 |---|---|
 | `ECONNREFUSED 127.0.0.1:7710` | Daemon down — go back to §1 |
-| `Invalid tenantId` | UUID format wrong; copy from `tenant-bootstrap.json` literally |
+| `Invalid tenantId` | UUID format wrong; copy it from `GET http://127.0.0.1:7710/api/tenants` |
 | `Cannot find module` | Node version too old, or bridge file was truncated during `docker cp` — re-copy |
 | `EACCES` on a path | Bridge has no permission for a tmp/log path |
 

@@ -60,12 +60,13 @@ This rule exists because of a documented v0.1.x risk: the daemon's SQLite databa
 ### 0.3 Find the tenant ID
 
 ```bash
-TENANT_ID=$(grep -o '"id":"[^"]*"' $HOME/.agentworks/data/tenant-bootstrap.json 2>/dev/null | \
-  head -1 | cut -d\" -f4)
+TENANT_ID=$(curl -s http://127.0.0.1:7710/api/tenants \
+  | python3 -c 'import sys,json; data=json.load(sys.stdin); items=data.get("items", data) if isinstance(data, dict) else data; print(items[0]["id"]) if items else exit(1)')
 echo "TENANT_ID=$TENANT_ID"
 ```
 
-If empty, the daemon hasn't bootstrapped yet — escalate to the operator.
+If empty, no tenant exists yet. Run the Admin UI onboarding flow or create one
+with `POST /api/tenants`.
 
 ---
 

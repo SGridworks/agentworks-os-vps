@@ -49,16 +49,16 @@ Capture the answers verbatim before continuing. If the operator says "use your j
 
 ## §2 — Locate the rule-packs directory
 
-Rule packs live in `rule-packs/<pack-id>/<pack-id>-v<version>.yaml` in the repo, and at runtime in the daemon's `RULE_PACKS_DIR` (default: `/app/rule-packs/` inside the container, mounted from the host).
+Rule packs live in `rule-packs/<pack-id>/<pack-id>-v<version>.yaml` in the repo, and at runtime in the daemon's `RULE_PACKS_DIR` (default: `/app/rule-packs/` inside the container, mounted from the installed source checkout).
 
 ```bash
-ls $HOME/Projects/agentworks-os/rule-packs/ 2>/dev/null || \
-  ls $HOME/.agentworks/rule-packs/ 2>/dev/null
+ls $HOME/.agentworks/source/rule-packs/ 2>/dev/null || \
+  ls ./rule-packs/ 2>/dev/null
 ```
 
 **Verify:** you see existing packs (`smb-starter/`, `tcpa-real-estate/`, `fair-housing/`).
 
-**Fix:** if no rule-packs directory exists, the operator either hasn't run the installer (§5 of the install guide) or is working in a fresh checkout. Confirm with them which path to write into.
+**Fix:** if no rule-packs directory exists, the operator either has not run the installer or is not in a source checkout. Confirm the install path before writing.
 
 ---
 
@@ -85,7 +85,7 @@ The `tier` field is a legal claim. Pick wrong and the operator can't enforce the
 Start from `rule-packs/smb-starter/smb-starter-v0.1.yaml` as a skeleton. Don't write from scratch — too easy to miss a required field.
 
 ```bash
-cp $HOME/Projects/agentworks-os/rule-packs/smb-starter/smb-starter-v0.1.yaml \
+cp $HOME/.agentworks/source/rule-packs/smb-starter/smb-starter-v0.1.yaml \
    /tmp/<pack-id>-draft.yaml
 ```
 
@@ -239,9 +239,9 @@ Without the negative cases, you'll write a rule that blocks correctly but also b
 Once §5 passes:
 
 ```bash
-mkdir -p $HOME/Projects/agentworks-os/rule-packs/<pack-id>
+mkdir -p $HOME/.agentworks/source/rule-packs/<pack-id>
 cp /tmp/<pack-id>-draft.yaml \
-   $HOME/Projects/agentworks-os/rule-packs/<pack-id>/<pack-id>-v0.1.yaml
+   $HOME/.agentworks/source/rule-packs/<pack-id>/<pack-id>-v0.1.yaml
 ```
 
 Reload packs in the running daemon (no restart required):

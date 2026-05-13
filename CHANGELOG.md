@@ -126,12 +126,29 @@ the fixes called out by two rounds of the pre-release adversarial audit.
   `COMPOSE_PROJECT_NAME` mixin so the wrapper and installer agree on
   resource naming.
 
+### Fixed (audit round 8)
+
+- `apps/installer/scripts/smoke-test.sh` no longer creates a persistent
+  smoke-test tenant. It uses an ephemeral UUID for the policy round-trip so
+  repeated release gates cannot pollute the normal Admin UI tenant list.
+- Dockerized Admin UI onboarding no longer attempts to write host editor MCP
+  configs from inside the `agentos-d` container. First-run pairing now points
+  operators to the host wrapper command, `agentworks mcp configure`, and the
+  daemon route returns an explicit unsupported response for host editor writes.
+- Agent-facing docs now discover tenants via `GET /api/tenants` instead of
+  the unshipped `~/.agentworks/data/tenant-bootstrap.json` file.
+- MCP docs now point Docker installs at
+  `~/.agentworks/config/mcp-stdio-bridge.js` / `agentworks mcp configure`
+  instead of fixed container names.
+- Rule-pack docs now use the installed source checkout path
+  `~/.agentworks/source/rule-packs` instead of stale
+  `~/Projects/agentworks-os` or `~/.agentworks/rule-packs` paths.
+- `packages/agentos-d/CLAUDE.md` now catalogs the daemon startup environment
+  variables used by execution, legacy-adapter, dispatch, and Kimi-backed
+  adapter paths.
+
 ### Known limitations
 
-- The smoke-test script does not delete its disposable tenants after the run
-  (the daemon has no tenant-delete REST endpoint in 0.1.9). Tenants are
-  identifiable by the `smoke-test-<timestamp>-<pid>` prefix; clean them up
-  via direct DB if smoke-testing accumulates noise.
 - Real-VPS install verification for this release was performed against a
   local OrbStack docker-compose stack on canonical ports, not on an actual
   remote VPS. The bundled E2E passed end-to-end against that stack.

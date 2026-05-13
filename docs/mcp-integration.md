@@ -68,17 +68,16 @@ Claude Desktop uses a JSON config file to declare MCP servers. AgentWorks ships 
 
 ### Step 1 — Find the bridge binary
 
-The bridge ships inside the `agentos-d` package:
+For Docker installs, the installer extracts the bridge onto the host:
 
 ```bash
-ls packages/agentos-d/dist/bin/mcp-stdio-bridge.js
+ls ~/.agentworks/config/mcp-stdio-bridge.js
 ```
 
-If you installed via Docker, the bridge is at the same path inside the container. Extract it to the host machine if needed:
+The wrapper can write the client config for you:
 
 ```bash
-docker cp agentos-d:/app/dist/bin/mcp-stdio-bridge.js \
-  ~/agentworks-mcp-bridge.js
+agentworks mcp configure
 ```
 
 ### Step 2 — Write the Claude Desktop config
@@ -107,7 +106,7 @@ Add the `agentworks` server entry:
 
 Replace the following:
 
-- `/FULL/PATH/TO/mcp-stdio-bridge.js` — absolute path to the bridge binary on your machine
+- `/FULL/PATH/TO/mcp-stdio-bridge.js` — absolute path to the bridge binary on your machine, normally `$HOME/.agentworks/config/mcp-stdio-bridge.js`
 
 ### Step 3 — Restart Claude Desktop
 

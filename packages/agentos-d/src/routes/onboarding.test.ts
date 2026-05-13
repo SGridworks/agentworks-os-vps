@@ -1,13 +1,13 @@
 /**
  * onboarding route tests — detect-editors and write-config behaviors.
  *
- * Each test case stubs HOME to a temp dir so the editor-config writes are
- * fully sandboxed. The merge logic is exercised per editor target plus
- * one shared-state idempotency case.
+ * The Docker daemon cannot safely write host editor configs. These tests keep
+ * detection behavior covered and assert that write-config directs the operator
+ * to the host-side wrapper.
  */
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { mkdtempSync, rmSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
+import { mkdtempSync, rmSync, mkdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import express from "express";
@@ -77,62 +77,15 @@ describe("POST /api/onboarding/write-config", () => {
     expect(res.body.error).toBe("unknown_editor_ids");
   });
 
-  it("creates the agentworks server entry when config is absent", async () => {
+  it("directs valid write requests to the host-side wrapper", async () => {
     const app = buildApp();
     const res = await request(app)
       .post("/api/onboarding/write-config")
       .send({ reviewerId: "local-admin", editorIds: ["claude-code"] });
-    expect(res.status).toBe(200);
-    expect(res.body.results[0].written).toBe(true);
-    expect(res.body.results[0].message).toBe("added");
-    const written = JSON.parse(
-      readFileSync(path.join(tempHome, ".claude", "mcp.json"), "utf8"),
-    );
-    expect(written.mcpServers.agentworks).toEqual({
-      command: "agentos-mcp-stdio",
-      args: [],
-    });
-  });
-
-  it("preserves unrelated server entries on merge", async () => {
-    mkdirSync(path.join(tempHome, ".cursor"), { recursive: true });
-    writeFileSync(
-      path.join(tempHome, ".cursor", "mcp.json"),
-      JSON.stringify({ mcpServers: { existing: { command: "other", args: ["--foo"] } } }),
-      "utf8",
-    );
-    const app = buildApp();
-    const res = await request(app)
-      .post("/api/onboarding/write-config")
-      .send({ reviewerId: "local-admin", editorIds: ["cursor"] });
-    expect(res.body.results[0].written).toBe(true);
-    const written = JSON.parse(
-      readFileSync(path.join(tempHome, ".cursor", "mcp.json"), "utf8"),
-    );
-    expect(written.mcpServers.existing).toEqual({ command: "other", args: ["--foo"] });
-    expect(written.mcpServers.agentworks).toBeDefined();
-  });
-
-  it("is idempotent — second write with identical config reports already_present", async () => {
-    const app = buildApp();
-    await request(app)
-      .post("/api/onboarding/write-config")
-      .send({ reviewerId: "local-admin", editorIds: ["claude-desktop"] });
-    const res = await request(app)
-      .post("/api/onboarding/write-config")
-      .send({ reviewerId: "local-admin", editorIds: ["claude-desktop"] });
+    expect(res.status).toBe(409);
+    expect(res.body.error).toBe("host_editor_config_unsupported");
+    expect(res.body.command).toBe("agentworks mcp configure");
     expect(res.body.results[0].written).toBe(false);
-    expect(res.body.results[0].message).toBe("already_present");
-  });
-
-  it("returns parse_failed when the existing config file is malformed JSON", async () => {
-    mkdirSync(path.join(tempHome, ".cursor"), { recursive: true });
-    writeFileSync(path.join(tempHome, ".cursor", "mcp.json"), "{not-json", "utf8");
-    const app = buildApp();
-    const res = await request(app)
-      .post("/api/onboarding/write-config")
-      .send({ reviewerId: "local-admin", editorIds: ["cursor"] });
-    expect(res.body.results[0].written).toBe(false);
-    expect(res.body.results[0].message).toMatch(/parse_failed/);
+    expect(res.body.results[0].message).toBe("use_host_agentworks_mcp_configure");
   });
 });

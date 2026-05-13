@@ -65,27 +65,10 @@ if ! echo "$health_body" | grep -q '"status"[[:space:]]*:[[:space:]]*"ok"'; then
 fi
 
 # -----------------------------------------------------------------------------
-# Step 2 — create a smoke-test tenant
+# Step 2 — allocate an ephemeral tenant id
 # -----------------------------------------------------------------------------
-SMOKE_TENANT_NAME="smoke-test-$(date +%Y%m%d%H%M%S)-$$"
-info "POST ${DAEMON_URL}/api/tenants — creating disposable tenant ${SMOKE_TENANT_NAME}..."
-tenant_resp=$(curl -sS -X POST "${DAEMON_URL}/api/tenants" \
-  -H 'content-type: application/json' \
-  -d "{\"name\":\"${SMOKE_TENANT_NAME}\",\"description\":\"created by apps/installer/scripts/smoke-test.sh; safe to delete\"}" 2>&1) || {
-  fail "POST /api/tenants failed: $tenant_resp"
-  fail "Diagnose: docker compose logs agentos-d --tail 100"
-  exit 1
-}
-
-tenant_id=$(printf '%s' "$tenant_resp" \
-  | python3 -c 'import sys,json; d=json.load(sys.stdin); print(d.get("id") or d.get("tenantId") or "")' 2>/dev/null) \
-  || tenant_id=""
-
-if [[ -z "$tenant_id" ]]; then
-  fail "Could not parse tenant id from response: $tenant_resp"
-  exit 1
-fi
-pass "Tenant created: ${tenant_id}"
+tenant_id=$(python3 -c 'import uuid; print(uuid.uuid4())')
+pass "Using ephemeral tenant id for smoke policy check: ${tenant_id}"
 
 # -----------------------------------------------------------------------------
 # Step 3 — policy.check round-trip
