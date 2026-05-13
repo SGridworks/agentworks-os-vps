@@ -94,11 +94,24 @@ service_container() {
 smoke_tenant_id=""
 cleanup_smoke_tenant() {
   if [[ -n "${smoke_tenant_id:-}" ]]; then
-    curl -fsS -X DELETE "${DAEMON_URL}/api/tenants/${smoke_tenant_id}" >/dev/null 2>&1 \
-      || warn "Could not delete disposable smoke tenant ${smoke_tenant_id}; remove it from the admin tenant registry."
+    if ! curl -fsS -X DELETE "${DAEMON_URL}/api/tenants/${smoke_tenant_id}" >/dev/null 2>&1; then
+      if [[ "${SMOKE_CLEANUP_OPTIONAL:-0}" == "1" ]]; then
+        warn "Could not delete disposable smoke tenant ${smoke_tenant_id}; remove it from the admin tenant registry."
+      else
+        fail "Could not delete disposable smoke tenant ${smoke_tenant_id}; remove it from the admin tenant registry."
+        return 1
+      fi
+    fi
   fi
 }
-trap cleanup_smoke_tenant EXIT
+finish() {
+  local status=$?
+  if ! cleanup_smoke_tenant && (( status == 0 )); then
+    exit 1
+  fi
+  exit "$status"
+}
+trap finish EXIT
 
 # -----------------------------------------------------------------------------
 # Step 1 — daemon is reachable
@@ -148,7 +161,8 @@ pass "Created disposable smoke tenant: ${tenant_id}"
 # Step 3 — policy.check round-trip
 # -----------------------------------------------------------------------------
 info "POST ${DAEMON_URL}/api/policy/check — evaluating a benign action..."
-policy_resp=$(curl -sS -X POST "${DAEMON_URL}/api/policy/check" \
+policy_raw=$(curl -sS -X POST "${DAEMON_URL}/api/policy/check" \
+  -w $'\n%{http_code}' \
   -H 'content-type: application/json' \
   -d "$(cat <<EOF
 {
@@ -162,10 +176,17 @@ policy_resp=$(curl -sS -X POST "${DAEMON_URL}/api/policy/check" \
 }
 EOF
 )" 2>&1) || {
-  fail "POST /api/policy/check failed: $policy_resp"
+  fail "POST /api/policy/check failed: $policy_raw"
   diagnose_service agentos-d
   exit 1
 }
+policy_status="${policy_raw##*$'\n'}"
+policy_resp="${policy_raw%$'\n'*}"
+if [[ ! "$policy_status" =~ ^2[0-9][0-9]$ ]]; then
+  fail "POST /api/policy/check returned HTTP ${policy_status}: $policy_resp"
+  diagnose_service agentos-d
+  exit 1
+fi
 
 decision=$(printf '%s' "$policy_resp" | extract_json_string decision)
 
@@ -327,7 +348,9 @@ if [[ "$n8n_optional" != "1" ]]; then
   )
   n8n_container="$(service_container n8n)"
   if [[ -z "$n8n_container" ]]; then
-    warn "Could not locate n8n container (compose label lookup failed); skipping nodes check."
+    fail "Could not locate n8n container (compose label lookup failed)."
+    fail "Set SMOKE_N8N_OPTIONAL=1 only for daemon-only diagnostic runs."
+    exit 1
   else
     missing=0
     for nf in "${N8N_NODE_FILES[@]}"; do

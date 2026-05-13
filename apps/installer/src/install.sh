@@ -293,7 +293,7 @@ preflight_check() {
     # The 'docker info' exit code is the same; check the stderr text.
     local docker_err
     docker_err=$(docker info 2>&1 >/dev/null || true)
-    if echo "$docker_err" | grep -qiE "permission denied|cannot connect.*sock"; then
+    if echo "$docker_err" | grep -qi "permission denied"; then
       log_error "Docker daemon is reachable but the current user lacks permission."
       log_error "On Linux, add yourself to the docker group:"
       log_error "  sudo usermod -aG docker \$USER && newgrp docker"
@@ -419,9 +419,12 @@ awos_compose_project_name() {
   # /tmp/b/.agentworks). Mix in a short hash of the full path.
   local base hash
   base="$(basename "${AGENTWORKS_DIR}")"
-  hash="$(printf '%s' "${AGENTWORKS_DIR}" | shasum -a 256 2>/dev/null | cut -c1-8)"
-  if [[ -z "${hash}" ]]; then
-    hash="$(printf '%s' "${AGENTWORKS_DIR}" | sha256sum 2>/dev/null | cut -c1-8)"
+  if command -v shasum &>/dev/null; then
+    hash="$(printf '%s' "${AGENTWORKS_DIR}" | shasum -a 256 | cut -c1-8)"
+  elif command -v sha256sum &>/dev/null; then
+    hash="$(printf '%s' "${AGENTWORKS_DIR}" | sha256sum | cut -c1-8)"
+  else
+    hash="default"
   fi
   printf '%s-%s' "${base}" "${hash:-default}" \
     | tr '[:upper:]' '[:lower:]' \

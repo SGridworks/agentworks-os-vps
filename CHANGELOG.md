@@ -261,6 +261,17 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
 - Corrected the failed-update rollback runbook to update both the source
   checkout and persisted `AGENTWORKS_VERSION` before recreating services.
 
+### Fixed (audit round 17)
+
+- Made compose project hash generation choose `shasum` or `sha256sum` before
+  running the hash pipeline, so installs do not abort on hosts that only ship
+  one of the two commands.
+- Corrected Docker preflight messaging so Docker Desktop / daemon connection
+  failures are not reported as Linux permission problems.
+- Tightened smoke-test assertions so policy checks must return HTTP 2xx, n8n
+  custom-node container lookup is fatal by default, and disposable tenant
+  cleanup failures fail the install gate unless explicitly downgraded.
+
 ### Known limitations
 
 - Real-VPS install verification for this release was performed against a

@@ -95,9 +95,12 @@ get_compose_cmd() {
 awos_compose_project_name() {
   local base hash
   base="$(basename "$AGENTWORKS_DIR")"
-  hash="$(printf '%s' "$AGENTWORKS_DIR" | shasum -a 256 2>/dev/null | cut -c1-8)"
-  if [[ -z "$hash" ]]; then
-    hash="$(printf '%s' "$AGENTWORKS_DIR" | sha256sum 2>/dev/null | cut -c1-8)"
+  if command -v shasum &>/dev/null; then
+    hash="$(printf '%s' "$AGENTWORKS_DIR" | shasum -a 256 | cut -c1-8)"
+  elif command -v sha256sum &>/dev/null; then
+    hash="$(printf '%s' "$AGENTWORKS_DIR" | sha256sum | cut -c1-8)"
+  else
+    hash="default"
   fi
   printf '%s-%s' "$base" "${hash:-default}" \
     | tr '[:upper:]' '[:lower:]' \
