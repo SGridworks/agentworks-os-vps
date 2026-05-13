@@ -67,10 +67,11 @@ fi
 # -----------------------------------------------------------------------------
 # Step 2 — create a smoke-test tenant
 # -----------------------------------------------------------------------------
-info "POST ${DAEMON_URL}/api/tenants — creating smoke-test tenant..."
+SMOKE_TENANT_NAME="smoke-test-$(date +%Y%m%d%H%M%S)-$$"
+info "POST ${DAEMON_URL}/api/tenants — creating disposable tenant ${SMOKE_TENANT_NAME}..."
 tenant_resp=$(curl -sS -X POST "${DAEMON_URL}/api/tenants" \
   -H 'content-type: application/json' \
-  -d '{"name":"smoke-test","description":"created by apps/installer/scripts/smoke-test.sh"}' 2>&1) || {
+  -d "{\"name\":\"${SMOKE_TENANT_NAME}\",\"description\":\"created by apps/installer/scripts/smoke-test.sh; safe to delete\"}" 2>&1) || {
   fail "POST /api/tenants failed: $tenant_resp"
   fail "Diagnose: docker compose logs agentos-d --tail 100"
   exit 1

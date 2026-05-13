@@ -217,28 +217,38 @@ test_fixtures:
       rule_id: "SMB-001"
 ```
 
-Run fixtures:
+Run fixtures via the policy-engine package tests (the substrate's authoritative validation path):
 
 ```bash
-agentworks pack dry-run rule-packs/smb-starter/smb-starter-v0.1.yaml --fixture="DNC contact — should block"
+# From the repo checkout:
+pnpm --filter @agentworks/policy-engine test -- rule-packs/smb-starter/smb-starter-v0.1.yaml
 ```
 
-Or run all fixtures:
+Or hit the daemon directly with a `policy/check` call that uses the fixture's
+input — the substrate evaluates the live pack:
 
 ```bash
-agentworks pack dry-run rule-packs/smb-starter/smb-starter-v0.1.yaml --all
+curl -s -X POST http://localhost:7710/api/policy/check \
+  -H 'content-type: application/json' \
+  -d @rule-packs/smb-starter/fixtures/dnc-contact.json
 ```
 
 **Fixture naming convention:** `<scenario> — <expected decision>`
+
+> The standalone `agentworks pack` CLI subcommand referenced in earlier drafts
+> is not shipped. Use the package-level test runner above for offline
+> validation, or hit `/api/policy/check` for an end-to-end check against the
+> running daemon.
 
 ---
 
 ## Validating a Pack
 
-Before loading a pack, validate it:
+Before loading a pack, validate it via the policy-engine's package tests:
 
 ```bash
-agentworks pack validate /path/to/pack.yaml
+# From the repo checkout:
+pnpm --filter @agentworks/policy-engine test -- /path/to/pack.yaml
 ```
 
 Validation checks:

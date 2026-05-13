@@ -39,8 +39,8 @@ If `docker ps` returns a connection error, open Docker Desktop and wait for it t
 On the machine that will host AgentWorks OS:
 
 ```bash
-git clone --depth=1 --branch v0.1.9 https://github.com/SGridworks/agentworks-os.git
-cd agentworks-os
+git clone --depth=1 --branch v0.1.9 https://github.com/SGridworks/agentworks-os-vps.git
+cd agentworks-os-vps
 ./apps/installer/src/install.sh --unattended \
   && ./apps/installer/scripts/smoke-test.sh
 ```

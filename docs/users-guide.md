@@ -207,7 +207,7 @@ If `docker ps` cannot connect, start Docker before installing.
 Run the installer on the machine that will host AgentWorks OS:
 
 ```bash
-curl -fsSL https://github.com/SGridworks/agentworks-os/releases/download/v0.1.9/install.sh | bash
+curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash
 ```
 
 The installer creates `~/.agentworks/`, generates secrets, starts services, and creates the first tenant.

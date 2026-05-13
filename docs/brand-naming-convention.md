@@ -53,7 +53,7 @@
     53|
     54|| Old name | New name | Notes |
     55||---|---|---|
-    56|| `github.com/AgentWorks-ui/AgentWorks` | `github.com/SGridworks/agentworks-os` | Main repo. |
+    56|| `github.com/AgentWorks-ui/AgentWorks` | `github.com/SGridworks/agentworks-os-vps` | Main repo. |
     57|| `AgentWorks/server/src/` | `agentos-d/src/` | Daemon source. |
     58|| `AgentWorks/packages/` | `packages/` | Monorepo packages under `agentworks-os/`. |
     59|| `AgentWorks/.claude/skills/` | `.claude/skills/` | Claude skills. No brand in path. |

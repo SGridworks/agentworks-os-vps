@@ -3,8 +3,8 @@
 **Spec version:** awcp/v0.1
 **Status:** DRAFT v0.1 — breaking changes allowed until v1.0 stable
 **Last updated:** 2026-04-30
-**Schema source:** [`packages/shared/src/schema/action.ts`](https://github.com/SGridworks/agentworks-os/blob/v0.1.9/packages/shared/src/schema/action.ts)
-**Policy engine types:** [`packages/policy-engine/src/types.ts`](https://github.com/SGridworks/agentworks-os/blob/v0.1.9/packages/policy-engine/src/types.ts)
+**Schema source:** [`packages/shared/src/schema/action.ts`](https://github.com/SGridworks/agentworks-os-vps/blob/v0.1.9/packages/shared/src/schema/action.ts)
+**Policy engine types:** [`packages/policy-engine/src/types.ts`](https://github.com/SGridworks/agentworks-os-vps/blob/v0.1.9/packages/policy-engine/src/types.ts)
 
 **Authors:** ComplianceConsultant (prose and legal), TechLead (technical review)
 

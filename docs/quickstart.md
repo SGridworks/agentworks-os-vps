@@ -30,14 +30,14 @@ If `docker ps` returns a daemon or permission error, fix Docker before installin
 Recommended release installer:
 
 ```bash
-curl -fsSL https://github.com/SGridworks/agentworks-os/releases/download/v0.1.9/install.sh | bash -s -- --unattended
+curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash -s -- --unattended
 ```
 
 Equivalent source-clone install:
 
 ```bash
-git clone --depth=1 --branch v0.1.9 https://github.com/SGridworks/agentworks-os.git
-cd agentworks-os
+git clone --depth=1 --branch v0.1.9 https://github.com/SGridworks/agentworks-os-vps.git
+cd agentworks-os-vps
 ./apps/installer/src/install.sh --unattended
 ```
 

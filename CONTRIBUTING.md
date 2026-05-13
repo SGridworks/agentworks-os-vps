@@ -6,8 +6,8 @@ Apache-2.0-licensed compliance gateway for SMBs running AI agents.
 ## Quick start
 
 ```bash
-git clone https://github.com/SGridworks/agentworks-os.git
-cd agentworks-os
+git clone https://github.com/SGridworks/agentworks-os-vps.git
+cd agentworks-os-vps
 pnpm install
 pnpm verify   # typecheck + build + test
 ```

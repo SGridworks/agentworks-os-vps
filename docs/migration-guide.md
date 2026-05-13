@@ -17,7 +17,7 @@ If you are doing a greenfield install, go to the [Install Runbook](./install-run
 Run the installer on your target machine before beginning migration:
 
 ```bash
-curl -fsSL https://github.com/SGridworks/agentworks-os/releases/download/v0.1.9/install.sh | bash
+curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash
 ```
 
 Make sure all services show `Up` before proceeding. The default stack starts the Admin UI at `http://localhost:3000`; REST/MCP checks below remain the canonical automation path.

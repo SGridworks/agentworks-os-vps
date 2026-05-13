@@ -1,7 +1,7 @@
 site_name: "AgentWorks AWCP Documentation"
 site_description: "AgentWorks Compliance Protocol v0.1 documentation"
 site_url: https://sgridworks.github.io/agentworks-os/
-repo_url: https://github.com/SGridworks/agentworks-os
+repo_url: https://github.com/SGridworks/agentworks-os-vps
 nav:
   - Home: index.md
   - "AWCP Spec": awcp/SPEC.md

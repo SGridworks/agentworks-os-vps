@@ -46,25 +46,31 @@ FROM n8nio/n8n:1.68.0
 
 USER root
 
-WORKDIR /home/node/.n8n
+# AgentWorks nodes live OUTSIDE /home/node/.n8n so that compose can bind-mount
+# the user's .n8n data dir over /home/node/.n8n without shadowing them.
+# n8n discovers them via N8N_CUSTOM_EXTENSIONS (set in docker-compose.yml).
+WORKDIR /opt/agentworks-extensions
 
 COPY --from=builder --chown=node:node /app/packages/n8n-nodes/dist /tmp/agentworks-nodes/dist
 COPY --from=builder --chown=node:node /app/packages/n8n-nodes/package.json /tmp/agentworks-nodes/agentworks-nodes-package.json
 
-# n8n auto-discovers nodes by scanning for packages with an "n8n" field in their
-# package.json (same mechanism community-installed packages use).
-RUN mkdir -p node_modules/@agentworks/n8n-nodes && \
-    cp /tmp/agentworks-nodes/agentworks-nodes-package.json node_modules/@agentworks/n8n-nodes/package.json && \
-    cp -r /tmp/agentworks-nodes/dist/* node_modules/@agentworks/n8n-nodes/ && \
-    chown -R node:node node_modules/@agentworks/
+# Install the package layout n8n's custom-extensions loader expects:
+#   $N8N_CUSTOM_EXTENSIONS/node_modules/@agentworks/n8n-nodes/{package.json, *.js}
+RUN mkdir -p /opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes && \
+    cp /tmp/agentworks-nodes/agentworks-nodes-package.json \
+       /opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/package.json && \
+    cp -r /tmp/agentworks-nodes/dist/* /opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/ && \
+    rm -rf /tmp/agentworks-nodes && \
+    chown -R node:node /opt/agentworks-extensions
 
 # Smoke-test: package.json is loadable and lists the expected nodes.
 RUN node --input-type=module <<'EOF'
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const p = require('/home/node/.n8n/node_modules/@agentworks/n8n-nodes/package.json');
+const p = require('/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/package.json');
 console.log('Package name:', p.name);
 console.log('n8n nodes:', p.n8n?.nodes?.length, 'nodes configured');
 EOF
 
 USER node
+WORKDIR /home/node

@@ -74,11 +74,11 @@ function cmdInstall(_opts: Record<string, unknown>) {
 
   logInfo("Running one-command install...");
   logInfo("For manual install instructions, visit:");
-  logInfo("  https://github.com/SGridworks/agentworks-os#manual-install");
+  logInfo("  https://github.com/SGridworks/agentworks-os-vps#manual-install");
 
   // Download and run the install script
   try {
-    const scriptUrl = process.env["INSTALL_SCRIPT_URL"] ?? "https://raw.githubusercontent.com/SGridworks/agentworks-os/main/apps/installer/src/install.sh";
+    const scriptUrl = process.env["INSTALL_SCRIPT_URL"] ?? "https://raw.githubusercontent.com/SGridworks/agentworks-os-vps/main/apps/installer/src/install.sh";
     logInfo(`Downloading install script from ${scriptUrl}...`);
 
     // For CI/testing, allow pointing at a local script

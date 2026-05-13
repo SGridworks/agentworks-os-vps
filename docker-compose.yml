@@ -158,6 +158,9 @@ services:
       - N8N_DATABASE_TYPE=sqlite
       - N8N_DATABASE_SQLITE_VACUUM_ON_STARTUP=true
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
+      # AgentWorks nodes live outside .n8n so the bind mount below doesn't
+      # shadow them. n8n loads them via this env var.
+      - N8N_CUSTOM_EXTENSIONS=/opt/agentworks-extensions
     volumes:
       - ${AGENTWORKS_DATA_DIR:-./data}/n8n:/home/node/.n8n
     healthcheck:

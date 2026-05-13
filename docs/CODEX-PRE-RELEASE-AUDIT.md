@@ -27,7 +27,7 @@ on a fresh-machine install, BEFORE the release ships. You do NOT fix
 anything. You produce a numbered finding list.
 
 Context you must have before reviewing:
-- The repo at https://github.com/SGridworks/agentworks-os checked out at
+- The repo at https://github.com/SGridworks/agentworks-os-vps checked out at
   commit <FILL IN COMMIT SHA OR TAG>.
 - The recent CHANGELOG entries (read at least the last 3 versions) — they
   enumerate the bug archetypes that have already shipped to customers.

@@ -2,11 +2,11 @@
 #
 # agentworks install — one-command setup for AgentWorks OS
 # Usage:
-#   curl -fsSL https://github.com/SGridworks/agentworks-os/releases/download/v0.1.9/install.sh | bash
-#   curl -fsSL https://github.com/SGridworks/agentworks-os/releases/download/v0.1.9/install.sh | bash -s -- --unattended
+#   curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash
+#   curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash -s -- --unattended
 #
 # To install a different release, override INSTALLER_REF:
-#   curl -fsSL https://github.com/SGridworks/agentworks-os/releases/download/v0.2.0/install.sh \
+#   curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.2.0/install.sh \
 #     | INSTALLER_REF=v0.2.0 bash
 #
 set -euo pipefail
@@ -15,7 +15,7 @@ set -euo pipefail
 # Constants
 # -----------------------------------------------------------------------------
 readonly INSTALLER_VERSION="0.1.9"
-readonly REPO="SGridworks/agentworks-os"
+readonly REPO="SGridworks/agentworks-os-vps"
 # Pin asset fetches to the release tag so v0.1.1 installer cannot silently
 # pull future main-branch changes. Override with INSTALLER_REF=<branch|tag|sha>
 # only for development.
@@ -103,7 +103,7 @@ check_git() {
   if ! command -v git &>/dev/null; then
     log_error "git is required to fetch the AgentWorks source."
     log_error "Install git, or clone the repo manually and re-run from inside it:"
-    log_error "  git clone ${REPO_URL} && cd agentworks-os && ./apps/installer/src/install.sh"
+    log_error "  git clone ${REPO_URL} && cd agentworks-os-vps && ./apps/installer/src/install.sh"
     exit 1
   fi
 }
@@ -351,9 +351,19 @@ acquire_source() {
 # names. Docker normalizes project names: lowercase, [a-z0-9_-] only.
 # -----------------------------------------------------------------------------
 awos_compose_project_name() {
-  local raw
-  raw="$(basename "${AGENTWORKS_DIR}")"
-  printf '%s' "${raw}" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9_-' '-' | sed 's/^-*//;s/-*$//'
+  # Two installs with the same basename but different full paths must get
+  # distinct compose project names (e.g. /tmp/a/.agentworks vs
+  # /tmp/b/.agentworks). Mix in a short hash of the full path.
+  local base hash
+  base="$(basename "${AGENTWORKS_DIR}")"
+  hash="$(printf '%s' "${AGENTWORKS_DIR}" | shasum -a 256 2>/dev/null | cut -c1-8)"
+  if [[ -z "${hash}" ]]; then
+    hash="$(printf '%s' "${AGENTWORKS_DIR}" | sha256sum 2>/dev/null | cut -c1-8)"
+  fi
+  printf '%s-%s' "${base}" "${hash:-default}" \
+    | tr '[:upper:]' '[:lower:]' \
+    | tr -c 'a-z0-9_-' '-' \
+    | sed 's/^-*//;s/-*$//'
 }
 
 compose() {

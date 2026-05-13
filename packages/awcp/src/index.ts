@@ -41,4 +41,4 @@ export const AWCP_SPEC_STATUS_LABEL =
 
 /** URL to the AWCP spec in the agentworks-os repository */
 export const AWCP_SPEC_URL =
-  "https://github.com/SGridworks/agentworks-os/blob/main/docs/awcp/SPEC.md";
+  "https://github.com/SGridworks/agentworks-os-vps/blob/main/docs/awcp/SPEC.md";

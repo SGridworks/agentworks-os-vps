@@ -21,20 +21,20 @@ Requires Docker Desktop (macOS) or Docker Engine (Linux), git, ~10 GB free disk,
 **One-liner (recommended):**
 
 ```bash
-curl -fsSL https://github.com/SGridworks/agentworks-os/releases/download/v0.1.9/install.sh | bash
+curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash
 ```
 
 Add `-s -- --unattended` to skip the confirmation prompt:
 
 ```bash
-curl -fsSL https://github.com/SGridworks/agentworks-os/releases/download/v0.1.9/install.sh | bash -s -- --unattended
+curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash -s -- --unattended
 ```
 
 **From source clone (equivalent):**
 
 ```bash
-git clone --depth=1 --branch v0.1.9 https://github.com/SGridworks/agentworks-os.git
-cd agentworks-os
+git clone --depth=1 --branch v0.1.9 https://github.com/SGridworks/agentworks-os-vps.git
+cd agentworks-os-vps
 ./apps/installer/src/install.sh --unattended \
   && ./apps/installer/scripts/smoke-test.sh
 ```

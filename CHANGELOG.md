@@ -5,14 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.9-vps] — 2026-05-13
+## [0.1.9] — 2026-05-13
 
-First clean public release after the OSS launch-prep refactor. Ships a
-default-on admin UI, loopback-bound host ports, a VPS install runbook, and a
-scripted full-stack E2E verification path. Includes the fixes called out by
-the pre-release adversarial audit.
+First public release of AgentWorks OS from the dedicated
+[`SGridworks/agentworks-os-vps`](https://github.com/SGridworks/agentworks-os-vps)
+repository. Ships a default-on admin UI, loopback-bound host ports, a VPS
+install runbook, and a scripted full-stack E2E verification path. Includes
+the fixes called out by two rounds of the pre-release adversarial audit.
 
-### Fixed
+> Predecessor: the archived
+> [`SGridworks/agentworks-os`](https://github.com/SGridworks/agentworks-os)
+> repository carries the prior 0.1.0–0.1.9 history (private). This is the
+> open-source successor and the first public-facing tag.
+
+### Fixed (audit round 1)
 
 - `apps/installer/src/install.sh` preflight now resolves both `docker compose`
   (v2) and legacy `docker-compose`, and the installer's `compose()` helper uses
@@ -31,10 +37,51 @@ the pre-release adversarial audit.
   `restore --input <file>` (also `--input=<file>` and `-i <file>`); the
   documented flag form now matches the parser.
 - `docker-compose.yml` no longer hardcodes `container_name`/`name` on every
-  service, network, or volume. `compose()` in both the installer and the
-  wrapper sets `COMPOSE_PROJECT_NAME` from `AGENTWORKS_DIR`, so two parallel
-  installs on the same Docker host (different `AGENTWORKS_DIR` paths) don't
-  collide on resource names.
+  service, network, or volume.
+
+### Fixed (audit round 2)
+
+- `packages/n8n-nodes/Dockerfile` installs the AgentWorks n8n nodes to
+  `/opt/agentworks-extensions` (outside the bind-mounted `.n8n` user folder)
+  and the compose file sets `N8N_CUSTOM_EXTENSIONS=/opt/agentworks-extensions`.
+  Previously the `${AGENTWORKS_DATA_DIR}/n8n:/home/node/.n8n` bind mount
+  shadowed the entire `node_modules/@agentworks/n8n-nodes` install, so the
+  substrate-aware Policy/Memory/Dispatch nodes were missing on every fresh
+  install.
+- `agentworks update --check` now extracts SemVer tags that include
+  prerelease / build-metadata identifiers (e.g. `0.1.9-rc1`, `0.1.10+build.42`).
+  The previous regex truncated on the first non-digit and could compare a
+  suffixed release against the bare semver string.
+- `agentworks update` persists the resolved version to
+  `$AGENTWORKS_DIR/config/.env` after a successful pull/up, so a subsequent
+  `agentworks restart` cannot recreate containers from the old image tag.
+- `docs/rule-pack-authoring.md` no longer references the unshipped
+  `agentworks pack validate` / `agentworks pack dry-run` subcommands. The
+  rule-pack validation path is now documented as
+  `pnpm --filter @agentworks/policy-engine test -- <pack.yaml>` (offline) or
+  `POST /api/policy/check` (live).
+- `agentworks <unknown-command>` now exits non-zero and prints an explicit
+  "Unknown command: …" message before help. Previously unknown commands
+  silently fell through to help with exit 0, which made mistyped commands
+  look successful in agent-driven scripts.
+- `agentworks backup` creates `dirname "$output"` before writing the tarball,
+  so the documented path `~/.agentworks/data/backups/<file>.tar.gz` works
+  out of the box.
+- `docs/AI-AGENT-INSTALL-GUIDE.md` vault-relocation guidance now reflects how
+  the daemon actually reads the vault path — relocating means editing the
+  compose bind mount, not setting `VAULT_ROOT` in `.env`.
+- `agentworks support-bundle` redacts secret-shaped env values from the
+  embedded compose config (`AGENTWORKS_SESSION_SECRET`, `POSTGRES_PASSWORD`,
+  `*_API_KEY`, `*_TOKEN`, `*PASSWORD*`, `*SECRET*`), drops the postgres dump
+  by default, and adds a `--include-db` opt-in for support requests that
+  need it. A `BUNDLE-README.txt` describes what's in/out so support knows.
+- `COMPOSE_PROJECT_NAME` is derived from `basename($AGENTWORKS_DIR) + short
+  sha256 of full path`, so two installs with the same basename but different
+  paths (e.g. `/tmp/a/.agentworks` and `/tmp/b/.agentworks`) no longer
+  collide on compose project names.
+- `apps/installer/scripts/smoke-test.sh` creates a per-run disposable tenant
+  named `smoke-test-<timestamp>-<pid>` instead of a permanent `smoke-test`
+  tenant. Repeated runs no longer pile up identical rows.
 
 ### Added
 
@@ -44,18 +91,23 @@ the pre-release adversarial audit.
   cross-record visibility.
 - `docs/e2e-verification.md` — operator-facing guide for running the E2E
   against a live install (loopback or SSH-tunneled).
+- `apps/installer/src/agentworks.sh` ships `compose()` with a
+  `COMPOSE_PROJECT_NAME` mixin so the wrapper and installer agree on
+  resource naming.
 
 ### Known limitations
 
-- The smoke-test script (`apps/installer/scripts/smoke-test.sh`) still creates
-  a `smoke-test` tenant that persists between runs. Repeated runs accumulate
-  tenants visible in the admin UI. Deferred to a future release; clean up
-  manually if you smoke-test repeatedly.
+- The smoke-test script does not delete its disposable tenants after the run
+  (the daemon has no tenant-delete REST endpoint in 0.1.9). Tenants are
+  identifiable by the `smoke-test-<timestamp>-<pid>` prefix; clean them up
+  via direct DB if smoke-testing accumulates noise.
 - Real-VPS install verification for this release was performed against a
   local OrbStack docker-compose stack on canonical ports, not on an actual
   remote VPS. The bundled E2E passed end-to-end against that stack.
+- `VAULT_ROOT` relocation requires editing the compose bind mount; a
+  first-class `--vault-root` configuration is on the next-release backlog.
 
-## [0.1.9] — 2026-05-05
+## [0.1.9-archived] — 2026-05-05
 
 Patch release focused on release hardening, stale-update safety, and clean
 operator handoff.

@@ -37,7 +37,7 @@ readonly COMPOSE_FILE="${SOURCE_DIR}/docker-compose.yml"
 # so compose pulls the new tag's image. With `readonly` + `set -e`, that inline
 # assignment aborts the script before the pull, breaking re-install handoff.
 AGENTWORKS_VERSION="${AGENTWORKS_VERSION:-0.1.9}"
-readonly REPO="SGridworks/agentworks-os"
+readonly REPO="SGridworks/agentworks-os-vps"
 readonly GITHUB_RELEASES="https://api.github.com/repos/${REPO}/releases"
 
 # Color codes
@@ -93,9 +93,16 @@ get_compose_cmd() {
 # and config dirs exported, matching what install.sh does. Bind mounts in
 # docker-compose.yml resolve under $AGENTWORKS_DIR rather than the source dir.
 awos_compose_project_name() {
-  local raw
-  raw="$(basename "$AGENTWORKS_DIR")"
-  printf '%s' "$raw" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9_-' '-' | sed 's/^-*//;s/-*$//'
+  local base hash
+  base="$(basename "$AGENTWORKS_DIR")"
+  hash="$(printf '%s' "$AGENTWORKS_DIR" | shasum -a 256 2>/dev/null | cut -c1-8)"
+  if [[ -z "$hash" ]]; then
+    hash="$(printf '%s' "$AGENTWORKS_DIR" | sha256sum 2>/dev/null | cut -c1-8)"
+  fi
+  printf '%s-%s' "$base" "${hash:-default}" \
+    | tr '[:upper:]' '[:lower:]' \
+    | tr -c 'a-z0-9_-' '-' \
+    | sed 's/^-*//;s/-*$//'
 }
 
 compose() {
@@ -186,7 +193,13 @@ cmd_update() {
   local latest_version
   # POSIX-portable extract: `grep -oP` (PCRE) is GNU-only — BSD grep on macOS
   # does not have -P, so the original silently returned empty on every Mac.
-  latest_version=$(curl -s "$GITHUB_RELEASES/latest" 2>/dev/null | sed -n 's/.*"tag_name":[[:space:]]*"v\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)".*/\1/p' | head -1 || true)
+  #
+  # The capture also preserves SemVer prerelease/build-metadata identifiers
+  # (e.g. "0.1.9-rc1", "0.1.9-vps", "0.1.10+build.42"), so comparison against
+  # the installed AGENTWORKS_VERSION works for suffixed releases.
+  latest_version=$(curl -s "$GITHUB_RELEASES/latest" 2>/dev/null \
+    | sed -n 's/.*"tag_name":[[:space:]]*"v\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\(-[0-9A-Za-z.+-][0-9A-Za-z.+-]*\)*\)".*/\1/p' \
+    | head -1 || true)
 
   if [[ -z "$latest_version" ]]; then
     log_warn "Could not fetch latest version from GitHub."
@@ -218,6 +231,23 @@ cmd_update() {
   AGENTWORKS_VERSION="$latest_version" compose pull || true
   AGENTWORKS_VERSION="$latest_version" compose up -d --build
 
+  # Persist the new version to .env so subsequent `agentworks restart` or
+  # `agentworks status` invocations don't drift back to the previous tag.
+  if [[ -f "$ENV_FILE" ]]; then
+    if grep -q '^AGENTWORKS_VERSION=' "$ENV_FILE"; then
+      # GNU vs BSD sed: write to a temp file and replace to stay portable.
+      local tmp_env
+      tmp_env=$(mktemp)
+      awk -v v="$latest_version" '
+        /^AGENTWORKS_VERSION=/ { print "AGENTWORKS_VERSION=" v; next }
+        { print }
+      ' "$ENV_FILE" > "$tmp_env" && mv "$tmp_env" "$ENV_FILE"
+    else
+      printf '\nAGENTWORKS_VERSION=%s\n' "$latest_version" >> "$ENV_FILE"
+    fi
+    log_info "Persisted AGENTWORKS_VERSION=${latest_version} to ${ENV_FILE}"
+  fi
+
   log_info "Update complete."
 }
 
@@ -232,6 +262,15 @@ cmd_backup() {
   if [[ -z "$output" ]]; then
     output="agentworks-backup-$(date +%Y%m%d-%H%M%S).tar.gz"
     log_info "No output specified, using: ${output}"
+  fi
+
+  # Make sure the output's parent dir exists. Customer docs suggest paths
+  # like `~/.agentworks/data/backups/<file>.tar.gz` which need this.
+  local output_dir
+  output_dir="$(dirname "$output")"
+  if [[ -n "$output_dir" && ! -d "$output_dir" ]]; then
+    log_info "Creating backup directory: ${output_dir}"
+    mkdir -p "$output_dir"
   fi
 
   log_step "Creating backup: ${output}"
@@ -621,7 +660,25 @@ PY
 # -----------------------------------------------------------------------------
 cmd_support_bundle() {
   require_installed
-  local output="${1:-agentworks-support-$(date +%Y%m%d-%H%M%S).tar.gz}"
+  local output=""
+  local include_db="false"
+
+  while (( $# > 0 )); do
+    case "$1" in
+      --include-db) include_db="true"; shift ;;
+      -h|--help)
+        echo "Usage: agentworks support-bundle [output.tar.gz] [--include-db]"
+        echo ""
+        echo "  --include-db    Also dump postgres tables. OFF by default because"
+        echo "                  the dump contains tenant data, policy decisions,"
+        echo "                  and dispatch payloads."
+        return 0
+        ;;
+      --*) log_error "Unknown option: $1"; exit 1 ;;
+      *)   output="$1"; shift ;;
+    esac
+  done
+  : "${output:=agentworks-support-$(date +%Y%m%d-%H%M%S).tar.gz}"
 
   log_step "Collecting support bundle: ${output}"
 
@@ -635,19 +692,48 @@ cmd_support_bundle() {
     compose logs --tail=500 "$svc" > "$tmpdir/logs/${svc}.log" 2>&1 || true
   done
 
-  # Docker compose config (sanitized)
-  compose config > "$tmpdir/docker-compose.yml" 2>/dev/null || true
+  # Docker compose config (sanitized — strip env values that match known
+  # secret-shaped names). The bundle is for diagnostics; raw secrets should
+  # never leave the host.
+  compose config 2>/dev/null \
+    | awk '
+        /^[[:space:]]*(AGENTWORKS_SESSION_SECRET|POSTGRES_PASSWORD|.*_API_KEY|.*_TOKEN|.*PASSWORD.*|.*SECRET.*):/ {
+          sub(/:.*/, ": [REDACTED]"); print; next
+        }
+        { print }
+      ' > "$tmpdir/docker-compose.sanitized.yml" || true
 
   # Health endpoint output
   curl -s http://localhost:7710/api/health > "$tmpdir/health.json" 2>/dev/null || true
 
-  # Database stats (if accessible)
-  compose exec -T postgres psql -U agentworks -d agentworks -c "SELECT 1" &>/dev/null && \
-    compose exec -T postgres pg_dump -U agentworks &>/dev/null > "$tmpdir/db.sql" || true
+  # Optional DB dump — explicit opt-in only. Customer-data-bearing.
+  if [[ "$include_db" == "true" ]]; then
+    log_warn "Including postgres dump in bundle (contains tenant data)."
+    compose exec -T postgres pg_dump -U agentworks agentworks > "$tmpdir/db.sql" 2>/dev/null || true
+  fi
+
+  # README in the bundle so support knows what's in/out.
+  cat > "$tmpdir/BUNDLE-README.txt" <<EOF
+AgentWorks OS support bundle
+Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+Host: $(uname -a)
+Daemon: ${AGENTWORKS_VERSION}
+
+Contents:
+  logs/                       Last 500 lines per service
+  docker-compose.sanitized.yml  Compose config with secret-shaped env values redacted
+  health.json                 /api/health snapshot
+  db.sql                      (only if --include-db) Postgres dump — contains tenant data
+
+If a secret slipped through the redactor, redact it before sharing.
+EOF
 
   tar -czf "$output" -C "$tmpdir" .
 
   log_info "Support bundle saved to: ${output}"
+  if [[ "$include_db" != "true" ]]; then
+    log_info "Run with --include-db if support asks for the postgres dump."
+  fi
 }
 
 # -----------------------------------------------------------------------------
@@ -730,7 +816,16 @@ main() {
     support-bundle) cmd_support_bundle "$@" ;;
     install)      cmd_install ;;
     -h|--help|help) show_help ;;
-    *)            show_help ;;
+    "")
+      show_help
+      exit 1
+      ;;
+    *)
+      log_error "Unknown command: $cmd"
+      echo "" >&2
+      show_help >&2
+      exit 1
+      ;;
   esac
 }
 

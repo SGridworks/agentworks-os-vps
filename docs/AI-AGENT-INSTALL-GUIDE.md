@@ -47,8 +47,8 @@ if test -f docker-compose.yml && grep -qE "packages/agentos-d/Dockerfile|agentos
   echo "Already in an agentworks-os checkout."
 else
   git clone --depth=1 --branch v0.1.9 \
-    https://github.com/SGridworks/agentworks-os.git
-  cd agentworks-os
+    https://github.com/SGridworks/agentworks-os-vps.git
+  cd agentworks-os-vps
 fi
 ```
 
@@ -177,7 +177,20 @@ to the canonical files. Do NOT symlink the operator's `~/.claude/projects/.../me
 directory unless they ask — that folder is operator-private memory and may
 include secrets.
 
-For (C): set `VAULT_ROOT=/absolute/path/to/vault` in `$AGENTWORKS_DIR/config/.env` and run `agentworks restart agentos-d`.
+For (C): the daemon reads the vault from `/data/vault` **inside the container**,
+which is bind-mounted from `${AGENTWORKS_DATA_DIR}/vault` on the host. To
+relocate the vault, point the data dir at the external location and bind it
+in by editing `docker-compose.yml`:
+
+```yaml
+# in services.agentos-d.volumes (and scanner-worker if needed):
+- /absolute/path/to/external/vault:/data/vault
+```
+
+Then `agentworks restart agentos-d`. Setting `VAULT_ROOT` in
+`$AGENTWORKS_DIR/config/.env` alone has no effect — compose hardcodes the
+in-container `VAULT_ROOT=/data/vault` and the env override is shadowed.
+A future release will surface this as a first-class `--vault-root` option.
 
 
 ---

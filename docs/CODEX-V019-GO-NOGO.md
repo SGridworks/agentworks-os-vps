@@ -22,9 +22,9 @@ codex -C /path/to/agentworks-os
 
 > You are doing a release-readiness audit on AgentWorks OS for the v0.1.9 tag. This is **not a code review**. It is a binary **go/no-go** decision. The maintainer is tired of iterating after public releases. Your only goal is to find anything that would force a v0.1.9.1 within a week, before the tag goes out.
 >
-> **Repo:** `SGridworks/agentworks-os` (public)
+> **Repo:** `SGridworks/agentworks-os-vps` (public)
 > **Candidate commit:** `<CANDIDATE_SHA>` on `main`
-> **v0.1.9 milestone:** https://github.com/SGridworks/agentworks-os/milestone/1
+> **v0.1.9 milestone:** https://github.com/SGridworks/agentworks-os-vps/milestone/1
 >
 > **Process rules:**
 > - Do not propose fixes. Report findings only.
