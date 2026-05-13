@@ -697,10 +697,17 @@ cmd_support_bundle() {
   # never leave the host.
   compose config 2>/dev/null \
     | awk '
+        # Whole-line redaction for keys whose VALUES are secrets.
         /^[[:space:]]*(AGENTWORKS_SESSION_SECRET|POSTGRES_PASSWORD|.*_API_KEY|.*_TOKEN|.*PASSWORD.*|.*SECRET.*):/ {
           sub(/:.*/, ": [REDACTED]"); print; next
         }
-        { print }
+        # URL-shaped values often embed `user:password@` (most commonly
+        # DATABASE_URL / EXECUTION_DATABASE_URL / DB_URL). Redact the
+        # userinfo segment of any value containing "://...@".
+        {
+          n = gsub(/[a-zA-Z][a-zA-Z0-9+.-]*:\/\/[^[:space:]"'\''/@]*:[^[:space:]"'\''/@]*@/, "REDACTED://[REDACTED]:[REDACTED]@")
+          print
+        }
       ' > "$tmpdir/docker-compose.sanitized.yml" || true
 
   # Health endpoint output

@@ -19,7 +19,7 @@
     19|| Paperclip adapter | agent adapter | Generic. Specific adapters: `claude-local`, `opencode`, `cursor`, `codex`, `gemini`, `pi`, `OpenClaw-gateway`, `Hermes`. |
     20|| Paperclip API | AgentWorks API | The REST + MCP surface. Version: `v1`. Base URL: `http://agentworks.local:7710`. |
     21|| Compliance Certificate | Compliance Evidence Report | Per Codex critique: "certificate" invites liability the product reduces. The report summarizes policy decisions, approval queue activity, and scanner findings. Monthly, signed, hash-chained. |
-    22|| AgentWorks CLI | agentworks CLI | The command-line tool. Commands: `agentworks install`, `agentworks update`, `agentworks backup`, `agentworks restore`, `agentworks pack validate`. |
+    22|| AgentWorks CLI | agentworks CLI | The command-line tool. Commands: `agentworks install`, `agentworks update`, `agentworks backup`, `agentworks restore`, `pnpm --filter /policy-engine test`. |
     23|
     24|---
     25|

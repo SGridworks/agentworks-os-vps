@@ -19,22 +19,22 @@ If the CLI command fails, collect these manually on the machine running AgentWor
 ### Service status and versions
 
 ```
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml ps > service-status.txt
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml version > compose-version.txt
+agentworks status > service-status.txt
+docker compose version > compose-version.txt
 docker --version > docker-version.txt
 ```
 
 ### Container logs (past 24 hours)
 
 ```
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml logs --tail=1000 > container-logs.txt
+agentworks logs > container-logs.txt
 ```
 
 To include logs from a specific service, add the service name:
 
 ```
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml logs --tail=500 agentos-d > agentos-d-logs.txt
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml logs --tail=500 scanner-worker > scanner-logs.txt
+agentworks logs agentos-d > agentos-d-logs.txt
+agentworks logs scanner-worker > scanner-logs.txt
 ```
 
 ### Scanner findings

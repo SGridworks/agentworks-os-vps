@@ -61,7 +61,7 @@ AgentWorks OS smoke test PASSED
 
 ```bash
 agentworks status
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml ps
+agentworks status
 ```
 
 Expected default services:

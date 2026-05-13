@@ -160,7 +160,7 @@ Do not copy any workstation versions of those files.
 
 ```bash
 cd ~/.agentworks/source
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml ps
+agentworks status
 curl -fsS http://127.0.0.1:7710/api/health
 curl -fsS http://127.0.0.1:3101/health
 ~/.agentworks/source/apps/installer/scripts/smoke-test.sh
@@ -222,12 +222,12 @@ Stop services without deleting generated data:
 
 ```bash
 cd ~/.agentworks/source
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml down
+agentworks restart
 ```
 
 Full reset is destructive and should only be used when the VPS must be blank again:
 
 ```bash
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml down -v
+agentworks uninstall
 rm -rf ~/.agentworks
 ```

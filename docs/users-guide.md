@@ -215,7 +215,7 @@ The installer creates `~/.agentworks/`, generates secrets, starts services, and 
 ### Verify Services
 
 ```bash
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml ps
+agentworks status
 ```
 
 Expected services:
@@ -679,11 +679,18 @@ In the admin UI:
 4. Confirm it appears in the list.
 5. Keep it in shadow until reviewed.
 
-From the CLI, validate first:
+Validate the pack with the policy-engine package tests (offline):
 
 ```bash
-agentworks pack validate /path/to/pack.yaml
-agentworks pack dry-run /path/to/pack.yaml --all
+pnpm --filter @agentworks/policy-engine test -- /path/to/pack.yaml
+```
+
+Or dry-run against the live daemon:
+
+```bash
+curl -s -X POST http://localhost:7710/api/policy/check \
+  -H 'content-type: application/json' \
+  -d @/path/to/test-fixture.json
 ```
 
 ### Understand Decisions
@@ -1130,7 +1137,7 @@ Test restore quarterly. A backup you have never restored is only a hope.
 Check version:
 
 ```bash
-agentworks version
+agentworks --help | head -1   # the wrapper prints "AgentWorks OS CLI — <version>"
 ```
 
 Check for updates:
@@ -1156,7 +1163,7 @@ Pre-update checklist:
 If an update fails, collect logs before making manual changes:
 
 ```bash
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml logs agentos-d
+agentworks logs agentos-d
 ```
 
 Do not manually edit the database to work around a failed migration.
@@ -1236,7 +1243,7 @@ Review:
 | Symptom | First check |
 |---|---|
 | Admin UI will not load | Check `docker compose ps admin-ui`, then `docker compose logs admin-ui --tail 100` |
-| Daemon is down | `docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml ps` |
+| Daemon is down | `agentworks status` |
 | Agent cannot read vault | Confirm MCP config, restart agent client, test `memory.hot` |
 | Policy checks all allow | Confirm rule packs are assigned and enforcing |
 | Too many approvals | Review shadow/enforcement mode and missing-data rules |
@@ -1253,8 +1260,8 @@ Useful commands:
 agentworks status
 agentworks logs
 agentworks logs agentos-d
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml ps
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml logs scanner-worker
+agentworks status
+agentworks logs scanner-worker
 curl http://localhost:7710/api/health
 ```
 

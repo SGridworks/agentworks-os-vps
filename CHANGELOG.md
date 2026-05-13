@@ -83,6 +83,37 @@ the fixes called out by two rounds of the pre-release adversarial audit.
   named `smoke-test-<timestamp>-<pid>` instead of a permanent `smoke-test`
   tenant. Repeated runs no longer pile up identical rows.
 
+### Fixed (audit round 3)
+
+- Customer docs no longer print raw
+  `docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml ...`
+  invocations. Those resolve to a different compose project than what the
+  installer uses (the installer now sets `COMPOSE_PROJECT_NAME`). All such
+  commands in `install-runbook.md`, `users-guide.md`, `support-bundle.md`,
+  `quickstart.md`, `AI-AGENT-INSTALL-GUIDE.md`, `error-messages.md`, and
+  `vps-blank-slate-install.md` are now `agentworks status/logs/restart`
+  or the explicit `cd ~/.agentworks/source && COMPOSE_PROJECT_NAME=...`
+  form.
+- `docs/install-runbook.md` Cursor + Codex MCP setup now points at
+  `~/.agentworks/config/mcp-stdio-bridge.js` (which the installer extracts
+  from the running container) with `AGENTOS_URL` to match
+  `agentworks mcp configure`. The earlier `dist/bin/mcp-stdio.js` path was
+  gitignored and not present in a clean clone.
+- `agentworks support-bundle` sanitization now redacts URL userinfo
+  (`scheme://user:pass@host`) in addition to whole-line secret keys, so
+  `AGENTOS_EXECUTION_DATABASE_URL` and any future `*_DATABASE_URL` value
+  no longer leaks the embedded password.
+- `docs/users-guide.md`, `docs/best-practices.md`, `docs/install-runbook.md`,
+  `docs/error-messages.md`, and `docs/brand-naming-convention.md` replace
+  the unshipped `agentworks pack validate` / `agentworks pack dry-run`
+  references with the supported
+  `pnpm --filter @agentworks/policy-engine test -- <pack.yaml>` and
+  `POST /api/policy/check` paths.
+- `docs/users-guide.md` version-check section uses
+  `agentworks --help | head -1` (which prints the wrapper's
+  `AgentWorks OS CLI — <version>` banner) instead of the unimplemented
+  `agentworks version` subcommand.
+
 ### Added
 
 - `scripts/awos-vps-e2e.mjs` — full-stack E2E (`pnpm test:vps-e2e`) exercising

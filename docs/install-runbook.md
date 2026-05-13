@@ -62,8 +62,12 @@ If the script fails, see [Common Errors](#common-errors) at the end of this docu
 ## Step 2 — Verify All Services Are Running
 
 ```bash
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml ps
+agentworks status
 ```
+
+The `agentworks` wrapper invokes Docker Compose with the same project name
+and env-file the installer used. Running `docker compose ... -f ~/.agentworks/source/docker-compose.yml`
+from a different cwd would inspect a different project — use the wrapper.
 
 All default services should show `Up` within 30 seconds of the installer completing.
 
@@ -135,8 +139,8 @@ stdio bridge into your Cursor MCP config:
   "mcpServers": {
     "agentworks": {
       "command": "node",
-      "args": ["~/.agentworks/source/packages/agentos-d/dist/bin/mcp-stdio.js"],
-      "env": { "AGENTOS_API_URL": "http://localhost:7710" }
+      "args": ["~/.agentworks/config/mcp-stdio-bridge.js"],
+      "env": { "AGENTOS_URL": "http://localhost:7710" }
     }
   }
 }
@@ -150,7 +154,7 @@ Codex MCP also uses stdio. Register the bridge:
 
 ```bash
 codex mcp add agentworks \
-  -- node ~/.agentworks/source/packages/agentos-d/dist/bin/mcp-stdio.js
+  -- node ~/.agentworks/config/mcp-stdio-bridge.js
 ```
 
 The HTTP endpoint `http://localhost:7710/api/mcp` is JSON-RPC over HTTP and is
@@ -313,7 +317,7 @@ Claude Desktop can't reach the AgentWorks OS MCP server.
 
 **Fix (in order):**
 
-1. Confirm AgentWorks OS is running: `docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml ps` — `agentos-d` should show `Up`
+1. Confirm AgentWorks OS is running: `agentworks status` — `agentos-d` should show `Up`
 2. Confirm the machine can reach the host: `curl http://localhost:7710/api/health` from the machine running Claude Desktop
 3. If on different machines, use the IP address instead of `localhost`: `http://192.168.x.x:7710`
 4. Check your Claude Desktop config has the correct URL with no trailing slash
@@ -327,7 +331,7 @@ YAML syntax error or the pack references a field not in the action schema.
 **Fix:** Validate with:
 
 ```bash
-agentworks pack validate /path/to/pack.yaml
+pnpm --filter @agentworks/policy-engine test -- /path/to/pack.yaml
 ```
 
 See [Rule Pack Authoring](./rule-pack-authoring.md) for the schema reference.
@@ -355,7 +359,7 @@ Agents can connect but `/memory read` returns nothing.
 To remove AgentWorks OS and all data:
 
 ```bash
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml down -v
+agentworks uninstall
 rm -rf ~/.agentworks
 rm -rf ~/Library/Application\ Support/agentworks   # macOS
 rm -rf ~/.config/agentworks                        # Linux

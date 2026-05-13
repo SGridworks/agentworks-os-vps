@@ -56,7 +56,7 @@ Claude Desktop (or another MCP client) can't reach the AgentWorks OS MCP server.
 
 **Causes and fixes:**
 
-1. **AgentWorks OS isn't running.** Run `docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml ps` and confirm `agentos-d` shows `Up`.
+1. **AgentWorks OS isn't running.** Run `agentworks status` and confirm `agentos-d` shows `Up`.
 
 2. **Wrong URL in Claude Desktop config.** The MCP server URL in your Claude Desktop config must exactly match the daemon URL. By default the daemon listens on `http://127.0.0.1:7710`. No trailing slash.
 
@@ -95,7 +95,7 @@ The rule pack YAML has a syntax error. The policy engine couldn't parse it.
 **Fix:** Validate the pack with the CLI:
 
 ```
-agentworks pack validate /path/to/pack.yaml
+pnpm --filter @agentworks/policy-engine test -- /path/to/pack.yaml
 ```
 
 Or check the pack in the admin UI at **Policy** -> **Rule Packs**. The invalid pack shows an error badge.

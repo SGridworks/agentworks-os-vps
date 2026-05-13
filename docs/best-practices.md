@@ -140,7 +140,7 @@ Every rule pack you write should have test fixtures covering:
 Run fixtures before activating a pack:
 
 ```bash
-agentworks pack dry-run /path/to/pack.yaml --all
+curl -X POST http://localhost:7710/api/policy/check -H content-type:application/json -d @fixture.json
 ```
 
 ---
