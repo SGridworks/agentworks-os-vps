@@ -14,13 +14,13 @@ One-command bootstrap for AgentWorks OS. Works on any machine with Docker instal
 Run this in your terminal:
 
 ```bash
-curl -fsSL https://get.agentworks.os/install.sh | bash
+curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash
 ```
 
 For non-interactive (CI/CD) use:
 
 ```bash
-curl -fsSL https://get.agentworks.os/install.sh | bash -s -- --unattended
+curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash -s -- --unattended
 ```
 
 ## What the Installer Does
@@ -28,10 +28,10 @@ curl -fsSL https://get.agentworks.os/install.sh | bash -s -- --unattended
 1. **Checks Docker** — verifies Docker is installed and the daemon is running
 2. **Creates `~/.agentworks/`** — data, config, and log directories
 3. **Generates secrets** — `AGENTWORKS_SESSION_SECRET`, admin password, DB password
-4. **Writes `~/.agentworks/.env`** — consumed by `docker compose`
-5. **Seeds rule-packs** — copies the default compliance packs into the volume
+4. **Writes `~/.agentworks/config/.env`** — consumed by `docker compose`
+5. **Mounts rule-packs** — exposes the installed source checkout's `rule-packs/` tree to the daemon
 6. **Starts services** — `agentos-d`, `scanner-worker`, `n8n`, `postgres`, and `admin-ui`
-7. **Waits for health** — polls `http://localhost:7710/api/health` (up to 60s)
+7. **Waits for health** — polls `http://localhost:7710/api/health` (up to 120s)
 8. **Runs smoke test** — creates a disposable tenant, checks policy, scanner, n8n, admin, and postgres, then deletes the disposable tenant
 9. **Prints next steps** — URLs, credentials, and CLI commands
 
@@ -118,7 +118,7 @@ Rule packs stay in the installed source checkout and are mounted into the
 
 ```bash
 ls ~/.agentworks/source/rule-packs/
-docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml exec agentos-d ls /app/rule-packs/
+docker compose --env-file ~/.agentworks/config/.env -f ~/.agentworks/source/docker-compose.yml exec agentos-d ls /opt/agentworks/rule-packs/
 ```
 
 ## Architecture

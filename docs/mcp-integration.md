@@ -179,7 +179,7 @@ Codex CLI connects to MCP servers declared in its config. Add the `agentworks` e
 Restart Codex. Verify with:
 
 ```
-codex --mcp list
+codex mcp list
 ```
 
 ---

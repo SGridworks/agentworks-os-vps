@@ -259,12 +259,13 @@ check_memory() {
 check_internet() {
   local required_urls=(
     "https://github.com/"
-    "https://ghcr.io/v2/"
     "https://registry-1.docker.io/v2/"
     "https://registry.npmjs.org/"
   )
   if [[ "${AGENTWORKS_BUILD_IMAGES:-0}" == "1" ]]; then
     required_urls+=("https://pypi.org/simple/")
+  else
+    required_urls+=("https://ghcr.io/v2/")
   fi
   local url
   for url in "${required_urls[@]}"; do

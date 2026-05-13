@@ -241,6 +241,18 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
   installed `agentworks` wrapper instead of raw compose commands or fixed
   container names.
 
+### Fixed (audit round 15)
+
+- Release workflow now publishes the `install.sh` GitHub Release asset only
+  after runtime images are built, multi-arch manifests are created, and GHCR
+  package visibility is verified public.
+- Compose now honors `POSTGRES_USER` and `POSTGRES_DB` consistently when
+  constructing `AGENTOS_EXECUTION_DATABASE_URL`.
+- `AGENTWORKS_BUILD_IMAGES=1` preflight no longer requires GHCR reachability
+  while still checking GitHub, Docker Hub, npm, and PyPI.
+- Installer and MCP docs now use the real v0.1.9 GitHub Release asset URL,
+  current Codex MCP verification command, and the mounted rule-pack path.
+
 ### Known limitations
 
 - Real-VPS install verification for this release was performed against a

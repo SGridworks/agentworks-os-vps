@@ -88,16 +88,17 @@ jobs:
           echo "Resolved: tag=$tag version=$version minor=$minor sha7=$sha7 image_prefix=$image_prefix"
 
   # ------------------------------------------------------------------
-  # Publish install.sh as a GitHub Release asset. Runs in its own job
-  # so the friend-install URL goes live within ~30s of tag push,
-  # independent of any image build.
+  # Publish install.sh as a GitHub Release asset only after the runtime
+  # images are built, multi-arch manifests exist, and GHCR visibility has
+  # been verified. The installer URL must not go live before compose pulls
+  # can succeed unauthenticated.
   #
   # The customer-facing install URL is
-  #   https://github.com/<owner>/agentworks-os/releases/download/<tag>/install.sh
+  #   https://github.com/<owner>/agentworks-os-vps/releases/download/<tag>/install.sh
   # — referenced from README and docs.
   # ------------------------------------------------------------------
   publish-installer:
-    needs: resolve-tag
+    needs: [resolve-tag, sign-and-publicize]
     runs-on: ubuntu-latest
     permissions:
       contents: write
