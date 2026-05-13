@@ -5,13 +5,15 @@ AgentWorks OS updates are operator-controlled. There is no forced auto-update.
 ## Check the installed version
 
 ```bash
-agentworks version
+agentworks --help | head -1
 ```
 
-If `version` is not implemented in the installed wrapper, read the wrapper banner:
+The wrapper banner includes the installed CLI version.
+
+If `agentworks` is not on PATH, invoke the installed wrapper directly:
 
 ```bash
-agentworks --help | head
+~/.agentworks/source/apps/installer/src/agentworks.sh --help | head -1
 ```
 
 ## Check for updates

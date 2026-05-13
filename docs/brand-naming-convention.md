@@ -17,7 +17,7 @@
     17|| AgentWorks server | agentos-d | The daemon process. Lowercase, hyphenated. |
     18|| Paperclip, Inc. | SGridworks | The company. Used in legal contexts, rule pack credentials, attorney bylines. |
     19|| Paperclip adapter | agent adapter | Generic. Specific adapters: `claude-local`, `opencode`, `cursor`, `codex`, `gemini`, `pi`, `OpenClaw-gateway`, `Hermes`. |
-    20|| Paperclip API | AgentWorks API | The REST + MCP surface. Version: `v1`. Base URL: `http://agentworks.local:7710`. |
+    20|| Paperclip API | AgentWorks API | The REST + MCP surface. Version: `v1`. Default base URL: `http://localhost:7710`. |
     21|| Compliance Certificate | Compliance Evidence Report | Per Codex critique: "certificate" invites liability the product reduces. The report summarizes policy decisions, approval queue activity, and scanner findings. Monthly, signed, hash-chained. |
     22|| AgentWorks CLI | agentworks CLI | The command-line tool. Commands: `agentworks install`, `agentworks update`, `agentworks backup`, `agentworks restore`, `pnpm --filter /policy-engine test`. |
     23|
@@ -42,8 +42,8 @@
     42|
     43|| Old name | New name | Notes |
     44||---|---|---|
-    45|| `AgentWorks.local` | `agentworks.local` | Local hostname for the daemon. |
-    46|| `AgentWorks:3100` | `agentworks.local:7710` | MCP server and REST API. |
+    45|| `AgentWorks.local` | `localhost` | Local hostname for the daemon in the default install. |
+    46|| `AgentWorks:3100` | `localhost:7710` | MCP server and REST API. |
     47|| `get.AgentWorks.io` | `get.agentworks.os` | Installer download URL. |
     48|| `api.AgentWorks.ing` | not used in v1 | v1 is local-only. No SaaS API hostname. |
     49|
@@ -102,7 +102,7 @@
    102|```
    103|Paperclip → AgentWorks OS  (product name, UI strings)
    104|AgentWorks → agentos-d       (daemon name, process name, hostnames)
-   105|AgentWorks.local → agentworks.local
+   105|AgentWorks.local → localhost
    106|Paperclip, Inc. → SGridworks
    107|PAPERCLIP_ → AGENTWORKS_  (env vars)
    108|AgentWorks-ui → admin-ui    (directory name)
@@ -132,7 +132,7 @@
    132||---|---|
    133|| "Paperclip is installing..." | "AgentWorks OS is installing..." |
    134|| "Paperclip has been installed." | "AgentWorks OS has been installed." |
-   135|| "Visit http://AgentWorks.local:3000 to complete setup." | "Visit https://agentworks.local:3000 to complete setup." |
+   135|| "Visit http://AgentWorks.local:3000 to complete setup." | "Visit http://localhost:3000 to complete setup." |
    136|| Default username: `AgentWorks` | Default username: `admin` |
    137|| Config path: `~/.AgentWorks/` | Config path: `~/.agentworks/` |
    138|

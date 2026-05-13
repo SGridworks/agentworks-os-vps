@@ -60,7 +60,7 @@ Claude Desktop (or another MCP client) can't reach the AgentWorks OS MCP server.
 
 2. **Wrong URL in Claude Desktop config.** The MCP server URL in your Claude Desktop config must exactly match the daemon URL. By default the daemon listens on `http://127.0.0.1:7710`. No trailing slash.
 
-3. **Different machines.** If Claude Desktop runs on a different machine than AgentWorks OS, use the server's IP address instead of `agentworks.local`. Example: `http://192.168.1.100:7710` not `http://agentworks.local:7710`.
+3. **Different machines.** If Claude Desktop runs on a different machine than AgentWorks OS, keep the daemon loopback-bound and connect through an SSH tunnel or authenticated reverse proxy.
 
 4. **Firewall or tunnel blocking port 7710.** On a VPS, keep the port loopback-bound and connect through an SSH tunnel or authenticated reverse proxy.
 
@@ -70,13 +70,21 @@ Claude Desktop (or another MCP client) can't reach the AgentWorks OS MCP server.
 
 The agent doesn't have the AgentWorks OS MCP tools loaded.
 
-**Fix:** Check that the `agentworks` MCP server is in your Claude Desktop config and that the URL points to the correct port (7710 by default):
+**Fix:** Check that the `agentworks` MCP server is in your Claude Desktop config and that the bridge points to the correct daemon URL (7710 by default). The wrapper can write this for you:
+
+```bash
+agentworks mcp configure --target claude-desktop
+```
+
+Expected shape:
 
 ```json
 {
   "mcpServers": {
     "agentworks": {
-      "url": "http://agentworks.local:7710"
+      "command": "node",
+      "args": ["/Users/<your-mac-user>/.agentworks/config/mcp-stdio-bridge.js"],
+      "env": { "AGENTOS_URL": "http://localhost:7710" }
     }
   }
 }
@@ -153,19 +161,19 @@ The main daemon can't talk to the scanner-worker sidecar.
 **Fix:** Check if the scanner container is running:
 
 ```
-docker compose ps scanner-worker
+agentworks status
 ```
 
 If it's down, restart it:
 
 ```
-docker compose up -d scanner-worker
+agentworks restart scanner-worker
 ```
 
 If it keeps going down, check the logs:
 
 ```
-docker compose logs scanner-worker
+agentworks logs scanner-worker
 ```
 
 ---
@@ -174,9 +182,7 @@ docker compose logs scanner-worker
 
 The scanner ran but didn't find any agent configs to scan.
 
-**Fix:** The scanner watches the configured config directory. By default, it looks in `~/.claude/` and the project directories you specify in the admin UI at **Security** -> **Scanner Settings**.
-
-Add the paths to your agent config directories.
+**Fix:** Scheduled watch scans are disabled until you configure `SCANNER_WATCH_DIRS` in `~/.agentworks/config/.env`. Add the absolute paths to your agent config directories, then run `agentworks restart scanner-worker`.
 
 ---
 
@@ -188,9 +194,10 @@ An n8n workflow using a substrate-aware node can't reach `agentos-d`.
 
 **Fixes:**
 
-1. Confirm `agentos-d` is running: `docker compose ps agentos-d`
-2. Check the n8n container can reach the API: `docker exec n8n curl http://agentos-d:7710/health`
-3. If they run on different Docker networks, check the docker-compose.yml network configuration
+1. Confirm `agentos-d` is running: `agentworks status`
+2. Check n8n logs for connection errors: `agentworks logs n8n`
+3. In n8n workflows, use the Docker-network URL `http://agentos-d:7710`, not `localhost`
+4. If you are running custom compose changes, keep n8n and `agentos-d` on the same Docker network
 
 ---
 
@@ -200,7 +207,7 @@ An n8n workflow using a substrate-aware node can't reach `agentos-d`.
 
 Your admin session timed out after 8 hours of inactivity.
 
-**Fix:** Log in again at `http://agentworks.local:7710`.
+**Fix:** Log in again at `http://localhost:3000`. On a remote host, use an SSH tunnel or authenticated TLS reverse proxy to reach the dashboard.
 
 ---
 

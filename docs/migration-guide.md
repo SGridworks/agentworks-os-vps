@@ -140,7 +140,16 @@ cp ~/path/to/your/CLAUDE.md ~/.agentworks/config/claude/
 cp ~/path/to/your/.cursorrules ~/.agentworks/config/cursor/
 ```
 
-3. Register them with the scanner. The scanner watches `~/.agentworks/config/` by default. To confirm it picked them up:
+3. Register them with the scanner. Scheduled watch scans are disabled by
+   default; add explicit watch paths to `~/.agentworks/config/.env`:
+
+```bash
+printf '\nSCANNER_WATCH_DIRS=%s\n' "$HOME/.agentworks/config/claude:$HOME/.agentworks/config/cursor" \
+  >> ~/.agentworks/config/.env
+agentworks restart scanner-worker
+```
+
+To confirm scanner submission works:
 
 ```bash
 # Trigger a manual scan to see the watched paths
@@ -271,13 +280,16 @@ curl -X POST http://localhost:7710/api/memory/reindex \
 
 ### Scanner not picking up agent configs
 
-Confirm the config directory is correct:
+Confirm watch paths are configured:
 
 ```bash
-docker exec agentos-d ls /config/
+grep '^SCANNER_WATCH_DIRS=' ~/.agentworks/config/.env
+agentworks logs scanner-worker
 ```
 
-The scanner watches `/config/claude/` and `/config/cursor/` by default. Copy configs there, then trigger a manual scan.
+The scanner does not watch `/config/claude/` or `/config/cursor/` by default
+in v0.1.9. Copy configs into your chosen host paths, set
+`SCANNER_WATCH_DIRS`, restart `scanner-worker`, then trigger a manual scan.
 
 ---
 

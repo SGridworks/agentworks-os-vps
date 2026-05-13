@@ -309,8 +309,8 @@ This is useful when you want to preview what the policy engine would decide befo
 You are running an older version of `agentos-d` before the MCP tool implementations were completed. Update to the latest release and restart the daemon:
 
 ```bash
-docker compose pull agentworks
-docker compose up -d
+agentworks update
+agentworks restart agentos-d
 ```
 
 ### Policy check returns block with no reason
