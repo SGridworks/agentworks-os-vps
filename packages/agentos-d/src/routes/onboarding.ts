@@ -22,8 +22,7 @@ import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
 import type { Config } from "../config.js";
-import { getDb } from "../db/index.js";
-import { tenants, type NewTenantRow } from "../db/schema.js";
+import { getSqlite } from "../db/index.js";
 import {
   assignPackToTenant,
   listAssignments,
@@ -34,6 +33,76 @@ interface EditorTarget {
   id: string;
   label: string;
   configPath: string;
+}
+
+interface TenantInsertRow {
+  id: string;
+  name: string;
+  description: string | null;
+  industry: string | null;
+  vaultRoot: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+function deriveCompanySlugBase(source: string): string {
+  const words = source
+    .split(/\s+/)
+    .map((w) => w.replace(/[^a-zA-Z0-9]/g, ""))
+    .filter((w) => w.length > 0);
+  if (words.length >= 2) {
+    const initials = words.map((w) => w[0]!.toUpperCase()).join("").slice(0, 4);
+    if (initials.length >= 2) return initials;
+  }
+  return source.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 3) || "TEN";
+}
+
+function allocateCompanySlugPrefix(
+  sqlite: ReturnType<typeof getSqlite>,
+  name: string
+): string {
+  const base = deriveCompanySlugBase(name);
+  let candidate = base;
+  let i = 2;
+  while (
+    sqlite
+      .prepare("SELECT 1 FROM execution_companies WHERE slug_prefix = ?")
+      .get(candidate)
+  ) {
+    candidate = `${base}${i++}`;
+  }
+  return candidate;
+}
+
+function insertTenantAndInitialCompany(row: TenantInsertRow): string {
+  const sqlite = getSqlite();
+  const companyId = randomUUID();
+  const slugPrefix = allocateCompanySlugPrefix(sqlite, row.name);
+  const insert = sqlite.transaction(() => {
+    sqlite.prepare(`
+      INSERT INTO tenants
+      (id, name, description, industry, vault_root, created_at, updated_at)
+      VALUES (@id, @name, @description, @industry, @vaultRoot, @createdAt, @updatedAt)
+    `).run(row);
+    sqlite.prepare(`
+      INSERT INTO execution_companies
+      (id, tenant_id, name, slug, slug_prefix, status, metadata_json, created_at, updated_at)
+      VALUES (?, ?, ?, NULL, ?, 'active', ?, ?, ?)
+    `).run(
+      companyId,
+      row.id,
+      row.name,
+      slugPrefix,
+      JSON.stringify({ createdBy: "onboarding" }),
+      row.createdAt,
+      row.updatedAt
+    );
+    sqlite
+      .prepare("INSERT OR IGNORE INTO execution_company_issue_seq (company_id, next_seq) VALUES (?, 1)")
+      .run(companyId);
+  });
+  insert();
+  return companyId;
 }
 
 function editorTargets(): EditorTarget[] {
@@ -120,8 +189,9 @@ export function createOnboardingRouter(_config: Config): Router {
   //
   // Orchestrates the full onboarding tenant creation in a single call:
   //   1. Create tenant row + vault directory
-  //   2. Assign the user-selected rule pack (in shadow mode per design doc)
-  //   3. Seed the vault with an empty .agentworks marker so first-agent can
+  //   2. Create the initial execution company for Mission Control
+  //   3. Assign the user-selected rule pack (in shadow mode per design doc)
+  //   4. Seed the vault with an empty .agentworks marker so first-agent can
   //      detect it exists and offer to populate it from memory.
   //
   // This replaces the previous multi-step flow where createTenant() was called
@@ -166,8 +236,8 @@ export function createOnboardingRouter(_config: Config): Router {
       return;
     }
 
-    // 2. Insert tenant row
-    const row: NewTenantRow = {
+    // 2. Insert tenant row and first execution company
+    const row: TenantInsertRow = {
       id,
       name: tenantName,
       description: tenantDescription ?? null,
@@ -177,18 +247,11 @@ export function createOnboardingRouter(_config: Config): Router {
       updatedAt: now,
     };
 
-    let db;
+    let companyId: string;
     try {
-      db = getDb();
+      companyId = insertTenantAndInitialCompany(row);
     } catch (err) {
-      res.status(500).json({ error: "db_init_failed", message: String(err) });
-      return;
-    }
-
-    try {
-      db.insert(tenants).values(row).run();
-    } catch (err) {
-      res.status(500).json({ error: "tenant_insert_failed", message: String(err) });
+      res.status(500).json({ error: "onboarding_insert_failed", message: String(err) });
       return;
     }
 
@@ -222,7 +285,7 @@ export function createOnboardingRouter(_config: Config): Router {
       // Non-fatal — vault directory was created successfully.
     }
 
-    res.status(201).json({ tenantId: id, vaultRoot });
+    res.status(201).json({ tenantId: id, companyId, vaultRoot });
   });
 
   return router;

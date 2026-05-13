@@ -210,7 +210,10 @@ Run the installer on the machine that will host AgentWorks OS:
 curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash -s -- --unattended
 ```
 
-The installer creates `~/.agentworks/`, generates secrets, starts services, and creates the first tenant.
+The installer creates `~/.agentworks/`, generates secrets, starts services, and
+verifies tenant creation with a disposable smoke-test tenant. It deletes that
+smoke tenant before exit. Create the real first tenant through the onboarding
+flow or `POST /api/tenants`.
 
 ### Verify Services
 

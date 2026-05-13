@@ -290,6 +290,28 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
 - CLI help now points operators to the installed local docs instead of an
   unshipped external documentation domain.
 
+### Fixed (audit round 19)
+
+- `agentworks mcp configure` now validates Node.js 18+ before writing MCP
+  client configs, so hosts with older distro Node packages get a clear failure
+  instead of a broken bridge.
+- Codex MCP setup docs now use the installed `codex mcp add` command shape
+  instead of a stale JSON config snippet.
+- Compose and customer docs now state that v0.1.9 stores daemon state in
+  SQLite and reserves the bundled Postgres service for future execution-store
+  wiring.
+
+### Fixed (audit round 20)
+
+- Release image builds now grant `contents: read`, allowing
+  `actions/checkout@v4` to read the tagged source before publishing GHCR images.
+- The onboarding initialize route now creates the initial execution company as
+  well as the tenant, so Mission Control is populated after first-run setup.
+- User docs now state that installer tenant creation is a disposable smoke
+  check, not the operator's first real tenant.
+- AI-agent docs no longer use stale `§` cross-references to sections that do
+  not exist in the current guides.
+
 ### Known limitations
 
 - Real-VPS install verification for this release was performed against a

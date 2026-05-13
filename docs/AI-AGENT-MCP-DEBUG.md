@@ -413,6 +413,6 @@ curl -sS -X POST http://127.0.0.1:7710/api/policy/check -H "content-type: applic
 ## See also
 
 - [docs/mcp-integration.md](./mcp-integration.md) — canonical MCP wiring
-- [docs/AI-AGENT-INSTALL-GUIDE.md](./AI-AGENT-INSTALL-GUIDE.md) §6 — first MCP client setup
+- [docs/AI-AGENT-INSTALL-GUIDE.md](./AI-AGENT-INSTALL-GUIDE.md) §2 — post-install MCP client setup
 - [docs/AI-AGENT-OPERATOR-RUNBOOK.md](./AI-AGENT-OPERATOR-RUNBOOK.md) — daemon and service health
-- [docs/users-guide.md](./users-guide.md) §10 "MCP and API Tools"
+- [docs/users-guide.md](./users-guide.md) — MCP and API Tools

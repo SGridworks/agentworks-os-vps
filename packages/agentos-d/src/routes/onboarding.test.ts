@@ -14,20 +14,39 @@ import express from "express";
 import request from "supertest";
 import { createOnboardingRouter } from "./onboarding.js";
 import type { Config } from "../config.js";
+import { loadConfig } from "../config.js";
+import { initDb, resetDb, getSqlite } from "../db/index.js";
+import { migrate } from "../db/migrations/index.js";
 
 let tempHome: string;
+let dataDir: string;
 let originalHome: string | undefined;
+let originalDataDir: string | undefined;
+let originalVaultRoot: string | undefined;
 
 beforeEach(() => {
   tempHome = mkdtempSync(path.join(tmpdir(), "awo-onboarding-"));
+  dataDir = mkdtempSync(path.join(tmpdir(), "awo-onboarding-data-"));
   originalHome = process.env.HOME;
+  originalDataDir = process.env.AGENTOS_DATA_DIR;
+  originalVaultRoot = process.env.VAULT_ROOT;
   process.env.HOME = tempHome;
+  process.env.AGENTOS_DATA_DIR = dataDir;
+  process.env.VAULT_ROOT = path.join(tempHome, "vault", "wiki");
+  resetDb();
+  initDb({ config: loadConfig(), migrations: migrate });
 });
 
 afterEach(() => {
   if (originalHome !== undefined) process.env.HOME = originalHome;
   else delete process.env.HOME;
+  if (originalDataDir !== undefined) process.env.AGENTOS_DATA_DIR = originalDataDir;
+  else delete process.env.AGENTOS_DATA_DIR;
+  if (originalVaultRoot !== undefined) process.env.VAULT_ROOT = originalVaultRoot;
+  else delete process.env.VAULT_ROOT;
+  resetDb();
   rmSync(tempHome, { recursive: true, force: true });
+  rmSync(dataDir, { recursive: true, force: true });
 });
 
 function buildApp() {
@@ -87,5 +106,28 @@ describe("POST /api/onboarding/write-config", () => {
     expect(res.body.command).toBe("agentworks mcp configure");
     expect(res.body.results[0].written).toBe(false);
     expect(res.body.results[0].message).toBe("use_host_agentworks_mcp_configure");
+  });
+});
+
+describe("POST /api/onboarding/initialize", () => {
+  it("creates a tenant and initial company for Mission Control", async () => {
+    const app = buildApp();
+    const res = await request(app)
+      .post("/api/onboarding/initialize")
+      .send({ tenantName: "Acme Grid", selectedPack: "minimal" });
+
+    expect(res.status).toBe(201);
+    expect(typeof res.body.tenantId).toBe("string");
+    expect(typeof res.body.companyId).toBe("string");
+
+    const company = getSqlite()
+      .prepare("SELECT tenant_id, name, slug_prefix FROM execution_companies WHERE id = ?")
+      .get(res.body.companyId) as { tenant_id: string; name: string; slug_prefix: string } | undefined;
+
+    expect(company).toEqual({
+      tenant_id: res.body.tenantId,
+      name: "Acme Grid",
+      slug_prefix: "AG",
+    });
   });
 });

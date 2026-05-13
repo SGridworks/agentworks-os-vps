@@ -476,7 +476,7 @@ Verifications passed:
 
 ## See also
 
-- [docs/users-guide.md](./users-guide.md) §6 "Vault Guide", §12 "Routine Maintenance"
+- [docs/users-guide.md](./users-guide.md) — Vault Guide and routine maintenance
 - [docs/best-practices.md](./best-practices.md) "Vault Hygiene"
-- [docs/AI-AGENT-INSTALL-GUIDE.md](./AI-AGENT-INSTALL-GUIDE.md) §8 "Vault setup"
+- [docs/AI-AGENT-INSTALL-GUIDE.md](./AI-AGENT-INSTALL-GUIDE.md) §2 "Post-install"
 - [docs/AI-AGENT-OPERATOR-RUNBOOK.md](./AI-AGENT-OPERATOR-RUNBOOK.md) — adjacent ops tasks

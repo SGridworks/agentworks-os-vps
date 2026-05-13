@@ -130,6 +130,7 @@ jobs:
   build-image:
     needs: resolve-tag
     permissions:
+      contents: read
       packages: write
       id-token: write
     strategy:

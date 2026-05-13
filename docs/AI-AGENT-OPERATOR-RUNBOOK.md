@@ -393,7 +393,7 @@ curl -sS "http://127.0.0.1:7710/api/memory/graph?tenantId=$TENANT_ID"
 
 ## See also
 
-- [docs/users-guide.md](./users-guide.md) §17 "Troubleshooting", §12 "Routine Maintenance"
+- [docs/users-guide.md](./users-guide.md) — Troubleshooting and routine maintenance
 - [docs/best-practices.md](./best-practices.md) — operating norms
 - [docs/backup-restore.md](./backup-restore.md) — recovery procedures
 - [docs/AI-AGENT-INSTALL-GUIDE.md](./AI-AGENT-INSTALL-GUIDE.md)

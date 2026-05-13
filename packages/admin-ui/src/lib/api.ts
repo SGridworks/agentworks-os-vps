@@ -975,6 +975,7 @@ export interface InitializeOnboardingRequest {
 
 export interface InitializeOnboardingResponse {
   tenantId: string;
+  companyId: string;
   vaultRoot: string;
 }
 

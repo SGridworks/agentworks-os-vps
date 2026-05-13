@@ -339,5 +339,5 @@ What you should do next:
 - [docs/rule-pack-authoring.md](./rule-pack-authoring.md) — schema reference (the dictionary)
 - [docs/AWCP](./awcp.md) — wire format and action kinds
 - [docs/best-practices.md](./best-practices.md) — `Rule Pack Design` section
-- [docs/users-guide.md](./users-guide.md) §7 "Rule Pack Operations"
+- [docs/users-guide.md](./users-guide.md) — Rule Pack Operations
 - [docs/AI-AGENT-INSTALL-GUIDE.md](./AI-AGENT-INSTALL-GUIDE.md) — install playbook
