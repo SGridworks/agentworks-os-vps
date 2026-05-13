@@ -29,7 +29,7 @@ services:
     # Published by .github/workflows/release.yml on every `v*` tag.
     # Override with AGENTWORKS_IMAGE_REGISTRY=docker.io/agentworks for a
     # private mirror, or AGENTWORKS_VERSION to pin a different release.
-    image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/agentworks}/agentos-d:${AGENTWORKS_VERSION:-0.1.9}
+    image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/awos}/agentos-d:${AGENTWORKS_VERSION:-0.1.9}
     restart: unless-stopped
     ports:
       - "127.0.0.1:7710:7710"   # REST + MCP
@@ -123,7 +123,7 @@ services:
     build:
       context: ./packages/scanner-worker
       dockerfile: Dockerfile
-    image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/agentworks}/scanner-worker:${AGENTWORKS_VERSION:-0.1.9}
+    image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/awos}/scanner-worker:${AGENTWORKS_VERSION:-0.1.9}
     restart: unless-stopped
     ports:
       - "127.0.0.1:3101:3101"   # Health + findings API
@@ -211,7 +211,7 @@ services:
     build:
       context: .
       dockerfile: packages/admin-ui/Dockerfile
-    image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/agentworks}/admin-ui:${AGENTWORKS_VERSION:-0.1.9}
+    image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/awos}/admin-ui:${AGENTWORKS_VERSION:-0.1.9}
     restart: unless-stopped
     ports:
       - "127.0.0.1:3000:3000"

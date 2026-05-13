@@ -76,7 +76,12 @@ jobs:
           minor="${version%.*}"
           sha7="$(git rev-parse HEAD | cut -c1-7)"
           owner_lc="$(printf '%s' "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
-          image_prefix="ghcr.io/${owner_lc}/agentworks"
+          # awos namespace is owned by SGridworks/agentworks-os-vps.
+          # The previous `agentworks/...` org packages are bound to the
+          # archived SGridworks/agentworks-os repo and the new repo's
+          # GITHUB_TOKEN cannot write to them; switching to a fresh
+          # namespace lets first-push bind the packages to this repo.
+          image_prefix="ghcr.io/${owner_lc}/awos"
           {
             echo "tag=$tag"
             echo "version=$version"

@@ -327,6 +327,17 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
 - MCP debug and install docs now use current REST endpoints, Codex MCP config
   behavior, Node.js 18+ Ubuntu guidance, and Claude connection verification.
 
+### Fixed (audit round 22)
+
+- GHCR image namespace moved from `ghcr.io/sgridworks/agentworks/*` to
+  `ghcr.io/sgridworks/awos/*`. The previous packages were bound to the
+  archived `SGridworks/agentworks-os` repo and the new
+  `SGridworks/agentworks-os-vps` `GITHUB_TOKEN` could not write to them
+  (`denied: permission_denied: write_package`). The new namespace is
+  first-pushed by this repo, so the release workflow owns publishing rights.
+  `docker-compose.yml`, `docker-compose.dev.yml`, the installer cleanup hints,
+  and the release workflow's `image_prefix` were updated together.
+
 ### Known limitations
 
 - Real-VPS install verification for this release was performed against a

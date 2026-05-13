@@ -87,7 +87,7 @@ services:
   # scanner-worker — AgentGuard Python sidecar
   # ------------------------------------------------------------------
   scanner-worker:
-    image: ghcr.io/sgridworks/agentworks/scanner-worker:dev
+    image: ghcr.io/sgridworks/awos/scanner-worker:dev
     container_name: agentworks-scanner
     restart: unless-stopped
     ports:

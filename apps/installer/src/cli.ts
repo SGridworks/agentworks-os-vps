@@ -116,8 +116,9 @@ function cmdUninstall(_opts: Record<string, unknown>) {
 
     logInfo("Uninstallation complete.");
     logInfo("Note: Docker images were not removed. To remove them, run:");
-    logInfo(`  docker rmi ghcr.io/sgridworks/agentworks-os/agentos-d:latest`);
-    logInfo(`  docker rmi ghcr.io/sgridworks/agentworks-os/scanner-worker:latest`);
+    logInfo(`  docker rmi ghcr.io/sgridworks/awos/agentos-d:latest`);
+    logInfo(`  docker rmi ghcr.io/sgridworks/awos/scanner-worker:latest`);
+    logInfo(`  docker rmi ghcr.io/sgridworks/awos/admin-ui:latest`);
     logInfo(`  docker rmi postgres:16-alpine`);
     logInfo(`  docker rmi n8nio/n8n:1.68.0`);
   } catch (err: unknown) {
@@ -232,7 +233,7 @@ function cmdVersion(_opts: Record<string, unknown>) {
   // Check docker image version first
   let imageVersion = "unknown";
   try {
-    const output = run(`docker images ghcr.io/sgridworks/agentworks-os/agentos-d:latest --format "{{.Tag}}" 2>/dev/null || echo "not-installed"`);
+    const output = run(`docker images ghcr.io/sgridworks/awos/agentos-d:latest --format "{{.Tag}}" 2>/dev/null || echo "not-installed"`);
     imageVersion = output.trim() || "unknown";
   } catch {
     imageVersion = "not-installed";
