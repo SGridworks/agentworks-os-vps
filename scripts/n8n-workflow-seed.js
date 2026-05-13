@@ -29,9 +29,21 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const N8N_URL = process.argv.find((a) => a.startsWith("--n8n-url="))?.split("=")[1]
   ?? "http://localhost:5678";
-const WORKFLOWS_DIR = join(__dirname, "workflows");
-const ADMIN_EMAIL = "admin@agentworks.local";
-const ADMIN_PASSWORD = process.env.N8N_ADMIN_PASSWORD ?? "agentworks-admin-123";
+// Repo layout: scripts/ is sibling to workflows/, not parent.
+const WORKFLOWS_DIR = join(__dirname, "..", "workflows");
+// n8n owner credentials must be supplied by the caller. The script no longer
+// assumes a hard-coded admin account that would collide with the operator's
+// first-launch n8n owner-setup screen.
+const ADMIN_EMAIL = process.env.N8N_ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.N8N_ADMIN_PASSWORD;
+if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+  console.error("[seed] N8N_ADMIN_EMAIL and N8N_ADMIN_PASSWORD are required.");
+  console.error(`[seed] Create the n8n owner account at ${N8N_URL} first, then run:`);
+  console.error("[seed]   N8N_ADMIN_EMAIL=you@example.com \\");
+  console.error("[seed]   N8N_ADMIN_PASSWORD='...' \\");
+  console.error("[seed]   node scripts/n8n-workflow-seed.js");
+  process.exit(2);
+}
 const MAX_WAIT_SECONDS = 120;
 
 // ---------------------------------------------------------------------------

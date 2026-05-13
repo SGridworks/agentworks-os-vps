@@ -31,7 +31,7 @@
       },
       "id": "uuid-vault-write",
       "name": "Vault Write",
-      "type": "agentworks.memory_write",
+      "type": "agentworks.memory.write",
       "typeVersion": 1,
       "position": [750, 300]
     }

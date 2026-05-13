@@ -35,6 +35,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=builder /root/.local /root/.local
 ENV PATH=/root/.local/bin:$PATH
 
+# Default to stub embedding/reranker pipelines so `docker run scanner-worker`
+# starts healthy without downloading HuggingFace model weights. The bundled
+# docker-compose.yml also sets these for the same reason — keep them in sync.
+# Override with EMBEDDING_MODE=real and RERANKER_MODE=real when running
+# with a warm HF model cache mounted in.
+ENV EMBEDDING_MODE=stub
+ENV RERANKER_MODE=stub
+
 EXPOSE 3101
 
 # 3101 must match SCANNER_WORKER_PORT in docker-compose.yml; both default to

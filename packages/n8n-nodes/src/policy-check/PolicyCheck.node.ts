@@ -118,7 +118,7 @@ const description: N8nNodeDescription = {
       name: "baseUrl",
       type: "string",
       required: false,
-      default: "http://127.0.0.1:3100",
+      default: "http://agentos-d:7710",
     },
   ],
 };
@@ -147,8 +147,8 @@ export class PolicyCheck {
       if (shadow) params.shadowMode = true;
 
       const baseUrl =
-        (this.getNodeParameter("baseUrl", i, "http://127.0.0.1:3100") as string) ||
-        "http://127.0.0.1:3100";
+        (this.getNodeParameter("baseUrl", i, "http://agentos-d:7710") as string) ||
+        "http://agentos-d:7710";
 
       const result = await runPolicyCheck(params, { baseUrl });
       const out: N8nExecutionItem = { json: { ...items[i]?.json, policyCheck: result } };

@@ -46,7 +46,7 @@
       },
       "id": "uuid-audit-allow",
       "name": "Audit (Allow)",
-      "type": "agentworks.memory_write",
+      "type": "agentworks.memory.write",
       "typeVersion": 1,
       "position": [750, 100]
     },
@@ -59,7 +59,7 @@
       },
       "id": "uuid-vault-review",
       "name": "Route to Review",
-      "type": "agentworks.memory_write",
+      "type": "agentworks.memory.write",
       "typeVersion": 1,
       "position": [750, 400]
     },
@@ -72,7 +72,7 @@
       },
       "id": "uuid-audit-block",
       "name": "Audit (Block)",
-      "type": "agentworks.memory_write",
+      "type": "agentworks.memory.write",
       "typeVersion": 1,
       "position": [750, 600]
     }

@@ -211,6 +211,44 @@ until curl -sf -m 5 "${admin_url}/mission-control" >/dev/null 2>&1; do
 done
 [[ "$admin_optional" == "1" && $elapsed -ge $admin_timeout ]] || pass "admin-ui /mission-control is up."
 
+# -----------------------------------------------------------------------------
+# Step 8 — n8n custom nodes are actually loadable
+#
+# /healthz only verifies n8n is alive; it doesn't verify the AgentWorks
+# Policy/Memory/Dispatch nodes are present and discoverable. The package
+# layout is fragile (Dockerfile install path × N8N_CUSTOM_EXTENSIONS env);
+# a regression in either silently breaks every workflow.
+# -----------------------------------------------------------------------------
+n8n_optional="${SMOKE_N8N_OPTIONAL:-0}"
+if [[ "$n8n_optional" != "1" ]]; then
+  info "Checking n8n custom nodes load..."
+  N8N_NODE_FILES=(
+    "/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/policy-check/PolicyCheck.node.js"
+    "/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/memory/MemoryRead.node.js"
+    "/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/memory/MemoryWrite.node.js"
+    "/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/dispatch/Dispatch.node.js"
+  )
+  # Find the n8n container by image label, regardless of compose project name.
+  n8n_container="$(docker ps --filter 'label=com.docker.compose.service=n8n' --format '{{.ID}}' | head -1)"
+  if [[ -z "$n8n_container" ]]; then
+    warn "Could not locate n8n container (compose label lookup failed); skipping nodes check."
+  else
+    missing=0
+    for nf in "${N8N_NODE_FILES[@]}"; do
+      if ! docker exec "$n8n_container" test -f "$nf" 2>/dev/null; then
+        warn "n8n node missing in container: $nf"
+        missing=$((missing + 1))
+      fi
+    done
+    if (( missing > 0 )); then
+      fail "${missing} AgentWorks n8n node file(s) not present in n8n container."
+      fail "Diagnose: docker exec ${n8n_container} ls -R /opt/agentworks-extensions"
+      exit 1
+    fi
+    pass "AgentWorks n8n nodes load (4/4 .node.js files present)."
+  fi
+fi
+
 echo ""
 echo "=============================================================================="
 echo -e "${GREEN}AgentWorks OS smoke test PASSED${NC}"

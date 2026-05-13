@@ -47,7 +47,7 @@ export interface PolicyCheckResult {
 }
 
 export interface PolicyCheckOptions {
-  /** Daemon base URL, e.g. "http://127.0.0.1:3100". */
+  /** Daemon base URL, e.g. "http://agentos-d:7710". */
   baseUrl: string;
   /** Request timeout in ms. Defaults to 10s. */
   timeoutMs?: number;

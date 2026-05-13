@@ -55,11 +55,21 @@ COPY --from=builder --chown=node:node /app/packages/n8n-nodes/dist /tmp/agentwor
 COPY --from=builder --chown=node:node /app/packages/n8n-nodes/package.json /tmp/agentworks-nodes/agentworks-nodes-package.json
 
 # Install the package layout n8n's custom-extensions loader expects:
-#   $N8N_CUSTOM_EXTENSIONS/node_modules/@agentworks/n8n-nodes/{package.json, *.js}
-RUN mkdir -p /opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes && \
+#   $N8N_CUSTOM_EXTENSIONS/node_modules/@agentworks/n8n-nodes/
+#     ├ package.json          (n8n.nodes paths reference dist/.../*.node.js)
+#     └ dist/
+#         ├ policy-check/PolicyCheck.node.js
+#         ├ memory/{MemoryRead,MemoryWrite}.node.js
+#         ├ dispatch/Dispatch.node.js
+#         └ automation/AutomationAction.node.js
+#
+# DO NOT flatten dist/* into the package root. package.json's n8n.nodes
+# array uses "dist/.../*.node.js" paths; flattening breaks node discovery.
+RUN mkdir -p /opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist && \
     cp /tmp/agentworks-nodes/agentworks-nodes-package.json \
        /opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/package.json && \
-    cp -r /tmp/agentworks-nodes/dist/* /opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/ && \
+    cp -r /tmp/agentworks-nodes/dist/. \
+          /opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/ && \
     rm -rf /tmp/agentworks-nodes && \
     chown -R node:node /opt/agentworks-extensions
 

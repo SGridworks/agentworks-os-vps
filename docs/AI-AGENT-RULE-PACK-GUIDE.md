@@ -158,20 +158,16 @@ Run all three checks every time you save the YAML. Hand-reading is not enough.
 
 ### §5.1 Schema validation
 
-```bash
-docker compose -f $HOME/.agentworks/docker-compose.yml exec -T agentos-d \
-  agentos rule-packs validate /tmp/<pack-id>-draft.yaml
-```
-
-Or, using the daemon's validate route:
+Validate the YAML against the rule-pack schema with the policy-engine
+package tests (offline, no daemon required):
 
 ```bash
-curl -sS -X POST http://127.0.0.1:7710/api/policy/packs/validate \
-  -H "content-type: application/yaml" \
-  --data-binary @/tmp/<pack-id>-draft.yaml
+# From the repo checkout:
+pnpm --filter @agentworks/policy-engine test -- /tmp/<pack-id>-draft.yaml
 ```
 
-**Verify:** response says `valid: true` with zero errors.
+**Verify:** vitest exits 0 with no schema errors. Any validation failures
+print the offending field path and a Zod error message.
 
 **Fix:** read the error path. The most common errors:
 

@@ -90,7 +90,7 @@ const description: N8nNodeDescription = {
       name: "baseUrl",
       type: "string",
       required: false,
-      default: "http://127.0.0.1:3100",
+      default: "http://agentos-d:7710",
     },
   ],
 };
@@ -113,8 +113,8 @@ export class Dispatch {
       if (policyDecisionId) params.policyDecisionId = policyDecisionId;
 
       const baseUrl =
-        (this.getNodeParameter("baseUrl", i, "http://127.0.0.1:3100") as string) ||
-        "http://127.0.0.1:3100";
+        (this.getNodeParameter("baseUrl", i, "http://agentos-d:7710") as string) ||
+        "http://agentos-d:7710";
 
       const result = await runDispatch(params, { baseUrl });
       out.push({ json: { ...items[i]?.json, dispatch: result } });

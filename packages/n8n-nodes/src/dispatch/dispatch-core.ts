@@ -31,7 +31,7 @@ export interface DispatchResult {
 }
 
 export interface DispatchClientOptions {
-  /** Daemon base URL, e.g. "http://127.0.0.1:3100". */
+  /** Daemon base URL, e.g. "http://agentos-d:7710". */
   baseUrl: string;
   /** Optional bearer token. */
   apiKey?: string;

@@ -82,7 +82,7 @@ const description: N8nNodeDescription = {
       name: "baseUrl",
       type: "string",
       required: false,
-      default: "http://127.0.0.1:3100",
+      default: "http://agentos-d:7710",
     },
   ],
 };
@@ -101,8 +101,8 @@ export class MemoryRead {
         tier: this.getNodeParameter("tier", i, "detail") as "index" | "detail",
       };
       const baseUrl =
-        (this.getNodeParameter("baseUrl", i, "http://127.0.0.1:3100") as string) ||
-        "http://127.0.0.1:3100";
+        (this.getNodeParameter("baseUrl", i, "http://agentos-d:7710") as string) ||
+        "http://agentos-d:7710";
       const result = await runMemoryRead(params, { baseUrl });
       out.push({ json: { ...items[i]?.json, memoryRead: result } });
     }

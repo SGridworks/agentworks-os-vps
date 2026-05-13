@@ -43,7 +43,7 @@ curl -sS --max-time 5 http://127.0.0.1:7710/api/health | head -c 300
 | Symptom | Cause | Fix |
 |---|---|---|
 | Connection refused | Daemon not running | See [operator runbook §2.2](./AI-AGENT-OPERATOR-RUNBOOK.md) |
-| Timeout | Firewall or wrong port | Confirm port in `~/.agentworks/.env` (`AGENTOS_PORT`) |
+| Timeout | Firewall, or daemon not listening on the expected port | v0.1.9 binds the daemon to `127.0.0.1:7710` (loopback only); custom ports aren't supported. Run `lsof -i :7710` to confirm what's listening. |
 | `{"status":"degraded"}` | Daemon is up but a dependency (DB, scanner) is down | Operator runbook §2.4 / §1.1 |
 | HTML/login page | Wrong port — talking to something else | `lsof -i :7710` to confirm what's listening |
 
@@ -65,7 +65,10 @@ file $HOME/.agentworks/config/mcp-stdio-bridge.js
 **Fix:** if missing, copy from the running container:
 
 ```bash
-docker cp agentos-d:/app/dist/bin/mcp-stdio-bridge.js \
+# Container names are compose-project-prefixed in v0.1.9. Locate the
+# agentos-d container by service label rather than guessing the name.
+AGENTOS_D_CTNR="$(docker ps --filter 'label=com.docker.compose.service=agentos-d' --format '{{.ID}}' | head -1)"
+docker cp "${AGENTOS_D_CTNR}:/app/dist/bin/mcp-stdio-bridge.js" \
   $HOME/.agentworks/config/mcp-stdio-bridge.js
 chmod +x $HOME/.agentworks/config/mcp-stdio-bridge.js
 ```

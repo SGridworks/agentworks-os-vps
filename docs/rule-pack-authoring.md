@@ -275,22 +275,32 @@ Admin UI.
 
 **REST API:**
 
+The substrate loads packs from disk under `RULE_PACKS_DIR` (default
+`rule-packs/`). To install a new pack, drop the YAML file into a subdirectory
+of that path and ask the daemon to reload its registry:
+
 ```bash
-# Load a pack
-curl -X POST http://localhost:7710/api/policy/packs \
-  -H "Content-Type: application/yaml" \
-  --data-binary @/path/to/pack.yaml
+# Drop the pack into the rule-packs/ tree on the host:
+mkdir -p ~/.agentworks/source/rule-packs/my-pack
+cp /path/to/pack.yaml ~/.agentworks/source/rule-packs/my-pack/
+
+# Tell the daemon to rescan rule-packs/ and load the new pack
+curl -X POST http://localhost:7710/api/policy/packs/reload
 
 # List active packs
 curl http://localhost:7710/api/policy/packs
 
-# Switch pack mode (replace PACK_ID and MODE)
-curl -X PATCH http://localhost:7710/api/policy/packs/PACK_ID \
+# Switch a pack's mode (replace PACK_ID with the id from /api/policy/packs)
+curl -X PATCH http://localhost:7710/api/policy/packs/PACK_ID/mode \
   -H "Content-Type: application/json" \
   -d '{"mode": "enforce"}'
 ```
 
 Valid modes: `shadow` (advisory only) or `enforce` (blocking). Newly loaded packs start in `shadow`. Switching from shadow to enforce is logged in the audit trail with timestamp and actor.
+
+> A first-class upload API (`POST /api/policy/packs` with the pack body, no
+> filesystem step) is on the v0.2 roadmap. For 0.1.9, drop-into-dir + reload
+> is the supported install path.
 
 ### Shadow Mode
 
