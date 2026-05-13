@@ -227,6 +227,20 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
 - Evidence Report download helper now calls the PDF route with
   `tenant_id`/`from`/`to` query parameters and requests `application/pdf`.
 
+### Fixed (audit round 14)
+
+- Default compose now bind-mounts the installed host `rule-packs/` tree into
+  `agentos-d`, so newly added packs can be loaded by
+  `POST /api/policy/packs/reload`.
+- Installer preflight now checks Docker Hub reachability because the v0.1.9
+  release path still locally builds the n8n image from Docker Hub base images.
+- Policy-engine now ships an explicit `validate:pack` command for validating
+  arbitrary rule-pack YAML files, and docs no longer pretend `vitest run` can
+  validate a user-provided pack path.
+- Troubleshooting docs now route service restart/log actions through the
+  installed `agentworks` wrapper instead of raw compose commands or fixed
+  container names.
+
 ### Known limitations
 
 - Real-VPS install verification for this release was performed against a

@@ -319,7 +319,7 @@ Fix in order: §1 → §3 → `node --version`.
 The daemon is up and the bridge is up, but every tool errors. Likely a daemon-side problem:
 
 ```bash
-docker compose -f $HOME/.agentworks/docker-compose.yml logs --tail 100 agentos-d | \
+agentworks logs agentos-d | \
   grep -iE "error|exception|trace"
 ```
 

@@ -159,14 +159,14 @@ Run all three checks every time you save the YAML. Hand-reading is not enough.
 ### §5.1 Schema validation
 
 Validate the YAML against the rule-pack schema with the policy-engine
-package tests (offline, no daemon required):
+validator (offline, no daemon required):
 
 ```bash
 # From the repo checkout:
-pnpm --filter @agentworks/policy-engine test -- /tmp/<pack-id>-draft.yaml
+pnpm --filter @agentworks/policy-engine validate:pack -- /tmp/<pack-id>-draft.yaml
 ```
 
-**Verify:** vitest exits 0 with no schema errors. Any validation failures
+**Verify:** the validator exits 0 with no schema errors. Any validation failures
 print the offending field path and a Zod error message.
 
 **Fix:** read the error path. The most common errors:
@@ -195,14 +195,15 @@ test_fixtures:
       rule_id: "<which rule should fire>"  # null if expecting allow with no fire
 ```
 
-Run them via the policy-engine package tests:
+Run schema validation again before the live policy check:
 
 ```bash
 # From the repo checkout:
-pnpm --filter @agentworks/policy-engine test -- /tmp/<pack-id>-draft.yaml
+pnpm --filter @agentworks/policy-engine validate:pack -- /tmp/<pack-id>-draft.yaml
 ```
 
-**Verify:** vitest exits 0; all fixtures pass.
+**Verify:** the validator exits 0; then use `/api/policy/check` with your
+fixture payloads for end-to-end decisions.
 
 **Fix:** if a fixture says `expected: block` but got `route_to_review`, the most common cause is missing-data disposition firing first (the action didn't include the field the rule needs). Add the field to `payload:` or set `disposition_when_missing: <expected>` on that rule.
 

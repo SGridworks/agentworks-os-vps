@@ -172,11 +172,12 @@ If logs end at "Listening on :7710" but health still won't answer, port-mapping 
 After an update, the daemon may serve stale code if the image wasn't actually pulled.
 
 ```bash
-agentworks status (image tag column)
-docker inspect agentos-d --format '{{.Created}} {{.Config.Image}}'
+agentworks status
+agentworks logs agentos-d
 ```
 
-If the image creation date predates the announced release: `docker compose pull && docker compose up -d agentos-d`. Then re-verify §1.2.
+If the image tag or logs indicate stale code, run `agentworks restart agentos-d`.
+Then re-verify §1.2.
 
 ### §2.4 SQLite corruption
 

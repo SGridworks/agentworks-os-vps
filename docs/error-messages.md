@@ -103,7 +103,7 @@ The rule pack YAML has a syntax error. The policy engine couldn't parse it.
 **Fix:** Validate the pack with the CLI:
 
 ```
-pnpm --filter @agentworks/policy-engine test -- /path/to/pack.yaml
+pnpm --filter @agentworks/policy-engine validate:pack -- /path/to/pack.yaml
 ```
 
 Or check the pack in the admin UI at **Policy** -> **Rule Packs**. The invalid pack shows an error badge.
@@ -218,7 +218,7 @@ The vault partition is unreadable or corrupt.
 **Fix:** Check disk space. Run `df -h` on the machine running AgentWorks OS. If disk is full, free up space and restart:
 
 ```
-docker compose restart agentos-d
+agentworks restart agentos-d
 ```
 
 ---
@@ -250,10 +250,10 @@ The updater couldn't cleanly shut down the running services.
 **Fix:** Stop services manually:
 
 ```
-docker compose down
+agentworks uninstall
 ```
 
-Then retry the update.
+Then run the installer again for the target release.
 
 ---
 

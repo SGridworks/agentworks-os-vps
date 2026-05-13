@@ -60,6 +60,7 @@ services:
     volumes:
       - ${AGENTWORKS_DATA_DIR:-./data}:/data            # SQLite DB, WAL, vault, uploads
       - ${AGENTWORKS_CONFIG_DIR:-./config}:/config:ro    # .env and secrets (read-only at runtime)
+      - ${AGENTWORKS_SOURCE_DIR:-.}/rule-packs:/opt/agentworks/rule-packs:ro
     depends_on:
       postgres:
         condition: service_healthy

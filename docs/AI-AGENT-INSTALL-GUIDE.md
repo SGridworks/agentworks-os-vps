@@ -87,7 +87,7 @@ The `--unattended` flag suppresses the "press enter to continue" prompt. Everyth
 
 **What the installer does:**
 
-1. Pre-flight: docker daemon up, ports 7710/3101/5678/3000 free, ≥10 GB disk, ≥4 GB RAM, internet to GitHub, GHCR, and npm.
+1. Pre-flight: docker daemon up, ports 7710/3101/5678/3000 free, ≥10 GB disk, ≥4 GB RAM, internet to GitHub, GHCR, Docker Hub, and npm.
 2. Creates `$AGENTWORKS_DIR/{data,config,logs}`, including `data/vault`, and pre-chmods `data/n8n` + `data/scanner` to 777 (n8n runs as uid 1000, scanner as root — host uid mismatch otherwise blocks writes).
 3. Re-uses the local checkout if you ran from one; otherwise `git clone`s into `$AGENTWORKS_DIR/source`.
 4. Generates secrets (admin password, session secret, hex DB password) into `$AGENTWORKS_DIR/config/{.env,secrets.json}` mode 600. Idempotent — re-running preserves the operator's saved password.

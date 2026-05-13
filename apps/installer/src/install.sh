@@ -260,6 +260,7 @@ check_internet() {
   local required_urls=(
     "https://github.com/"
     "https://ghcr.io/v2/"
+    "https://registry-1.docker.io/v2/"
     "https://registry.npmjs.org/"
   )
   if [[ "${AGENTWORKS_BUILD_IMAGES:-0}" == "1" ]]; then
@@ -431,6 +432,7 @@ compose() {
   ( cd "${SOURCE_DIR}" \
     && AGENTWORKS_DATA_DIR="${DATA_DIR}" \
        AGENTWORKS_CONFIG_DIR="${CONFIG_DIR}" \
+       AGENTWORKS_SOURCE_DIR="${SOURCE_DIR}" \
        COMPOSE_PROJECT_NAME="$(awos_compose_project_name)" \
        "${COMPOSE_CMD[@]}" --env-file "${ENV_FILE}" "$@" )
 }
@@ -472,6 +474,7 @@ generate_secrets() {
 AGENTWORKS_VERSION=${INSTALLER_VERSION}
 AGENTWORKS_DATA_DIR=${DATA_DIR}
 AGENTWORKS_CONFIG_DIR=${CONFIG_DIR}
+AGENTWORKS_SOURCE_DIR=${SOURCE_DIR}
 AGENTWORKS_SESSION_SECRET=${session_secret}
 POSTGRES_PASSWORD=${db_password}
 POSTGRES_USER=agentworks

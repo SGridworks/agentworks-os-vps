@@ -217,11 +217,11 @@ test_fixtures:
       rule_id: "SMB-001"
 ```
 
-Run fixtures via the policy-engine package tests (the substrate's authoritative validation path):
+Validate the YAML schema with the policy-engine package validator:
 
 ```bash
 # From the repo checkout:
-pnpm --filter @agentworks/policy-engine test -- rule-packs/smb-starter/smb-starter-v0.1.yaml
+pnpm --filter @agentworks/policy-engine validate:pack -- rule-packs/smb-starter/smb-starter-v0.1.yaml
 ```
 
 Or hit the daemon directly with a `policy/check` call that uses the fixture's
@@ -230,7 +230,7 @@ input — the substrate evaluates the live pack:
 ```bash
 curl -s -X POST http://localhost:7710/api/policy/check \
   -H 'content-type: application/json' \
-  -d @rule-packs/smb-starter/fixtures/dnc-contact.json
+  -d @rule-packs/test-fixtures/SMB-007_consent_missing.json
 ```
 
 **Fixture naming convention:** `<scenario> — <expected decision>`
@@ -244,11 +244,11 @@ curl -s -X POST http://localhost:7710/api/policy/check \
 
 ## Validating a Pack
 
-Before loading a pack, validate it via the policy-engine's package tests:
+Before loading a pack, validate it via the policy-engine validator:
 
 ```bash
 # From the repo checkout:
-pnpm --filter @agentworks/policy-engine test -- /path/to/pack.yaml
+pnpm --filter @agentworks/policy-engine validate:pack -- /path/to/pack.yaml
 ```
 
 Validation checks:
@@ -275,9 +275,10 @@ Admin UI.
 
 **REST API:**
 
-The substrate loads packs from disk under `RULE_PACKS_DIR` (default
-`rule-packs/`). To install a new pack, drop the YAML file into a subdirectory
-of that path and ask the daemon to reload its registry:
+The substrate loads packs from disk under `RULE_PACKS_DIR`. In the default
+Docker install, `~/.agentworks/source/rule-packs` is mounted into the daemon at
+`/opt/agentworks/rule-packs`. To install a new pack, drop the YAML file into a
+subdirectory of the host tree and ask the daemon to reload its registry:
 
 ```bash
 # Drop the pack into the rule-packs/ tree on the host:

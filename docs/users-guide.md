@@ -679,10 +679,10 @@ In the admin UI:
 4. Confirm it appears in the list.
 5. Keep it in shadow until reviewed.
 
-Validate the pack with the policy-engine package tests (offline):
+Validate the pack with the policy-engine validator (offline):
 
 ```bash
-pnpm --filter @agentworks/policy-engine test -- /path/to/pack.yaml
+pnpm --filter @agentworks/policy-engine validate:pack -- /path/to/pack.yaml
 ```
 
 Or dry-run against the live daemon:

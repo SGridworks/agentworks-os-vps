@@ -113,6 +113,7 @@ compose() {
   ( cd "$SOURCE_DIR" \
     && AGENTWORKS_DATA_DIR="$DATA_DIR" \
        AGENTWORKS_CONFIG_DIR="$CONFIG_DIR" \
+       AGENTWORKS_SOURCE_DIR="$SOURCE_DIR" \
        COMPOSE_PROJECT_NAME="$(awos_compose_project_name)" \
        $cc "${env_args[@]}" "$@" )
 }

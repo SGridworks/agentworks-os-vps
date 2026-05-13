@@ -61,7 +61,7 @@ cd agentworks-os-vps
 
 The script will:
 
-1. Run pre-flight (Docker daemon up, ports 7710/3101/5678/3000 free, ≥10 GB disk, ≥4 GB RAM, internet to GitHub, GHCR, and npm).
+1. Run pre-flight (Docker daemon up, ports 7710/3101/5678/3000 free, ≥10 GB disk, ≥4 GB RAM, internet to GitHub, GHCR, Docker Hub, and npm).
 2. Create `~/.agentworks/` with `data/`, `data/vault`, `config/`, and `logs/` subdirs (and pre-chmod `data/n8n` + `data/scanner` to 777 for the n8n+scanner uid mismatch).
 3. Re-use the local checkout if you ran from one; otherwise `git clone` into `~/.agentworks/source`.
 4. Generate secrets (admin password, session secret, hex DB password) into `~/.agentworks/config/{.env,secrets.json}` mode 600. **The admin password is in `~/.agentworks/config/secrets.json`.**
@@ -359,7 +359,7 @@ YAML syntax error or the pack references a field not in the action schema.
 **Fix:** Validate with:
 
 ```bash
-pnpm --filter @agentworks/policy-engine test -- /path/to/pack.yaml
+pnpm --filter @agentworks/policy-engine validate:pack -- /path/to/pack.yaml
 ```
 
 See [Rule Pack Authoring](./rule-pack-authoring.md) for the schema reference.
