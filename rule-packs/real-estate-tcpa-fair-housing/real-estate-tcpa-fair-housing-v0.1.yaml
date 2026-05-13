@@ -1,0 +1,1114 @@
+# Real Estate TCPA + Fair Housing Rule Pack
+# Version: 0.1.0-draft
+# Tier: paid (attorney-reviewed tier requires signed engagement letter)
+# Credentialed by: SGridworks
+# Jurisdiction: United States — Ohio real estate marketing
+#
+# ============================================================
+# ATTORNEY REVIEWER INSTRUCTIONS
+# ============================================================
+# This pack is submitted for attorney review to support
+# setting attorney_reviewed: true and populating attorney_name
+# and attorney_engagement_letter_on_file.
+#
+# REVIEW SCOPE — what to verify:
+# 1. Rule logic correctly captures the regulatory requirements
+# 2. Citations are accurate, current, and sufficient
+# 3. Disposition logic (block/route_to_review/allow) is appropriate
+# 4. Required_data declarations are complete and realistic
+# 5. Exceptions and exemptions are correctly modeled
+# 6. Ohio-specific rules are accurate and complete
+#
+# ITEMS REQUIRING ATTORNEY VERIFICATION (marked with @ATTORNEY):
+# @ATTORNEY-TCPA-001: Verify TCPA written consent requirement for mobile SMS/calls
+#   is correctly stated per 47 U.S.C. § 227(b)(1)(A) and 47 C.F.R. § 64.1200(a)(1)
+# @ATTORNEY-TCPA-002: Verify EBR exemption scope — whether mobile EBR still
+#   requires written consent (split authority between FCC and courts)
+# @ATTORNEY-TCPA-003: Verify ATDS definition and whether AI-agent-initiated
+#   messages constitute ATDS usage under current FCC guidance
+# @ATTORNEY-FH-001: Verify disparate impact standard — whether census-tract
+#   targeting alone triggers route_to_review or requires additional showing
+# @ATTORNEY-FH-002: Verify steering definition and whether neighborhood
+#   descriptive language in digital ads constitutes steering
+# @ATTORNEY-FH-003: Verify Ohio ORC 4112 protected classes — confirm
+#   ancestry and military status are correctly listed as additional protections
+# @ATTORNEY-OH-001: Verify Ohio real estate license disclosure requirements
+#   under OAC 4735-7-09 — scope of "unsolicited communication" and
+#   whether SMS/email both require disclosure or only certain channels
+#
+# ============================================================
+# COVERAGE
+# ============================================================
+# This pack covers:
+# - TCPA (47 U.S.C. § 227; 47 C.F.R. § 64.1200): automated calls, SMS, email
+# - Fair Housing Act (42 U.S.C. § 3601 et seq.): housing-related marketing
+# - FHA advertising rules (24 C.F.R. Part 109): display and content restrictions
+# - Ohio Real Estate License Law (OAC 4735: Ohio Real Estate License Law)
+# - Ohio Fair Housing Act (ORC Chapter 4112)
+#
+# DISCLAIMER: This pack provides compliance assistance, not legal advice.
+# It requires customer integration with consent records, DNC status, phone
+# type, and jurisdiction data to function fully. "Route to review" is the
+# correct disposition when required data is missing — it is not a pass.
+#
+# Attorney review pending. Do NOT set attorney_reviewed: true until
+# signed engagement letter on file with named attorney and all
+# @ATTORNEY items above are verified in writing.
+
+schema_version: "awcp/v0.1"
+pack_id: "real-estate-tcpa-fair-housing"
+pack_version: "0.1.0"
+pack_name: "TCPA + Fair Housing — Real Estate Outreach"
+pack_description: |
+  Compliance rules for real estate lead-gen and outbound marketing.
+  Covers TCPA automated-contact restrictions, consent provenance,
+  fair housing anti-discrimination, and Ohio-specific real estate
+  marketing rules. Designed for Ohio real estate brokerages and
+  agents using AI agents for lead outreach.
+tier: paid
+credentialed_by: "SGridworks"
+attorney_reviewed: false
+attorney_name: null
+attorney_engagement_letter_on_file: false
+jurisdiction: ["US-OH", "US-Federal"]
+industry: ["real estate"]
+target_action_kinds:
+  - "outbound.sms"
+  - "outbound.email"
+  - "outbound.call"
+  - "outbound.dm"
+  - "lead.generation"
+  - "lead.enrichment"
+  - "crm.write"
+
+missing_data_disposition: route_to_review
+
+required_data_declarations:
+  - field: consent.source
+    description: "Source of contact's consent: written | verbal | inferred | none | unknown"
+    data_provider: customer_integration
+  - field: consent.date
+    description: "ISO-8601 date when consent was captured"
+    data_provider: customer_integration
+  - field: consent.verified
+    description: "Boolean — has consent been verified (not self-asserted)?"
+    data_provider: customer_integration
+  - field: consent.status
+    description: "verified | unverified | none"
+    data_provider: customer_integration
+  - field: dnc_status
+    description: "Boolean — is contact on internal do-not-call list?"
+    data_provider: customer_integration
+  - field: reassigned_number
+    description: "Boolean — has this phone number been reassigned since consent date?"
+    data_provider: external_api
+  - field: phone_type
+    description: "mobile | landline | unknown"
+    data_provider: external_api
+  - field: target_jurisdiction
+    description: "US state code or 'US-Federal' for multi-state"
+    data_provider: substrate
+  - field: relationship_to_contact
+    description: "existing_customer | former_customer | prospect | unknown"
+    data_provider: customer_integration
+  - field: message_body
+    description: "Content of the outbound message"
+    data_provider: substrate
+  - field: offer_type
+    description: "listing | buyer_agent | mortgage | insurance | rental | other"
+    data_provider: customer_integration
+  - field: housing_related
+    description: "Boolean — does this action relate to housing?"
+    data_provider: substrate
+  - field: targeting_criteria
+    description: "Structured object describing targeting parameters"
+    data_provider: customer_integration
+  - field: geographic_scope
+    description: "census_tract | zip_code | city | county | state | multi-state | federal"
+    data_provider: substrate
+  - field: advertising_platform
+    description: "digital | print | display | direct_mail | sms | email | voice | other"
+    data_provider: substrate
+  - field: protected_class_indicator_present
+    description: "Boolean — does targeting use a protected class as criterion?"
+    data_provider: customer_integration
+  - field: targeting_criteria_uses_protected_class
+    description: "Boolean — do targeting criteria reference protected class characteristics?"
+    data_provider: customer_integration
+  - field: message_body_contains_discriminatory_language
+    description: "Boolean — does message body contain discriminatory content per FHA?"
+    data_provider: substrate
+  - field: message_body_contains_steering_content
+    description: "Boolean — does message describe neighborhood by racial/ethnic composition?"
+    data_provider: substrate
+  - field: message_body_missing_license_disclosure
+    description: "Boolean — does message lack required Ohio real estate license disclosure?"
+    data_provider: substrate
+  - field: message_body_missing_equal_housing_notice
+    description: "Boolean — is equal housing opportunity notice absent where required?"
+    data_provider: substrate
+  - field: local_time_of_contact
+    description: "HH:MM in 24-hour format in contact's local timezone"
+    data_provider: substrate
+  - field: actor_type
+    description: "agent | human | system — type of actor initiating the action"
+    data_provider: substrate
+  - field: lead_gen_collects_protected_class_data
+    description: "Boolean — does lead-gen collect data that could enable discriminatory targeting?"
+    data_provider: customer_integration
+  - field: crm_tags_include_protected_class
+    description: "Boolean — would CRM write add protected-class-based tags to contact record?"
+    data_provider: customer_integration
+  - field: storage_destination
+    description: "local | external — where is contact data being written?"
+    data_provider: substrate
+
+rules:
+
+  # ============================================================
+  # TCPA — Do-Not-Call Rules
+  # ============================================================
+
+  - rule_id: RE-TCPA-001
+    name: "Block SMS to internal DNC list"
+    description: |
+      Blocks outbound SMS to contacts on the internal do-not-call list.
+      Per 47 C.F.R. § 64.1200(c)(2), callers must honor internal DNC lists
+      for residential subscribers. Applies to SMS and voice calls.
+      Does not check the National Reassigned Numbers Database —
+      customer must integrate RNDB separately for that check.
+    required_data:
+      - action_kind
+      - dnc_status
+    disposition_when_missing: route_to_review
+    priority: 1
+    conditions:
+      - when:
+          action_kind: ["outbound.sms", "outbound.call"]
+          dnc_status: true
+        then:
+          decision: block
+          reason: "Outbound contact blocked — contact is on internal do-not-call list"
+          citation: "47 C.F.R. § 64.1200(c)(2)"
+
+  - rule_id: RE-TCPA-002
+    name: "Block SMS to reassigned numbers without fresh consent"
+    description: |
+      If a phone number has been reassigned since the contact last provided
+      consent, the prior consent is void as to the new subscriber.
+      Block SMS and calls to the new subscriber unless new written consent
+      has been obtained after the reassignment date.
+      @ATTORNEY-TCPA-003: Confirm ATDS analysis applies to AI-agent-initiated
+      messages under current FCC guidance (In re RulesImplementing the TCPA, 30 FCC Rcd 7961).
+    required_data:
+      - action_kind
+      - phone_type
+      - reassigned_number
+      - consent.date
+    disposition_when_missing: route_to_review
+    priority: 2
+    conditions:
+      - when:
+          action_kind: ["outbound.sms", "outbound.call"]
+          reassigned_number: true
+        then:
+          decision: block
+          reason: "Outbound contact blocked — phone number reassigned; prior consent is void as to new subscriber"
+          citation: "47 U.S.C. § 227(b); FCC 07-222; 47 C.F.R. § 64.1200"
+
+  - rule_id: RE-TCPA-003
+    name: "Block SMS to landline via ATDS without human intervention"
+    description: |
+      ATDS (automated telephone dialing system) delivery of SMS to landline
+      numbers is technically restricted and may constitute a violation.
+      Block SMS to landline numbers when the contact phone type is confirmed
+      landline, unless the agent confirms human involvement in each message.
+      @ATTORNEY-TCPA-003: Confirm scope of ATDS restriction for SMS-to-landline.
+    required_data:
+      - action_kind
+      - phone_type
+    disposition_when_missing: route_to_review
+    priority: 3
+    conditions:
+      - when:
+          action_kind: "outbound.sms"
+          phone_type: "landline"
+        then:
+          decision: block
+          reason: "SMS blocked — landline number; ATDS delivery to landlines is restricted"
+          citation: "47 U.S.C. § 227(b)(1)"
+
+  - rule_id: RE-TCPA-004
+    name: "Block outbound without written consent for mobile"
+    description: |
+      For mobile numbers, TCPA requires written consent before automated SMS
+      or calls. Verbal, inferred, or unverified consent is insufficient for
+      mobile outreach. Written consent must be source-documented and retained.
+      @ATTORNEY-TCPA-001: Verify written consent requirement is correctly
+      stated per 47 U.S.C. § 227(b)(1)(A).
+    required_data:
+      - action_kind
+      - phone_type
+      - consent.source
+    disposition_when_missing: route_to_review
+    priority: 4
+    conditions:
+      - when:
+          action_kind: ["outbound.sms", "outbound.call"]
+          phone_type: "mobile"
+          consent.source: ["none", "unknown", "verbal", "inferred"]
+        then:
+          decision: block
+          reason: "Outbound contact blocked — mobile number requires written consent under TCPA; verbal/inferred/no consent is insufficient"
+          citation: "47 U.S.C. § 227(b)(1)(A); 47 C.F.R. § 64.1200(a)(1)"
+
+  - rule_id: RE-TCPA-005
+    name: "Block outreach without declared jurisdiction"
+    description: |
+      TCPA and state consumer protection rules vary by jurisdiction.
+      Without a declared target jurisdiction, the policy engine cannot
+      verify which rules apply. Route to review; do not allow.
+    required_data:
+      - action_kind
+      - target_jurisdiction
+    disposition_when_missing: route_to_review
+    priority: 5
+    conditions:
+      - when:
+          action_kind: ["outbound.sms", "outbound.email", "outbound.call", "outbound.direct_message"]
+          target_jurisdiction: null
+        then:
+          decision: route_to_review
+          reason: "Outbound action with no declared jurisdiction — cannot verify applicable TCPA or state rules"
+          citation: "47 U.S.C. § 227; state consumer protection laws"
+
+  # ============================================================
+  # TCPA — Existing Business Relationship (EBR) Exemption
+  # ============================================================
+
+  - rule_id: RE-TCPA-006
+    name: "Route to review for EBR claimed on mobile outreach"
+    description: |
+      Existing Business Relationship is an exemption from some TCPA
+      restrictions, but its scope is contested — particularly for mobile
+      automated contact. Courts and the FCC have reached different conclusions
+      on whether EBR eliminates the written consent requirement for mobile.
+      @ATTORNEY-TCPA-002: Verify EBR exemption scope for mobile — whether
+      written consent is still required even with documented EBR.
+      Route to review when EBR is claimed so a human can verify the
+      applicable standard in the relevant jurisdiction.
+    required_data:
+      - action_kind
+      - phone_type
+      - relationship_to_contact
+      - consent.source
+    disposition_when_missing: route_to_review
+    priority: 6
+    conditions:
+      - when:
+          action_kind: ["outbound.sms", "outbound.call"]
+          phone_type: "mobile"
+          relationship_to_contact: ["existing_customer", "former_customer"]
+          consent.source: ["none", "unknown", "verbal", "inferred"]
+        then:
+          decision: route_to_review
+          reason: "EBR claimed for mobile outreach — verify applicable EBR standard; written consent may still be required despite EBR"
+          citation: "47 C.F.R. § 64.1200(f)(5); FCC 12-21;see also Tel. No. 1 v. FCC (D.C. Cir. 2024)"
+
+  # ============================================================
+  # TCPA — Time-of-Day Restrictions
+  # ============================================================
+
+  - rule_id: RE-TCPA-007
+    name: "Block outreach outside permitted hours"
+    description: |
+      TCPA restricts autodialed calls and SMS to 8:00 AM–9:00 PM local
+      time of the called party. Block outreach attempts outside these hours.
+      Applies to SMS and calls initiated via autodialer or ATDS.
+      When local_time_of_contact is unavailable, route to review.
+    required_data:
+      - action_kind
+      - local_time_of_contact
+    disposition_when_missing: route_to_review
+    priority: 7
+    conditions:
+      - when:
+          action_kind: ["outbound.sms", "outbound.call"]
+          local_time_of_contact: null
+        then:
+          decision: route_to_review
+          reason: "Cannot verify time-of-day restriction — local time of contact unknown"
+          citation: "47 C.F.R. § 64.1200(a)(1)"
+      - when:
+          action_kind: ["outbound.sms", "outbound.call"]
+          local_time_of_contact:
+            gte: "00:00"
+            lt: "08:00"
+        then:
+          decision: block
+          reason: "Outreach blocked — outside permitted hours (8:00 AM–9:00 PM local time of called party)"
+          citation: "47 C.F.R. § 64.1200(a)(1)"
+      - when:
+          action_kind: ["outbound.sms", "outbound.call"]
+          local_time_of_contact:
+            gte: "21:00"
+        then:
+          decision: block
+          reason: "Outreach blocked — outside permitted hours (8:00 AM–9:00 PM local time of called party)"
+          citation: "47 C.F.R. § 64.1200(a)(1)"
+
+  # ============================================================
+  # TCPA — Lead Gen / Consent Provenance
+  # ============================================================
+
+  - rule_id: RE-TCPA-008
+    name: "Block lead-gen without verified written consent"
+    description: |
+      Any lead-gen action that will result in outbound contact must have
+      verified written consent on file before the lead is acted upon.
+      Self-asserted consent (e.g., an unchecked checkbox, a verbal
+      statement without documentation) is insufficient.
+      Consent must be traceable to a written record with a capture date.
+    required_data:
+      - action_kind
+      - consent.verified
+      - consent.source
+      - consent.date
+    disposition_when_missing: route_to_review
+    priority: 8
+    conditions:
+      - when:
+          action_kind: "lead.generation"
+          consent.verified: false
+        then:
+          decision: block
+          reason: "Lead-gen blocked — verified written consent not on file"
+          citation: "47 U.S.C. § 227(b); FCC 07-222"
+      - when:
+          action_kind: "lead.generation"
+          consent.source: ["none", "unknown"]
+        then:
+          decision: block
+          reason: "Lead-gen blocked — no documented consent source"
+          citation: "47 U.S.C. § 227(b)"
+
+  - rule_id: RE-TCPA-009
+    name: "Block lead enrichment without consent record"
+    description: |
+      Third-party data appended to a lead record (lead enrichment) may
+      constitute a separate regulatory contact event. Require documented
+      consent before enriching a lead with external data if the enrichment
+      will be used for outbound outreach.
+    required_data:
+      - action_kind
+      - consent.status
+    disposition_when_missing: route_to_review
+    priority: 9
+    conditions:
+      - when:
+          action_kind: "lead.enrichment"
+          consent.status: "none"
+        then:
+          decision: block
+          reason: "Lead enrichment blocked — no consent record; enriching contact data without consent may constitute a separate regulatory event"
+          citation: "TCPA, 47 U.S.C. § 227; state data privacy laws"
+
+  # ============================================================
+  # TCPA — CRM / Data Handling
+  # ============================================================
+
+  - rule_id: RE-TCPA-010
+    name: "Block CRM write without contact consent or established relationship"
+    description: |
+      Writing a new contact to the CRM requires either:
+      (a) explicit consent from the contact, or
+      (b) an established business relationship, or
+      (c) the contact initiated the inquiry.
+      Block CRM writes without one of these conditions met.
+    required_data:
+      - action_kind
+      - consent.status
+      - relationship_to_contact
+    disposition_when_missing: route_to_review
+    priority: 30
+    conditions:
+      - when:
+          action_kind: "crm.write"
+          consent.status: "none"
+          relationship_to_contact: "prospect"
+        then:
+          decision: block
+          reason: "CRM write blocked — no consent and no established relationship with prospect"
+          citation: "TCPA, 47 U.S.C. § 227; CAN-SPAM Act, 15 U.S.C. § 7704"
+
+  # ============================================================
+  # Fair Housing — Core Anti-Discrimination
+  # ============================================================
+
+  - rule_id: RE-FH-001
+    name: "Block housing action that excludes by protected class"
+    description: |
+      Block any housing-related action that uses protected class membership
+      as an exclusion criterion. This includes filtering out prospects,
+      leads, or contacts based on race, color, national origin, religion,
+      sex (including gender identity and sexual orientation),
+      familial status, disability, or other protected characteristic.
+      Applies to lead generation, lead enrichment, CRM writes,
+      and outbound outreach.
+    required_data:
+      - housing_related
+      - protected_class_indicator_present
+    disposition_when_missing: route_to_review
+    priority: 10
+    conditions:
+      - when:
+          housing_related: true
+          protected_class_indicator_present: true
+        then:
+          decision: block
+          reason: "Housing-related action excludes or filters based on protected class membership — Fair Housing violation"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604(a); 24 C.F.R. § 100.60"
+
+  - rule_id: RE-FH-002
+    name: "Block housing action with discriminatory intent"
+    description: |
+      Block any housing-related action where the targeting criteria,
+      message content, or stated objective reflects discriminatory intent
+      toward a protected class. Discriminatory intent can be inferred from
+      the combination of targeting criteria plus message content even
+      if no protected class is explicitly mentioned.
+    required_data:
+      - housing_related
+      - targeting_criteria_uses_protected_class
+      - message_body
+    disposition_when_missing: route_to_review
+    priority: 11
+    conditions:
+      - when:
+          housing_related: true
+          targeting_criteria_uses_protected_class: true
+        then:
+          decision: block
+          reason: "Housing action uses protected-class membership as targeting criterion — discriminatory intent"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604(a); 24 C.F.R. § 100.60"
+
+  - rule_id: RE-FH-003
+    name: "Block housing action with discriminatory disparate impact"
+    description: |
+      Block any housing-related action that, in practice, restricts housing
+      choices based on protected class even without explicit discriminatory intent.
+      This includes "dummy" criteria that are proxies for protected class
+      (e.g., excluding zip codes with high minority population).
+      Note: Full disparate impact analysis requires statistical evidence.
+      This rule flags for human review when indicators are present.
+      @ATTORNEY-FH-001: Confirm whether census-tract targeting alone
+      is sufficient to trigger route_to_review or whether additional
+      statistical showing is required under current HUD guidance.
+    required_data:
+      - housing_related
+      - geographic_scope
+      - targeting_criteria_uses_protected_class
+    disposition_when_missing: route_to_review
+    priority: 12
+    conditions:
+      - when:
+          housing_related: true
+          targeting_criteria_uses_protected_class: true
+        then:
+          decision: block
+          reason: "Housing action has potential disparate impact based on protected class — Fair Housing violation"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604(a); HUD Fair Housing Act § 100.500"
+
+  # ============================================================
+  # Fair Housing — Advertising Restrictions
+  # ============================================================
+
+  - rule_id: RE-FH-004
+    name: "Block housing advertisement with discriminatory content"
+    description: |
+      Block any housing advertisement that contains, suggests, or implies
+      a preference, limitation, or discrimination based on protected class.
+      Applies to message body text, subject lines, display URLs,
+      and any displayed content in any channel (SMS, email, digital ad).
+      Examples include: describing an area as "family-friendly" to exclude
+      families with children; using language that suggests racial preferences;
+      indicating a property is "perfect for young professionals" in a
+      context that implies exclusion of families.
+    required_data:
+      - housing_related
+      - message_body
+    disposition_when_missing: route_to_review
+    priority: 13
+    conditions:
+      - when:
+          housing_related: true
+          message_body_contains_discriminatory_language: true
+        then:
+          decision: block
+          reason: "Housing advertisement contains discriminatory content or language indicating protected-class preference"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604(c); 24 C.F.R. Part 109"
+
+  - rule_id: RE-FH-005
+    name: "Block housing advertisement that steers by neighborhood"
+    description: |
+      Block any housing advertisement that indicates a preference to
+      retain or exclude prospects based on the racial or ethnic composition
+      of a neighborhood or area. "Steering" includes describing neighborhoods
+      using characteristics associated with protected classes, even without
+      explicitly mentioning race or ethnicity.
+      @ATTORNEY-FH-002: Confirm whether describing neighborhood
+      demographics (school quality, income level, family density) in
+      marketing content constitutes steering under current HUD guidance.
+    required_data:
+      - housing_related
+      - message_body_contains_steering_content
+      - geographic_scope
+    disposition_when_missing: route_to_review
+    priority: 14
+    conditions:
+      - when:
+          housing_related: true
+          message_body_contains_steering_content: true
+        then:
+          decision: block
+          reason: "Housing advertisement steers prospects based on neighborhood racial or ethnic composition — Fair Housing violation"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604(c); HUD Revenue Ruling 24-10"
+
+  - rule_id: RE-FH-006
+    name: "Route to review for housing advertisement missing equal housing notice"
+    description: |
+      Fair housing advertising requires the equal housing opportunity
+      statement or logo in certain print and display advertising contexts.
+      Digital ads, SMS, and email may have modified requirements depending
+      on platform and jurisdiction. Route to review when the platform
+      requires the notice but it may be absent.
+      @ATTORNEY-FH-002: Verify which advertising platforms and formats
+      require the equal housing notice under current FHA advertising rules.
+    required_data:
+      - housing_related
+      - advertising_platform
+      - message_body_missing_equal_housing_notice
+    disposition_when_missing: allow
+    priority: 15
+    conditions:
+      - when:
+          housing_related: true
+          message_body_missing_equal_housing_notice: true
+          advertising_platform: ["print", "display", "direct_mail"]
+        then:
+          decision: route_to_review
+          reason: "Housing advertisement may be missing required equal housing opportunity notice — verify for applicable platform"
+          citation: "24 C.F.R. § 109.30; FHA advertising guidelines"
+
+  # ============================================================
+  # Fair Housing — Disparate Impact (Geographic)
+  # ============================================================
+
+  - rule_id: RE-FH-007
+    name: "Route to review for housing offers at census-tract granularity"
+    description: |
+      Housing offers targeted to census tracts or block groups require
+      review for potential disparate impact. Fine geographic granularity
+      increases the statistical likelihood that the targeting will have
+      a discriminatory effect even without discriminatory intent.
+      @ATTORNEY-FH-001: Confirm whether census-tract targeting alone
+      is sufficient to trigger route_to_review under current HUD
+      disparate impact standards (24 C.F.R. § 100.500).
+    required_data:
+      - housing_related
+      - offer_type
+      - geographic_scope
+    disposition_when_missing: allow
+    priority: 16
+    conditions:
+      - when:
+          housing_related: true
+          offer_type: ["listing", "buyer_agent", "mortgage", "insurance", "rental"]
+          geographic_scope: "census_tract"
+        then:
+          decision: route_to_review
+          reason: "Housing offer targeted to census-tract granularity — review for potential disparate impact before proceeding"
+          citation: "Fair Housing Act; ECOA, 15 U.S.C. § 1691; 24 C.F.R. § 100.500"
+
+  # ============================================================
+  # Fair Housing — Lead Gen / CRM Data Collection
+  # ============================================================
+
+  - rule_id: RE-FH-008
+    name: "Block lead-gen that collects protected-class data discriminatorily"
+    description: |
+      Collecting or using protected-class information in lead-gen
+      that could enable discriminatory targeting is itself a fair
+      housing violation — even if the final outreach does not
+      explicitly discriminate.
+      Block lead-gen actions designed to collect data that correlates
+      with protected class membership for targeting purposes.
+    required_data:
+      - housing_related
+      - lead_gen_collects_protected_class_data
+    disposition_when_missing: route_to_review
+    priority: 17
+    conditions:
+      - when:
+          housing_related: true
+          lead_gen_collects_protected_class_data: true
+        then:
+          decision: block
+          reason: "Lead-gen collects data that could enable discriminatory targeting — Fair Housing violation"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604; 24 C.F.R. § 100.70"
+
+  - rule_id: RE-FH-009
+    name: "Block CRM write that tags contact with protected class discriminatorily"
+    description: |
+      Writing discriminatory tags, notes, or classifications to a contact
+      record based on protected class is a fair housing violation.
+      Block CRM write actions that would add protected-class-based
+      tags, segmentations, or classifications to contact records.
+    required_data:
+      - housing_related
+      - action_kind
+      - crm_tags_include_protected_class
+    disposition_when_missing: route_to_review
+    priority: 18
+    conditions:
+      - when:
+          housing_related: true
+          action_kind: "crm.write"
+          crm_tags_include_protected_class: true
+        then:
+          decision: block
+          reason: "CRM write would tag contact with protected-class-based classification — Fair Housing violation"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604"
+
+  # ============================================================
+  # Fair Housing — Ohio State Overlay
+  # ============================================================
+
+  - rule_id: RE-OH-FH-001
+    name: "Block housing discrimination under Ohio Fair Housing Act"
+    description: |
+      Ohio Revised Code Chapter 4112 prohibits housing discrimination
+      based on protected class. Ohio law extends coverage to additional
+      protected classes beyond federal law: ancestry and military status
+      are covered under Ohio law but not explicitly in the federal FHA.
+      @ATTORNEY-FH-003: Confirm Ohio ORC 4112 protected classes —
+      specifically whether ancestry and military status are correctly
+      listed as additional Ohio-only protections.
+    required_data:
+      - housing_related
+      - target_jurisdiction
+      - protected_class_indicator_present
+    disposition_when_missing: route_to_review
+    priority: 19
+    conditions:
+      - when:
+          housing_related: true
+          target_jurisdiction: "US-OH"
+          protected_class_indicator_present: true
+        then:
+          decision: block
+          reason: "Housing action discriminates based on protected class — violates Ohio Fair Housing Act (ORC Chapter 4112)"
+          citation: "ORC Chapter 4112"
+
+  # ============================================================
+  # Ohio Real Estate — License Disclosure
+  # ============================================================
+
+  - rule_id: RE-OH-RE-001
+    name: "Block real estate outreach missing required license disclosure"
+    description: |
+      Ohio real estate license law requires that unsolicited real estate
+      communications include the licensee's name and license number.
+      @ATTORNEY-OH-001: Verify scope of OAC 4735-7-09 — which channels
+      (SMS, email, voice, all) require license disclosure, and whether
+      "unsolicited" is defined to include AI-initiated outreach to
+      prospects who have not directly requested contact.
+    required_data:
+      - action_kind
+      - housing_related
+      - offer_type
+      - message_body_missing_license_disclosure
+    disposition_when_missing: allow
+    priority: 20
+    conditions:
+      - when:
+          housing_related: true
+          action_kind: ["outbound.sms", "outbound.email", "outbound.call", "outbound.direct_message"]
+          offer_type: ["listing", "buyer_agent", "rental"]
+          message_body_missing_license_disclosure: true
+        then:
+          decision: block
+          reason: "Real estate outreach missing required Ohio license disclosure — violates OAC 4735-7-09"
+          citation: "OAC 4735-7-09; ORC Chapter 4735"
+
+  # ============================================================
+  # Data Retention / PII Handling
+  # ============================================================
+
+  - rule_id: RE-DATA-001
+    name: "Block payload containing unprocessed PII"
+    description: |
+      Block actions that would submit personally identifiable information
+      to an LLM without documented processing basis.
+      PII here means: SSN, driver's license number, financial account number,
+      or other sensitive identifiers that require legal basis for processing.
+    required_data:
+      - payload_contains_pii
+    disposition_when_missing: route_to_review
+    priority: 25
+    conditions:
+      - when:
+          payload_contains_pii: true
+        then:
+          decision: block
+          reason: "Payload contains PII that requires documented processing basis before LLM submission"
+          citation: "State data privacy laws (CCPA, VCDPA, CPA et al.)"
+
+  - rule_id: RE-DATA-002
+    name: "Route to review for external data writes without retention disclosure"
+    description: |
+      Any action that writes contact data to an external system
+      must include a data-retention disclosure in the action record.
+      Verify the customer has provided required privacy notices before
+      writing contact data externally.
+    required_data:
+      - storage_destination
+      - action_kind
+    disposition_when_missing: allow
+    priority: 26
+    conditions:
+      - when:
+          storage_destination: "external"
+          action_kind: ["crm.write", "lead.enrichment", "data.export"]
+        then:
+          decision: route_to_review
+          reason: "Contact data being written to external system — verify data-retention disclosure and privacy notice were provided"
+          citation: "CCPA, Cal. Civ. Code § 1798.100 et seq.; state privacy laws"
+
+  - rule_id: RE-DATA-003
+    name: "Block data export without consent or legal basis"
+    description: |
+      Bulk export of contact or transaction data requires either
+      documented consent from each contact or a recognized legal basis
+      (legal obligation, contract performance, or legitimate interest).
+    required_data:
+      - action_kind
+      - consent.status
+      - legal_basis
+    disposition_when_missing: route_to_review
+    priority: 27
+    conditions:
+      - when:
+          action_kind: "data.export"
+          consent.status: "none"
+          legal_basis: null
+        then:
+          decision: block
+          reason: "Bulk data export blocked — no documented consent or recognized legal basis"
+          citation: "CCPA, Cal. Civ. Code § 1798.150; state data privacy laws"
+
+---
+
+# Test fixtures — dry-run cases
+# Run with: agentworks pack dry-run real-estate-tcpa-fair-housing-v0.1.yaml --fixture=<name>
+
+test_fixtures:
+
+  - name: "SMS to DNC number — should block"
+    input:
+      action_kind: "outbound.sms"
+      contact_id: "lead-001"
+      dnc_status: true
+      phone_type: "mobile"
+      consent:
+        source: "written"
+        verified: true
+      target_jurisdiction: "US-OH"
+      housing_related: true
+      local_time_of_contact: "14:00"
+    expected:
+      decision: block
+      rule_id: "RE-TCPA-001"
+
+  - name: "SMS to mobile with written consent — should allow"
+    input:
+      action_kind: "outbound.sms"
+      contact_id: "lead-002"
+      dnc_status: false
+      phone_type: "mobile"
+      consent:
+        source: "written"
+        verified: true
+        date: "2026-01-15"
+      target_jurisdiction: "US-OH"
+      reassigned_number: false
+      relationship_to_contact: "prospect"
+      local_time_of_contact: "14:00"
+      housing_related: true
+      message_body: "New listing alert: 123 Main St. Reply STOP to unsubscribe."
+      message_body_missing_license_disclosure: false
+    expected:
+      decision: allow
+      rule_id: null
+
+  - name: "SMS to mobile without consent — should block"
+    input:
+      action_kind: "outbound.sms"
+      contact_id: "lead-003"
+      dnc_status: false
+      phone_type: "mobile"
+      consent:
+        source: "none"
+        verified: false
+      target_jurisdiction: "US-OH"
+      housing_related: true
+    expected:
+      decision: block
+      rule_id: "RE-TCPA-004"
+
+  - name: "SMS to landline — should block"
+    input:
+      action_kind: "outbound.sms"
+      contact_id: "lead-004"
+      dnc_status: false
+      phone_type: "landline"
+      consent:
+        source: "written"
+        verified: true
+      target_jurisdiction: "US-OH"
+      housing_related: true
+    expected:
+      decision: block
+      rule_id: "RE-TCPA-003"
+
+  - name: "SMS at 10PM local time — should block"
+    input:
+      action_kind: "outbound.sms"
+      contact_id: "lead-005"
+      dnc_status: false
+      phone_type: "mobile"
+      consent:
+        source: "written"
+        verified: true
+      target_jurisdiction: "US-OH"
+      housing_related: true
+      local_time_of_contact: "22:00"
+    expected:
+      decision: block
+      rule_id: "RE-TCPA-007"
+
+  - name: "Lead-gen without verified consent — should block"
+    input:
+      action_kind: "lead.generation"
+      consent:
+        verified: false
+        source: "unknown"
+        date: null
+      housing_related: true
+    expected:
+      decision: block
+      rule_id: "RE-TCPA-008"
+
+  - name: "Lead-gen with verified written consent — should allow"
+    input:
+      action_kind: "lead.generation"
+      consent:
+        verified: true
+        source: "web_form"
+        date: "2026-01-20"
+      housing_related: true
+    expected:
+      decision: allow
+      rule_id: null
+
+  - name: "Housing filter by familial status — should block"
+    input:
+      action_kind: "lead.generation"
+      housing_related: true
+      protected_class_indicator_present: true
+      targeting_criteria:
+        exclude: ["familial_status"]
+      geographic_scope: "zip_code"
+      target_jurisdiction: "US-OH"
+      consent:
+        source: "written"
+        verified: true
+        date: "2026-01-15"
+    expected:
+      decision: block
+      rule_id: "RE-FH-001"
+
+  - name: "Housing ad with discriminatory language — should block"
+    input:
+      action_kind: "outbound.email"
+      housing_related: true
+      message_body_contains_discriminatory_language: true
+      message_body: "This community is perfect for young professional couples — no children please"
+      geographic_scope: "city"
+      target_jurisdiction: "US-OH"
+      consent:
+        source: "written"
+        verified: true
+      dnc_status: false
+    expected:
+      decision: block
+      rule_id: "RE-FH-004"
+
+  - name: "Housing ad with steering content — should block"
+    input:
+      action_kind: "outbound.email"
+      housing_related: true
+      message_body_contains_steering_content: true
+      message_body: "This neighborhood has excellent schools and young families"
+      geographic_scope: "zip_code"
+      target_jurisdiction: "US-Federal"
+      consent:
+        source: "written"
+        verified: true
+      dnc_status: false
+    expected:
+      decision: block
+      rule_id: "RE-FH-005"
+
+  - name: "Housing offer at census tract — should route to review"
+    input:
+      action_kind: "outbound.email"
+      housing_related: true
+      offer_type: "listing"
+      geographic_scope: "census_tract"
+      targeting_criteria: {}
+      target_jurisdiction: "US-OH"
+      consent:
+        source: "written"
+        verified: true
+      dnc_status: false
+      message_body: "New listing in your area"
+    expected:
+      decision: route_to_review
+      rule_id: "RE-FH-007"
+
+  - name: "Ohio housing discrimination — should block"
+    input:
+      action_kind: "crm.write"
+      housing_related: true
+      target_jurisdiction: "US-OH"
+      protected_class_indicator_present: true
+      crm_tags_include_protected_class: false
+      consent:
+        source: "written"
+        verified: true
+    expected:
+      decision: block
+      rule_id: "RE-OH-FH-001"
+
+  - name: "CRM write, no consent, prospect — should block"
+    input:
+      action_kind: "crm.write"
+      consent.status: "none"
+      relationship_to_contact: "prospect"
+      housing_related: false
+    expected:
+      decision: block
+      rule_id: "RE-TCPA-010"
+
+  - name: "Ohio real estate SMS missing license disclosure — should block"
+    input:
+      action_kind: "outbound.sms"
+      housing_related: true
+      offer_type: "buyer_agent"
+      message_body_missing_license_disclosure: true
+      target_jurisdiction: "US-OH"
+      consent:
+        source: "written"
+        verified: true
+      dnc_status: false
+      phone_type: "mobile"
+      local_time_of_contact: "14:00"
+    expected:
+      decision: block
+      rule_id: "RE-OH-RE-001"
+
+  - name: "Lead-gen collects protected class data — should block"
+    input:
+      action_kind: "lead.enrichment"
+      housing_related: true
+      lead_gen_collects_protected_class_data: true
+      consent.status: "none"
+      target_jurisdiction: "US-OH"
+    expected:
+      decision: block
+      rule_id: "RE-FH-008"
+
+  - name: "PII in LLM prompt — should block"
+    input:
+      action_kind: "llm.completion"
+      payload_contains_pii: true
+      consent:
+        source: "written"
+        verified: true
+    expected:
+      decision: block
+      rule_id: "RE-DATA-001"
+
+  - name: "Non-housing action with valid consent — should allow"
+    input:
+      action_kind: "outbound.email"
+      housing_related: false
+      dnc_status: false
+      consent:
+        source: "written"
+        verified: true
+      target_jurisdiction: "US-OH"
+      message_body: "Your appointment reminder for tomorrow at 2pm"
+      local_time_of_contact: "13:00"
+    expected:
+      decision: allow
+      rule_id: null
+
+  - name: "Housing action, no protected class indicators, proper license — should allow"
+    input:
+      action_kind: "outbound.sms"
+      housing_related: true
+      protected_class_indicator_present: false
+      targeting_criteria_uses_protected_class: false
+      message_body: "New listing: 456 Oak Ave. 3BR/2BA. Reply STOP."
+      message_body_missing_license_disclosure: false
+      geographic_scope: "city"
+      target_jurisdiction: "US-OH"
+      consent:
+        source: "written"
+        verified: true
+      dnc_status: false
+      phone_type: "mobile"
+      local_time_of_contact: "14:00"
+      offer_type: "listing"
+    expected:
+      decision: allow
+      rule_id: null
+
+  - name: "CRM write with external storage, no retention disclosure — should route to review"
+    input:
+      action_kind: "crm.write"
+      storage_destination: "external"
+      consent:
+        source: "written"
+        verified: true
+      relationship_to_contact: "existing_customer"
+      housing_related: false
+    expected:
+      decision: route_to_review
+      rule_id: "RE-DATA-002"
+
+  - name: "Bulk data export, no consent, no legal basis — should block"
+    input:
+      action_kind: "data.export"
+      consent.status: "none"
+      legal_basis: null
+    expected:
+      decision: block
+      rule_id: "RE-DATA-003"
+
+changelog:
+  - version: "0.1.0"
+    date: "2026-04-27"
+    changes: "Initial draft. Unified TCPA + Fair Housing pack covering: DNC checks, written consent for mobile, EBR exemption routing, time-of-day restrictions, lead-gen consent provenance, fair housing anti-discrimination, advertising restrictions, disparate impact, Ohio state overlay, Ohio license disclosure, PII handling, and data retention. Attorney review pending."

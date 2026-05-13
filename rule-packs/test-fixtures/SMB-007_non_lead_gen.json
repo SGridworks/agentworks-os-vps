@@ -1,0 +1,8 @@
+{
+  "case_id": "SMB-007_non_lead_gen",
+  "contact_id": "c_003",
+  "action_kind": "outbound.email",
+  "consent.verified": false,
+  "consent.source": null,
+  "consent.date": null
+}

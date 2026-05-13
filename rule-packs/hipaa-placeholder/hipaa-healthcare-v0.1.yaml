@@ -1,0 +1,270 @@
+# HIPAA Healthcare Rule Pack — Placeholder
+# Version: 0.1.0-placeholder
+# Tier: paid (attorney-reviewed pending)
+# Credentialed by: SGridworks
+# Jurisdiction: United States
+#
+# STATUS: THIS PACK IS A PLACEHOLDER FOR v1.1
+#
+# HIPAA (Health Insurance Portability and Accountability Act) rule writing
+# requires specialized healthcare privacy counsel. This pack provides the
+# structural scaffold and sample rules for a healthcare-specific pack.
+# It does NOT contain accurate HIPAA rule definitions.
+#
+# DO NOT deploy this pack in a production healthcare context without:
+# 1. Review by a healthcare regulatory attorney
+# 2. Business Associate Agreement (BAA) review
+# 3. Specific analysis of the customer's role (covered entity vs. business
+#    associate) and the types of PHI involved
+#
+# What this pack covers (placeholder):
+# - Basecamp HIPAA compliance for AI agents handling PHI
+# - Minimum necessary standard
+# - Access controls for PHI
+# - Breach notification triggers
+#
+# What this pack does NOT cover (requires attorney review):
+# - Full HIPAA Privacy Rule analysis (45 C.F.R. Part 164)
+# - Security Rule implementation (45 C.F.R. Part 164, Subpart C)
+# - Breach notification rule (45 C.F.R. Part 164, Subpart D)
+# - Specific healthcare contexts: hospitals, payers, clearinghouses
+# - State-specific healthcare privacy laws (e.g., California CMIA)
+# - Substance use disorder records (42 C.F.R. Part 2)
+# - Mental health records (state-specific)
+# - Minor patient records (state-specific consent requirements)
+#
+# This placeholder ships with v1 so the pack library structure is complete.
+# The attorney-reviewed HIPAA pack is deferred to v1.1.
+
+schema_version: "awcp/v0.1"
+pack_id: "hipaa-healthcare"
+pack_version: "0.1.0"
+pack_name: "HIPAA Healthcare — AI Agent PHI Handling"
+pack_description: |
+  PLACEHOLDER — v1.1 attorney-reviewed pack.
+  Compliance rules for AI agents handling Protected Health Information (PHI)
+  in healthcare contexts. Covers minimum necessary standard, access controls,
+  and breach notification triggers.
+
+  WARNING: This is not a HIPAA compliance pack. HIPAA rule writing requires
+  healthcare regulatory counsel. This placeholder provides basic scaffold
+  and is NOT suitable for production healthcare use.
+tier: paid
+credentialed_by: "SGridworks"
+attorney_reviewed: false
+attorney_name: null
+attorney_engagement_letter_on_file: false
+jurisdiction: ["US-Federal"]
+industry: ["healthcare"]
+target_action_kinds:
+  - "crm.write"
+  - "llm.completion"
+  - "data.export"
+  - "data.delete"
+
+missing_data_disposition: route_to_review
+
+required_data_declarations:
+  - field: phi_content_type
+    description: "Type of PHI involved: ePHI | none"
+    data_provider: substrate
+  - field: phi_present
+    description: "Boolean — does this action involve Protected Health Information?"
+    data_provider: substrate
+  - field: actor.role
+    description: "Role of the actor: covered_entity | business_associate | patient | other"
+    data_provider: substrate
+  - field: access_authorization
+    description: "Boolean — is the actor authorized to access this PHI?"
+    data_provider: customer_integration
+  - field: phi_data_element_types
+    description: "List of PHI data element types: diagnosis | medication | procedure | demographic | all"
+    data_provider: customer_integration
+  - field: treatment_purpose
+    description: "Boolean — is this action for treatment purposes?"
+    data_provider: substrate
+  - field: payment_purpose
+    description: "Boolean — is this action for payment purposes?"
+    data_provider: substrate
+  - field: operations_purpose
+    description: "Boolean — is this action for healthcare operations?"
+    data_provider: substrate
+
+rules:
+
+  - rule_id: HIPAA-001
+    name: "Block LLM completion with ePHI without authorization"
+    description: |
+      PHI may not be submitted to an LLM without explicit patient authorization
+      or a valid HIPAA exception (treatment, payment, operations, public health).
+      This rule blocks LLM calls where ePHI is present and no authorization
+      or exception is documented.
+    required_data:
+      - phi_present
+      - access_authorization
+      - treatment_purpose
+      - payment_purpose
+      - operations_purpose
+    disposition_when_missing: route_to_review
+    priority: 1
+    conditions:
+      - when:
+          phi_present: true
+          access_authorization: false
+          treatment_purpose: false
+          payment_purpose: false
+          operations_purpose: false
+        then:
+          decision: block
+          reason: "ePHI submitted to LLM without authorization or documented HIPAA exception"
+          citation: "45 C.F.R. § 164.502(a); HIPAA Privacy Rule"
+
+  - rule_id: HIPAA-002
+    name: "Block data export of full patient record without minimum necessary review"
+    description: |
+      The minimum necessary standard requires that PHI requests be limited to
+      the minimum amount of information needed to accomplish the purpose.
+      Export of full patient records without documented minimum-necessary
+      justification is blocked.
+    required_data:
+      - action_kind
+      - phi_content_type
+      - phi_data_element_types
+    disposition_when_missing: route_to_review
+    priority: 2
+    conditions:
+      - when:
+          action_kind: "data.export"
+          phi_content_type: "ePHI"
+          phi_data_element_types: ["all"]
+        then:
+          decision: route_to_review
+          reason: "Full ePHI export — verify minimum necessary standard applies"
+          citation: "45 C.F.R. § 164.502(b)"
+
+  - rule_id: HIPAA-003
+    name: "Block deletion of PHI without documented authorization or legal basis"
+    description: |
+      HIPAA does not generally provide a right to deletion equivalent to
+      state privacy law "delete" rights. PHI retention may be required
+      for legal, regulatory, or operational reasons. Block deletion requests
+      that lack documented legal basis or patient authorization.
+    required_data:
+      - action_kind
+      - phi_present
+      - deletion_legal_basis
+    disposition_when_missing: route_to_review
+    priority: 3
+    conditions:
+      - when:
+          action_kind: "data.delete"
+          phi_present: true
+          deletion_legal_basis: null
+        then:
+          decision: block
+          reason: "PHI deletion blocked — no documented authorization or legal basis"
+          citation: "45 C.F.R. § 164.502(g)"
+
+  - rule_id: HIPAA-004
+    name: "Route to review for substance use disorder records"
+    description: |
+      42 C.F.R. Part 2 governs substance use disorder (SUD) patient records.
+      These records have heightened protections — consent requirements are
+      more restrictive than general HIPAA rules. Route to review when
+      the PHI data element types suggest SUD records may be involved.
+    required_data:
+      - phi_data_element_types
+      - action_kind
+    disposition_when_missing: route_to_review
+    priority: 4
+    conditions:
+      - when:
+          phi_data_element_types: ["diagnosis", "medication"]
+          action_kind: ["crm.write", "data.export"]
+        then:
+          decision: route_to_review
+          reason: "Healthcare data export involving diagnosis/medication — verify 42 C.F.R. Part 2 applicability"
+          citation: "42 C.F.R. Part 2"
+
+  - rule_id: HIPAA-005
+    name: "Block CRM write of PHI without documented purpose"
+    description: |
+      PHI may only be used or disclosed for documented, permitted purposes.
+      Writing PHI to a CRM requires either: treatment, payment, operations,
+      patient authorization, or other documented legal basis.
+    required_data:
+      - phi_present
+      - action_kind
+      - treatment_purpose
+      - payment_purpose
+      - operations_purpose
+    disposition_when_missing: route_to_review
+    priority: 5
+    conditions:
+      - when:
+          action_kind: "crm.write"
+          phi_present: true
+          treatment_purpose: false
+          payment_purpose: false
+          operations_purpose: false
+        then:
+          decision: route_to_review
+          reason: "PHI write to CRM without documented permitted purpose — verify HIPAA authorization"
+          citation: "45 C.F.R. § 164.502(a)"
+
+test_fixtures:
+
+  - name: "LLM with ePHI, no auth, no exception — should block"
+    input:
+      action_kind: "llm.completion"
+      phi_present: true
+      access_authorization: false
+      treatment_purpose: false
+      payment_purpose: false
+      operations_purpose: false
+    expected:
+      decision: block
+      rule_id: "HIPAA-001"
+
+  - name: "LLM with ePHI, treatment purpose — should allow"
+    input:
+      action_kind: "llm.completion"
+      phi_present: true
+      access_authorization: false
+      treatment_purpose: true
+      payment_purpose: false
+      operations_purpose: false
+    expected:
+      decision: allow
+      rule_id: null
+
+  - name: "Full patient record export — should route to review"
+    input:
+      action_kind: "data.export"
+      phi_content_type: "ePHI"
+      phi_data_element_types: ["all"]
+    expected:
+      decision: route_to_review
+      rule_id: "HIPAA-002"
+
+  - name: "PHI deletion without legal basis — should block"
+    input:
+      action_kind: "data.delete"
+      phi_present: true
+      deletion_legal_basis: null
+    expected:
+      decision: block
+      rule_id: "HIPAA-003"
+
+  - name: "SUD-related data export — should route to review"
+    input:
+      action_kind: "data.export"
+      phi_data_element_types: ["diagnosis", "medication"]
+    expected:
+      decision: route_to_review
+      rule_id: "HIPAA-004"
+
+changelog:
+  - version: "0.1.0"
+    date: "2026-04-27"
+    changes: "PLACEHOLDER. Initial scaffold for HIPAA healthcare AI agent compliance. Attorney review required before production use. Covers basic PHI handling, minimum necessary standard, and breach notification triggers."

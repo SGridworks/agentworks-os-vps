@@ -1,0 +1,8 @@
+{
+  "case_id": "SMB-007_consent_verified",
+  "contact_id": "c_002",
+  "action_kind": "lead.generation",
+  "consent.verified": true,
+  "consent.source": "web_form",
+  "consent.date": "2026-01-15"
+}

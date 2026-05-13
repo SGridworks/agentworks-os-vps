@@ -1,0 +1,100 @@
+# AgentWorks OS continuous integration.
+# Authored by Coordinator; closes AWO-9.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all packages
+        run: pnpm -r build
+
+      - name: Typecheck
+        run: pnpm -r --if-present run typecheck
+
+      - name: Run package tests
+        run: pnpm -r --if-present test
+
+      - name: Run substrate E2E
+        run: npx vitest run tests/substrate-e2e.test.ts
+
+      - name: Backup/restore full-cycle test
+        run: bash apps/installer/tests/backup-restore.test.sh
+
+  rule-packs-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared + policy-engine
+        run: pnpm -r --filter @agentworks/shared --filter @agentworks/policy-engine build
+
+      - name: Validate every YAML rule pack loads
+        run: |
+          node -e "
+          const { loadPackFromFile } = require('./packages/policy-engine/dist/index.js');
+          const { readdirSync, statSync } = require('node:fs');
+          const { join } = require('node:path');
+          const root = './rule-packs';
+          const failures = [];
+          (async () => {
+            for (const sub of readdirSync(root)) {
+              const p = join(root, sub);
+              if (!statSync(p).isDirectory()) continue;
+              for (const f of readdirSync(p)) {
+                if (!/\.ya?ml$/.test(f)) continue;
+                try {
+                  const pack = await loadPackFromFile(join(p, f));
+                  console.log('OK', sub + '/' + f, '→', pack.pack_id, '(' + pack.rules.length + ' rules)');
+                } catch (e) {
+                  failures.push({pack: sub + '/' + f, err: e.message.split('\n').slice(0,3).join(' | ')});
+                  console.log('FAIL', sub + '/' + f, '→', e.message.split('\n')[0]);
+                }
+              }
+            }
+            if (failures.length > 0) {
+              console.error('\n' + failures.length + ' rule packs failed validation');
+              process.exit(1);
+            }
+          })();
+          "

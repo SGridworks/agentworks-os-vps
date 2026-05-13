@@ -1,0 +1,11 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AgentWorks OS weave symbol</title>
+  <desc id="desc">An interlocked A and W path representing coordinated agents.</desc>
+  <rect width="256" height="256" rx="48" fill="#173F49"/>
+  <path d="M47 188L90 68L128 188L166 68L209 188" stroke="#F8FCFC" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M76 151H112" stroke="#58C7D8" stroke-width="14" stroke-linecap="round"/>
+  <path d="M144 151H180" stroke="#58C7D8" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="90" cy="68" r="10" fill="#D6A84E"/>
+  <circle cx="166" cy="68" r="10" fill="#D6A84E"/>
+  <circle cx="128" cy="188" r="10" fill="#58C7D8"/>
+</svg>

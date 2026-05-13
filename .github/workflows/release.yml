@@ -1,0 +1,297 @@
+name: Release
+
+on:
+  push:
+    tags:
+      # Tightened from 'v*' to a semver-shaped glob so a stray non-release
+      # tag (e.g. 'vendored', 'v-old') cannot trigger a release run before
+      # the resolve-tag validation fails downstream.
+      #
+      # GitHub Actions filter globs treat `*` as "zero or more chars except
+      # `/`", so `v[0-9]*` is "v then a digit then anything" — looser than
+      # a regex `v[0-9]+` would be, but resolve-tag's `case` validation
+      # below catches anything that isn't strict vN.N.N.
+      - 'v[0-9]*.[0-9]*.[0-9]*'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Tag or commit SHA to release (defaults to the workflow's source ref)"
+        required: false
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+
+# Serialize releases. Two concurrent runs would race on the shared
+# :buildcache-* registry tags and on the floating :<minor> tag,
+# so the loser would silently overwrite the winner's manifest.
+# cancel-in-progress: false because we never want to interrupt a
+# release that's already publishing artifacts.
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  # ------------------------------------------------------------------
+  # Resolve tag/version/minor/sha7 and the lowercased owner once.
+  # All downstream jobs read these outputs so we never reparse the
+  # ref in shell, and so the image-prefix is guaranteed lowercase
+  # (Docker rejects uppercase repository paths).
+  #
+  # sha7 must reflect the dispatched-tag commit, not the dispatching
+  # branch. On workflow_dispatch from main with ref=v0.1.8,
+  # GITHUB_SHA is main HEAD, not v0.1.8's commit. Checking out at
+  # the resolved tag and reading HEAD gives the right SHA in both
+  # the tag-push and dispatch cases.
+  # ------------------------------------------------------------------
+  resolve-tag:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.r.outputs.tag }}
+      version: ${{ steps.r.outputs.version }}
+      minor: ${{ steps.r.outputs.minor }}
+      sha7: ${{ steps.r.outputs.sha7 }}
+      owner_lc: ${{ steps.r.outputs.owner_lc }}
+      image_prefix: ${{ steps.r.outputs.image_prefix }}
+    steps:
+      - id: validate
+        run: |
+          set -euo pipefail
+          tag="${{ inputs.ref }}"
+          if [ -z "$tag" ]; then
+            tag="${{ github.ref_name }}"
+          fi
+          case "$tag" in
+            v[0-9]*.[0-9]*.[0-9]*) ;;
+            *)
+              echo "::error::release workflow requires a vN.N.N tag, got '$tag'. Dispatch with the 'ref' input set to the tag you want to release."
+              exit 1
+              ;;
+          esac
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.validate.outputs.tag }}
+          fetch-depth: 1
+      - id: r
+        run: |
+          set -euo pipefail
+          tag="${{ steps.validate.outputs.tag }}"
+          version="${tag#v}"
+          minor="${version%.*}"
+          sha7="$(git rev-parse HEAD | cut -c1-7)"
+          owner_lc="$(printf '%s' "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
+          image_prefix="ghcr.io/${owner_lc}/agentworks"
+          {
+            echo "tag=$tag"
+            echo "version=$version"
+            echo "minor=$minor"
+            echo "sha7=$sha7"
+            echo "owner_lc=$owner_lc"
+            echo "image_prefix=$image_prefix"
+          } >> "$GITHUB_OUTPUT"
+          echo "Resolved: tag=$tag version=$version minor=$minor sha7=$sha7 image_prefix=$image_prefix"
+
+  # ------------------------------------------------------------------
+  # Publish install.sh as a GitHub Release asset. Runs in its own job
+  # so the friend-install URL goes live within ~30s of tag push,
+  # independent of any image build.
+  #
+  # The customer-facing install URL is
+  #   https://github.com/<owner>/agentworks-os/releases/download/<tag>/install.sh
+  # — referenced from README and docs.
+  # ------------------------------------------------------------------
+  publish-installer:
+    needs: resolve-tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.resolve-tag.outputs.tag }}
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.resolve-tag.outputs.tag }}
+          files: apps/installer/src/install.sh
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          # Explicit even though it's the action's default; locks the
+          # re-runnability contract into repo bytes so a future action
+          # default change doesn't silently break re-dispatching the
+          # same tag.
+          overwrite_files: true
+
+  # ------------------------------------------------------------------
+  # Build per-platform images on native runners.
+  #
+  # Why native runners and not QEMU: v0.1.8's release run hung for
+  # 52 minutes because qemu-user-static crashed with SIGILL during
+  # pnpm install on the linux/arm64 emulation path, and buildx never
+  # noticed the dead child. Native arm64 runners eliminate this
+  # class of failure entirely.
+  # ------------------------------------------------------------------
+  build-image:
+    needs: resolve-tag
+    permissions:
+      packages: write
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - { name: agentos-d,      context: .,                          dockerfile: ./packages/agentos-d/Dockerfile }
+          - { name: scanner-worker, context: ./packages/scanner-worker,  dockerfile: ./packages/scanner-worker/Dockerfile }
+          - { name: admin-ui,       context: .,                          dockerfile: ./packages/admin-ui/Dockerfile }
+        platform:
+          - { runner: ubuntu-latest,    docker: linux/amd64, suffix: amd64 }
+          - { runner: ubuntu-24.04-arm, docker: linux/arm64, suffix: arm64 }
+    runs-on: ${{ matrix.platform.runner }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.resolve-tag.outputs.tag }}
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # provenance: false keeps the per-platform image as a simple
+      # manifest, not an OCI image-index with attestation entries.
+      # The downstream `docker buildx imagetools create` step merges
+      # the two simple manifests into one multi-arch index cleanly.
+      - name: Build and push ${{ matrix.image.name }} (${{ matrix.platform.suffix }})
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.image.context }}
+          file: ${{ matrix.image.dockerfile }}
+          platforms: ${{ matrix.platform.docker }}
+          push: true
+          provenance: false
+          tags: ${{ needs.resolve-tag.outputs.image_prefix }}/${{ matrix.image.name }}:${{ needs.resolve-tag.outputs.tag }}-${{ matrix.platform.suffix }}
+          cache-from: type=registry,ref=${{ needs.resolve-tag.outputs.image_prefix }}/${{ matrix.image.name }}:buildcache-${{ matrix.platform.suffix }}
+          cache-to: type=registry,ref=${{ needs.resolve-tag.outputs.image_prefix }}/${{ matrix.image.name }}:buildcache-${{ matrix.platform.suffix }},mode=max
+
+  # ------------------------------------------------------------------
+  # Merge per-platform tags into multi-arch manifests with the
+  # user-facing tag layout:
+  #   <prefix>/<image>:<version>   (e.g. 0.1.8)
+  #   <prefix>/<image>:<minor>     (e.g. 0.1)
+  #   <prefix>/<image>:sha-<7>     (e.g. sha-da799b3)
+  # ------------------------------------------------------------------
+  manifest:
+    needs: [resolve-tag, build-image]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    strategy:
+      matrix:
+        image: [agentos-d, scanner-worker, admin-ui]
+    steps:
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create multi-arch manifest for ${{ matrix.image }}
+        env:
+          IMG: ${{ needs.resolve-tag.outputs.image_prefix }}/${{ matrix.image }}
+          TAG: ${{ needs.resolve-tag.outputs.tag }}
+          VERSION: ${{ needs.resolve-tag.outputs.version }}
+          MINOR: ${{ needs.resolve-tag.outputs.minor }}
+          SHA7: ${{ needs.resolve-tag.outputs.sha7 }}
+        run: |
+          set -euo pipefail
+          docker buildx imagetools create \
+            -t "$IMG:$VERSION" \
+            -t "$IMG:$MINOR" \
+            -t "$IMG:sha-$SHA7" \
+            "$IMG:$TAG-amd64" \
+            "$IMG:$TAG-arm64"
+
+  # ------------------------------------------------------------------
+  # Sign the multi-arch manifests with cosign (skipped if the secret
+  # isn't configured) and flip GHCR packages to public so
+  # unauthenticated `docker compose pull` works for end users.
+  # ------------------------------------------------------------------
+  sign-and-publicize:
+    needs: [resolve-tag, manifest]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      id-token: write
+    strategy:
+      matrix:
+        image: [agentos-d, scanner-worker, admin-ui]
+    steps:
+      - uses: sigstore/cosign-installer@v3
+        with:
+          cosign-release: 'v2.4.1'
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # The prior workflow signed `:$github.ref_name` (e.g.
+      # `:v0.1.8`), which never existed because metadata-action
+      # produces version-stripped tags (`:0.1.8`). That bug was
+      # latent because the cosign secret isn't configured; if it
+      # ever is, this version signs the tag that actually exists.
+      - name: Sign ${{ matrix.image }} (skipped if key absent)
+        env:
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          IMG: ${{ needs.resolve-tag.outputs.image_prefix }}/${{ matrix.image }}
+          VERSION: ${{ needs.resolve-tag.outputs.version }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COSIGN_PRIVATE_KEY:-}" ]; then
+            echo "COSIGN_PRIVATE_KEY not set — skipping signing for ${{ matrix.image }} (image is published unsigned)."
+            exit 0
+          fi
+          echo "$COSIGN_PRIVATE_KEY" | cosign sign --yes --key - "$IMG:$VERSION"
+
+      # Try /user/... first (works for user-owned packages), fall
+      # back to /orgs/... (org-owned, the SGridworks case). The
+      # prior workflow only tried /user/... and warned-but-passed
+      # for orgs, which is why these packages had to be flipped
+      # manually the first time. This makes future first-time
+      # releases work without manual intervention.
+      #
+      # After flipping, verify the package is actually public by
+      # reading visibility back from the API. A silent flip failure
+      # would let a green release ship with private images, and
+      # unauthenticated `docker compose pull` would 401.
+      - name: Make ${{ matrix.image }} GHCR package public
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          pkg="agentworks/${{ matrix.image }}"
+          enc="${pkg//\//%2F}"
+          owner_lc="${{ needs.resolve-tag.outputs.owner_lc }}"
+          if gh api -X PATCH "/user/packages/container/${enc}/visibility" -f visibility=public >/dev/null 2>&1; then
+            echo "ok: flipped ${pkg} public via /user"
+          elif gh api -X PATCH "/orgs/${owner_lc}/packages/container/${enc}/visibility" -f visibility=public >/dev/null 2>&1; then
+            echo "ok: flipped ${pkg} public via /orgs"
+          else
+            echo "warn: PATCH visibility failed via both /user and /orgs (may already be public)"
+          fi
+          # Verify visibility is public; fail the job otherwise.
+          vis="$(gh api "/users/${owner_lc}/packages/container/${enc}" --jq .visibility 2>/dev/null \
+              || gh api "/orgs/${owner_lc}/packages/container/${enc}" --jq .visibility 2>/dev/null \
+              || echo "")"
+          if [ "$vis" != "public" ]; then
+            echo "::error::${pkg} visibility is '${vis:-unknown}', not public — unauthenticated docker pull will fail"
+            exit 1
+          fi
+          echo "verified: ${pkg} visibility=public"

@@ -1,0 +1,11 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AgentWorks OS ledger symbol</title>
+  <desc id="desc">A circular audit ledger mark with policy check and action trail.</desc>
+  <rect width="256" height="256" rx="48" fill="#F4FAFB"/>
+  <circle cx="128" cy="128" r="81" stroke="#173F49" stroke-width="14"/>
+  <path d="M88 131L116 158L170 95" stroke="#173F49" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M70 76L50 76L50 108" stroke="#58C7D8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M186 180L207 180L207 148" stroke="#58C7D8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="77" cy="76" r="9" fill="#D6A84E"/>
+  <circle cx="179" cy="180" r="9" fill="#D6A84E"/>
+</svg>

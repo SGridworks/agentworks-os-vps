@@ -1,0 +1,16 @@
+<svg width="760" height="180" viewBox="0 0 760 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AgentWorks OS ledger horizontal logo</title>
+  <desc id="desc">AgentWorks OS wordmark with circular audit ledger symbol.</desc>
+  <g transform="translate(24 18) scale(.5625)">
+    <rect width="256" height="256" rx="48" fill="#F4FAFB"/>
+    <circle cx="128" cy="128" r="81" stroke="#173F49" stroke-width="14"/>
+    <path d="M88 131L116 158L170 95" stroke="#173F49" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M70 76L50 76L50 108" stroke="#58C7D8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M186 180L207 180L207 148" stroke="#58C7D8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="77" cy="76" r="9" fill="#D6A84E"/>
+    <circle cx="179" cy="180" r="9" fill="#D6A84E"/>
+  </g>
+  <text x="196" y="86" fill="#173F49" font-family="Inter, Arial, sans-serif" font-size="52" font-weight="750" letter-spacing="0">AgentWorks</text>
+  <text x="199" y="126" fill="#58737A" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="600" letter-spacing="4">OS</text>
+  <path d="M199 141H390" stroke="#58C7D8" stroke-width="7" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,48 @@
+{
+  "name": "@agentworks/agentos-d",
+  "version": "0.1.9",
+  "description": "AgentWorks substrate daemon",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "agentos-d": "./dist/cli.js",
+    "agentos-mcp-stdio": "./dist/bin/mcp-stdio.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "dev": "tsx watch src/cli.ts",
+    "start": "node dist/cli.js",
+    "test": "vitest run",
+    "db:migrate": "node --import tsx src/db/migrate.ts"
+  },
+  "dependencies": {
+    "@agentworks/memory": "workspace:*",
+    "@agentworks/pdf": "workspace:*",
+    "@agentworks/policy-engine": "workspace:*",
+    "@agentworks/shared": "workspace:*",
+    "better-sqlite3": "^11.6.0",
+    "drizzle-orm": "^0.38.2",
+    "express": "^4.21.2",
+    "js-yaml": "^4.1.1",
+    "openai": "^6.35.0",
+    "pino": "^9.5.0",
+    "pino-http": "^10.3.0",
+    "ws": "^8.20.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/express": "^5.0.0",
+    "@types/express-serve-static-core": "^5.0.0",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.0.0",
+    "@types/supertest": "^6.0.2",
+    "@types/ws": "^8.18.1",
+    "drizzle-kit": "^0.30.1",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.0"
+  }
+}

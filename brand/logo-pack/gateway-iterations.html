@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgentWorks OS Gateway Iterations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F4F6F4;
+      --bg-2: #E8ECEA;
+      --bg-card: #FFFFFF;
+      --ink: #0F1618;
+      --ink-2: #2A3A3E;
+      --ink-3: #6B7A7F;
+      --rule: #D8DDD9;
+      --rule-2: #C4CBC6;
+      --accent: #1C4855;
+      --accent-2: #2D6A7A;
+      --warn: #B8730F;
+      --cyan: #5FCCDB;
+      --grid-line: #D8DDD9;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 46px 32px 72px;
+    }
+
+    .top {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 48px;
+      align-items: end;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 28px;
+    }
+
+    .eyebrow {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    h1, h2, h3 {
+      font-family: Fraunces, Georgia, serif;
+      font-weight: 700;
+      letter-spacing: -0.018em;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 900px;
+      font-size: clamp(40px, 7vw, 76px);
+      line-height: .96;
+    }
+
+    .lede {
+      font-family: Fraunces, Georgia, serif;
+      color: var(--ink-2);
+      font-size: 20px;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .tokens {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .swatch {
+      min-height: 68px;
+      border: 1px solid var(--rule);
+      display: grid;
+      align-content: end;
+      padding: 10px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: .06em;
+      color: var(--ink-3);
+      background: var(--bg-card);
+    }
+
+    .swatch.dark { color: #F1F3EE; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 44px;
+      border: 1px solid var(--rule);
+      background: var(--rule);
+    }
+
+    .card {
+      background: var(--bg-card);
+      min-height: 640px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .card-head {
+      padding: 24px;
+      border-bottom: 1px solid var(--rule);
+      min-height: 190px;
+    }
+
+    .card h2 {
+      font-size: 29px;
+      line-height: 1.05;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--ink-2);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 34ch;
+    }
+
+    .spec {
+      margin-top: 18px;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      color: var(--ink-3);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .mark-zone {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 305px;
+      overflow: hidden;
+      background:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+        var(--bg);
+      background-size: 48px 48px;
+    }
+
+    .mark-zone::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(244,246,244,0) 15%, var(--bg) 76%);
+      pointer-events: none;
+    }
+
+    .mark-zone img {
+      position: relative;
+      z-index: 1;
+      width: 132px;
+      height: 132px;
+      image-rendering: auto;
+    }
+
+    .lockup-zone {
+      display: grid;
+      gap: 24px;
+      padding: 24px;
+      border-top: 1px solid var(--rule);
+      background: var(--bg-card);
+    }
+
+    .lockup-zone img {
+      width: 100%;
+      height: auto;
+      max-width: 360px;
+    }
+
+    .mini {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding-top: 18px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .mini span {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+
+    .mini img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .rec {
+      margin-top: 44px;
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 1px;
+      border: 1px solid var(--rule);
+      background: var(--rule);
+    }
+
+    .rec > div {
+      background: var(--bg-card);
+      padding: 28px;
+    }
+
+    .rec h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .rec p {
+      margin: 0;
+      color: var(--ink-2);
+      max-width: 62ch;
+    }
+
+    @media (max-width: 920px) {
+      .top,
+      .grid,
+      .rec {
+        grid-template-columns: 1fr;
+      }
+
+      .wrap {
+        padding: 32px 18px 52px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="top">
+      <div>
+        <div class="eyebrow">AgentWorks OS gateway iteration</div>
+        <h1>Aligned with the SGRIDWORKS redesign.</h1>
+      </div>
+      <p class="lede">These keep Direction 1, but shift the mark into the current site language: Fraunces wordmark, cool paper, thin engineering linework, mono labels, and restrained color.</p>
+    </header>
+
+    <section class="tokens" aria-label="Palette">
+      <div class="swatch dark" style="background:#0F1618">ink<br>#0F1618</div>
+      <div class="swatch dark" style="background:#1C4855">accent<br>#1C4855</div>
+      <div class="swatch" style="background:#F4F6F4">paper<br>#F4F6F4</div>
+      <div class="swatch" style="background:#D8DDD9">rule<br>#D8DDD9</div>
+      <div class="swatch" style="background:#B8730F">warn<br>#B8730F</div>
+    </section>
+
+    <section class="grid" aria-label="Gateway variants">
+      <article class="card">
+        <div class="card-head">
+          <h2>1A. Line Gate</h2>
+          <p>The cleanest successor to Direction 1. Policy boundary, central agent path, small approval nodes. Best candidate for product identity.</p>
+          <div class="spec">recommended / app icon ready</div>
+        </div>
+        <div class="mark-zone">
+          <img src="svg/agentworks-gateway-line-symbol.svg" alt="Line Gate symbol">
+        </div>
+        <div class="lockup-zone">
+          <img src="svg/agentworks-gateway-line-lockup.svg" alt="Line Gate lockup">
+          <div class="mini">
+            <img src="svg/agentworks-gateway-line-symbol.svg" alt="">
+            <span>32px header mark</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h2>1B. Spark Gate</h2>
+          <p>Most aligned with the existing SG mark. The top signal echoes the lightbulb/turbine gesture without copying it directly.</p>
+          <div class="spec">closest portfolio family match</div>
+        </div>
+        <div class="mark-zone">
+          <img src="svg/agentworks-gateway-spark-symbol.svg" alt="Spark Gate symbol">
+        </div>
+        <div class="lockup-zone">
+          <img src="svg/agentworks-gateway-spark-lockup.svg" alt="Spark Gate lockup">
+          <div class="mini">
+            <img src="svg/agentworks-gateway-spark-symbol.svg" alt="">
+            <span>32px header mark</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <h2>1C. Grid Gate</h2>
+          <p>The most operational version. Stronger control-room and system-of-record signal, with less warmth than the other two.</p>
+          <div class="spec">admin UI / docs friendly</div>
+        </div>
+        <div class="mark-zone">
+          <img src="svg/agentworks-gateway-grid-symbol.svg" alt="Grid Gate symbol">
+        </div>
+        <div class="lockup-zone">
+          <img src="svg/agentworks-gateway-grid-lockup.svg" alt="Grid Gate lockup">
+          <div class="mini">
+            <img src="svg/agentworks-gateway-grid-symbol.svg" alt="">
+            <span>32px header mark</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="rec" aria-label="Recommendation">
+      <div>
+        <h3>Recommendation</h3>
+        <p>Advance 1A as the base mark, borrow the top signal from 1B only if we want stronger portfolio continuity.</p>
+      </div>
+      <div>
+        <h3>Next Pass</h3>
+        <p>Produce light, dark, mono, stacked, favicon, GitHub avatar, admin header, and README header variants after choosing between pure Line Gate and Line Gate with the subtle top signal.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

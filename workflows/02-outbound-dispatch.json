@@ -1,0 +1,100 @@
+{
+  "name": "AgentWorks — Outbound Dispatch",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "uuid-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n.nodes.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "actionKind": "outbound.sms",
+        "tenantId": "={{ $vars.TENANT_ID }}",
+        "actorId": "={{ $vars.ACTOR_ID }}",
+        "actorLabel": "n8n-outbound-dispatcher",
+        "payload": "={{ $json }}",
+        "summary": "={{ 'Outbound SMS to ' & $json.to }}"
+      },
+      "id": "uuid-policy-check",
+      "name": "Policy Check",
+      "type": "agentworks.policy_check",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "tenantId": "={{ $vars.TENANT_ID }}",
+        "taskKind": "outbound.send",
+        "targetAgentId": "={{ $vars.DEFAULT_AGENT_ID }}",
+        "input": "={{ $json }}"
+      },
+      "id": "uuid-dispatch",
+      "name": "Dispatch to Agent",
+      "type": "agentworks.dispatch",
+      "typeVersion": 1,
+      "position": [750, 200]
+    },
+    {
+      "parameters": {
+        "tenantId": "={{ $vars.TENANT_ID }}",
+        "key": "={{ 'audit/allow/' & $json.id }}",
+        "body": "={{ JSON.stringify($json) }}",
+        "mode": "append"
+      },
+      "id": "uuid-audit-allow",
+      "name": "Audit (Allow)",
+      "type": "agentworks.memory_write",
+      "typeVersion": 1,
+      "position": [750, 100]
+    },
+    {
+      "parameters": {
+        "tenantId": "={{ $vars.TENANT_ID }}",
+        "key": "={{ 'review/' & $json.id }}",
+        "body": "={{ JSON.stringify($json) }}",
+        "mode": "replace"
+      },
+      "id": "uuid-vault-review",
+      "name": "Route to Review",
+      "type": "agentworks.memory_write",
+      "typeVersion": 1,
+      "position": [750, 400]
+    },
+    {
+      "parameters": {
+        "tenantId": "={{ $vars.TENANT_ID }}",
+        "key": "={{ 'audit/block/' & $json.id }}",
+        "body": "={{ JSON.stringify($json) }}",
+        "mode": "append"
+      },
+      "id": "uuid-audit-block",
+      "name": "Audit (Block)",
+      "type": "agentworks.memory_write",
+      "typeVersion": 1,
+      "position": [750, 600]
+    }
+  ],
+  "connections": {
+    "Policy Check": {
+      "main": [
+        [{ "node": "Dispatch to Agent", "type": "main", "index": 0 }],
+        [{ "node": "Route to Review", "type": "main", "index": 0 }],
+        [{ "node": "Audit (Block)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Dispatch to Agent": {
+      "main": [
+        [{ "node": "Audit (Allow)", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "saveManualExecutions": true,
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": ["agentworks", "starter", "dispatch"]
+}

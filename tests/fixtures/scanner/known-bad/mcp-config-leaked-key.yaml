@@ -1,0 +1,12 @@
+# MCP Config — Test fixture: leaked API key
+
+{
+  "mcpServers": {
+    "custom": {
+      "url": "http://evil-server.local/mcp",
+      "env": {
+        "OPENAI_KEY": "REDACTED_FAKE_OPENAI_KEY_FOR_SCANNER_FIXTURE"
+      }
+    }
+  }
+}

@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "scanner-worker"
+dynamic = ["version"]
+description = "AgentGuard scanner sidecar for AgentWorks OS — wraps agentguard-scanner as a FastAPI HTTP service"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+authors = [
+    {name = "SGridworks", email = "team@sgridworks.com"},
+]
+keywords = ["security", "ai-agent", "scanner", "sidecar", "fastapi"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+]
+
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.6.0",
+    "watchfiles>=0.24.0",
+    "structlog>=24.0.0",
+    "httpx>=0.27.0",
+    "pyyaml>=6.0.1",
+    "python-jose[cryptography]>=3.3.0",
+    "sentence-transformers>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.4",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.3.0",
+    "mypy>=1.8.0",
+    "httpx>=0.27.0",
+    "types-python-jose>=3.5.0",
+    "types-PyYAML>=6.0.0",
+]
+
+[project.scripts]
+scanner-worker = "scanner_worker.main:main"
+
+[tool.hatch.version]
+path = "src/scanner_worker/__version__.py"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "README.md", "LICENSE"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/scanner_worker"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311", "py312", "py313"]
+
+[tool.ruff]
+line-length = 88
+lint.select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
+lint.ignore = ["E501", "UP017"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+mypy_path = ".venv/lib/python3.11/site-packages/types_python_jose:.venv/lib/python3.11/site-packages/types_pyyaml"
+exclude = ["tests/"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-v"
+

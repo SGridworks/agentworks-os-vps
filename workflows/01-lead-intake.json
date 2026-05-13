@@ -1,0 +1,52 @@
+{
+  "name": "AgentWorks — Lead Intake",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "uuid-manual",
+      "name": "Manual Trigger",
+      "type": "n8n.nodes.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "actionKind": "lead.intake",
+        "tenantId": "={{ $vars.TENANT_ID }}",
+        "actorId": "n8n-workflow",
+        "payload": "={{ $json }}"
+      },
+      "id": "uuid-policy-check",
+      "name": "Policy Check",
+      "type": "agentworks.policy_check",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "tenantId": "={{ $vars.TENANT_ID }}",
+        "key": "={{ 'intake/' & $json.id }}",
+        "body": "={{ JSON.stringify($json) }}",
+        "mode": "replace"
+      },
+      "id": "uuid-vault-write",
+      "name": "Vault Write",
+      "type": "agentworks.memory_write",
+      "typeVersion": 1,
+      "position": [750, 300]
+    }
+  ],
+  "connections": {
+    "Policy Check": {
+      "main": [
+        [{ "node": "Vault Write", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "saveManualExecutions": true,
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": ["agentworks", "starter"]
+}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">AgentWorks OS spark gateway symbol</title>
+  <desc id="desc">A gateway with a small signal spark above the policy path.</desc>
+  <g stroke="#0F1618" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 3V7.4"/>
+    <path d="M25 7.7L21.3 9.9"/>
+    <path d="M7 7.7L10.7 9.9"/>
+    <path d="M8.5 27V13C8.5 11 10.2 9.4 12.1 9.4H19.9C21.8 9.4 23.5 11 23.5 13V27"/>
+    <path d="M11.2 27H20.8"/>
+  </g>
+  <path d="M13 14.4H19" stroke="#1C4855" stroke-width="1.45" stroke-linecap="round"/>
+  <path d="M16 14.4V23" stroke="#1C4855" stroke-width="1.45" stroke-linecap="round"/>
+  <circle cx="16" cy="18.8" r="1.45" fill="#1C4855"/>
+  <circle cx="16" cy="27" r="1.2" fill="#1C4855"/>
+</svg>

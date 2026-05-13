@@ -1,0 +1,33 @@
+{
+  "name": "@agentworks/n8n-nodes",
+  "version": "0.1.9",
+  "description": "AgentWorks custom n8n nodes \u2014 policy_check, memory.read/write, dispatch",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.0"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "nodes": [
+      "dist/policy-check/PolicyCheck.node.js",
+      "dist/memory/MemoryRead.node.js",
+      "dist/memory/MemoryWrite.node.js",
+      "dist/dispatch/Dispatch.node.js",
+      "dist/automation/AutomationAction.node.js"
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://agentworks.os/schemas/feature-list/v1",
+  "title": "FeatureList",
+  "description": "Structured task list for agent planning and progress tracking. Replaces free-form todo lists with typed, verifiable items.",
+  "type": "object",
+  "required": ["version", "tenantId", "features"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Schema version. Must be 1.0.0."
+    },
+    "tenantId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Tenant identifier this feature list belongs to."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp (ISO 8601)."
+    },
+    "features": {
+      "type": "array",
+      "description": "Ordered list of features or tasks.",
+      "items": {
+        "$ref": "#/definitions/Feature"
+      }
+    }
+  },
+  "definitions": {
+    "Feature": {
+      "type": "object",
+      "required": ["id", "title", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z]+-[0-9]+$",
+          "description": "Feature identifier, e.g. RULE-42, UI-7."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Human-readable title."
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "One-paragraph description of the feature."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["backlog", "todo", "in_progress", "review", "done", "cancelled"],
+          "description": "Current lifecycle status."
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"],
+          "default": "medium",
+          "description": "Business priority."
+        },
+        "assignee": {
+          "type": "string",
+          "description": "Agent or human responsible. Optional."
+        },
+        "acceptanceCriteria": {
+          "type": "array",
+          "description": "Verifiable criteria that define done.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "dependsOn": {
+          "type": "array",
+          "description": "Feature IDs this item depends on.",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]+-[0-9]+$"
+          }
+        },
+        "deliverablePath": {
+          "type": "string",
+          "description": "File path or URL to the shipped artifact."
+        },
+        "verificationCommand": {
+          "type": "string",
+          "description": "Shell command that proves the feature works."
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Free-form tags for filtering."
+        }
+      }
+    }
+  }
+}

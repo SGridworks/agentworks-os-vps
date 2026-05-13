@@ -1,0 +1,8 @@
+{
+  "case_id": "SMB-007_consent_missing",
+  "contact_id": "c_001",
+  "action_kind": "lead.generation",
+  "consent.verified": false,
+  "consent.source": null,
+  "consent.date": null
+}

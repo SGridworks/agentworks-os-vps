@@ -1,0 +1,18 @@
+<svg width="760" height="180" viewBox="0 0 760 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AgentWorks OS gateway horizontal logo</title>
+  <desc id="desc">AgentWorks OS wordmark with shield gateway symbol.</desc>
+  <g transform="translate(24 18) scale(.5625)">
+    <rect width="256" height="256" rx="48" fill="#F4FAFB"/>
+    <path d="M128 26L214 57V119C214 170 181 211 128 230C75 211 42 170 42 119V57L128 26Z" stroke="#173F49" stroke-width="14" stroke-linejoin="round"/>
+    <path d="M82 167V98C82 88.6 89.6 81 99 81H157C166.4 81 174 88.6 174 98V167" stroke="#173F49" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M92 167H164" stroke="#173F49" stroke-width="14" stroke-linecap="round"/>
+    <path d="M128 82V178" stroke="#58C7D8" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="128" cy="111" r="10" fill="#58C7D8"/>
+    <circle cx="128" cy="149" r="10" fill="#58C7D8"/>
+    <circle cx="82" cy="167" r="8" fill="#D6A84E"/>
+    <circle cx="174" cy="167" r="8" fill="#D6A84E"/>
+  </g>
+  <text x="196" y="86" fill="#173F49" font-family="Inter, Arial, sans-serif" font-size="52" font-weight="750" letter-spacing="0">AgentWorks</text>
+  <text x="199" y="126" fill="#58737A" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="600" letter-spacing="4">OS</text>
+  <path d="M199 141H390" stroke="#58C7D8" stroke-width="7" stroke-linecap="round"/>
+</svg>

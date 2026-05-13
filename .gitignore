@@ -1,0 +1,39 @@
+.DS_Store
+node_modules/
+__pycache__/
+*.pyc
+.env
+.env.local
+.venv/
+venv/
+dist/
+build/
+.next/
+.turbo/
+*.tsbuildinfo
+*.bak
+*.tar.gz
+.coverage
+coverage/
+test-results/
+site/
+
+# Local SQLite databases (per-package data dirs)
+packages/*/data/*.db
+packages/*/data/*.db-shm
+packages/*/data/*.db-wal
+# Per-package runtime scratch + signing keys must never be committed
+packages/*/data/
+packages/*/data.relocated-*/
+.gstack/
+
+# Top-level db scratch
+data/
+
+# Package-local generated outputs
+packages/*/.coverage
+packages/*/coverage/
+packages/*/test-results/
+
+# Personal dev helpers
+_build_jwt.py

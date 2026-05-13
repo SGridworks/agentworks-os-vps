@@ -1,0 +1,9 @@
+{
+  "name": "n8n-nodes-agentworks-dispatch",
+  "version": "0.1.0",
+  "description": "AgentWorks Dispatch node for n8n",
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "nodes": ["Dispatch.node.js"]
+  }
+}

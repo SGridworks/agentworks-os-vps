@@ -1,0 +1,473 @@
+# Fair Housing Rule Pack
+# Version: 0.1.0-draft
+# Tier: paid (attorney-reviewed tier requires signed engagement letter)
+# Credentialed by: SGridworks
+# Jurisdiction: United States — federal Fair Housing Act + state overlays
+#
+# This pack covers:
+# - Fair Housing Act (42 U.S.C. § 3601 et seq.): discrimination in housing marketing
+# - FHA advertising rules (24 C.F.R. Part 109): display and content restrictions
+# - HUD fair housing marketing regulations (24 C.F.R. Part 108)
+# - State fair housing laws (varies — Ohio, see ORC 4112)
+#
+# DISCLAIMER: This pack provides compliance assistance, not legal advice.
+# It requires customer integration with targeting criteria data to function fully.
+# "Route to review" is the correct disposition when required data is missing —
+# it is not a passing grade.
+#
+# Attorney review pending. Do NOT set attorney_reviewed: true until
+# signed engagement letter on file with named attorney.
+
+schema_version: "awcp/v0.1"
+pack_id: "fair-housing"
+pack_version: "0.1.0"
+pack_name: "Fair Housing — Housing Marketing Anti-Discrimination"
+pack_description: |
+  Compliance rules for housing-related marketing and lead-gen activities.
+  Covers FHA anti-discrimination prohibitions, advertising content restrictions,
+  disparate impact analysis, and state-level fair housing overlays.
+  Designed for real estate brokerages, property managers, mortgage lenders,
+  and insurance carriers using AI agents for housing-related outreach.
+tier: paid
+credentialed_by: "SGridworks"
+attorney_reviewed: false
+attorney_name: null
+attorney_engagement_letter_on_file: false
+jurisdiction: ["US-Federal", "US-OH"]
+industry: ["real estate", "mortgage", "insurance"]
+target_action_kinds:
+  - "outbound.sms"
+  - "outbound.email"
+  - "outbound.call"
+  - "outbound.dm"
+  - "lead.generation"
+  - "lead.enrich"
+  - "crm.write"
+
+missing_data_disposition: route_to_review
+
+required_data_declarations:
+  - field: housing_related
+    description: "Boolean — does this action relate to housing?"
+    data_provider: substrate
+  - field: targeting_criteria
+    description: "Structured object describing who the action targets"
+    data_provider: substrate
+  - field: offer_type
+    description: "Type of offer: listing | buyer_agent | mortgage | insurance | rental | other"
+    data_provider: customer_integration
+  - field: geographic_scope
+    description: "Granularity of geographic targeting: census_tract | zip_code | city | county | state"
+    data_provider: substrate
+  - field: target_jurisdiction
+    description: "US state code or federal"
+    data_provider: substrate
+  - field: message_body
+    description: "Content of the outbound message"
+    data_provider: substrate
+  - field: advertising_content
+    description: "Structured content of any housing advertisement"
+    data_provider: substrate
+  - field: protected_class_indicator_present
+    description: "Boolean — does the targeting use a protected class as a criterion?"
+    data_provider: customer_integration
+  - field: consent.status
+    description: "verified | unverified | none"
+    data_provider: customer_integration
+
+rules:
+
+  # ============================================================
+  # FHA Core Anti-Discrimination
+  # ============================================================
+
+  - rule_id: FH-001
+    name: "Block housing action that excludes by protected class"
+    description: |
+      Block any housing-related action that uses protected class membership
+      as an exclusion criterion. This includes filtering out prospects based
+      on race, color, national origin, religion, sex, familial status,
+      disability, or other protected characteristic.
+    required_data:
+      - housing_related
+      - protected_class_indicator_present
+    disposition_when_missing: route_to_review
+    priority: 1
+    conditions:
+      - when:
+          housing_related: true
+          protected_class_indicator_present: true
+        then:
+          decision: block
+          reason: "Housing action excludes prospects based on protected class membership"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604(a); 24 C.F.R. § 100.60"
+
+  - rule_id: FH-002
+    name: "Block housing action with discriminatory intent"
+    description: |
+      Block any housing-related action where the targeting criteria,
+      message content, or stated objective reflects discriminatory intent
+      toward a protected class. Discriminatory intent can be inferred from
+      the combination of targeting + content even if no protected class
+      is explicitly mentioned.
+    required_data:
+      - housing_related
+      - targeting_criteria
+      - message_body
+    disposition_when_missing: route_to_review
+    priority: 2
+    conditions:
+      - when:
+          housing_related: true
+          targeting_criteria_uses_protected_class: true
+        then:
+          decision: block
+          reason: "Housing action uses protected-class membership as targeting criterion"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604(a); 24 C.F.R. § 100.60"
+
+  - rule_id: FH-003
+    name: "Block housing action with discriminatory disparate impact"
+    description: |
+      Block any housing-related action that, in practice, restricts housing
+      choices based on protected class even without explicit discriminatory intent.
+      This includes "dummy" criteria that are proxies for protected class
+      (e.g., excluding zip codes with high minority population).
+      Note: Disparate impact analysis requires statistical evidence. Route to
+      review unless the pattern is egregious.
+    required_data:
+      - housing_related
+      - geographic_scope
+      - targeting_criteria
+    disposition_when_missing: route_to_review
+    priority: 3
+    conditions:
+      - when:
+          housing_related: true
+          targeting_criteria_uses_protected_class: true
+        then:
+          decision: block
+          reason: "Housing action has potential disparate impact based on protected class"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604(a); HUD Fair Housing Act § 100.500"
+
+  # ============================================================
+  # FHA Advertising Restrictions
+  # ============================================================
+
+  - rule_id: FH-004
+    name: "Block housing advertisement with discriminatory content"
+    description: |
+      Block any housing advertisement that contains language indicating
+      a preference, limitation, or discrimination based on protected class.
+      Applies to message body text, subject lines, and any displayed content.
+    required_data:
+      - housing_related
+      - message_body
+    disposition_when_missing: route_to_review
+    priority: 4
+    conditions:
+      - when:
+          housing_related: true
+          message_body_contains_discriminatory_language: true
+        then:
+          decision: block
+          reason: "Housing advertisement contains discriminatory language"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604(c); 24 C.F.R. Part 109"
+
+  - rule_id: FH-005
+    name: "Block housing advertisement that steers by neighborhood"
+    description: |
+      Block any housing advertisement that indicates a preference to
+      retain or exclude prospects based on the racial or ethnic composition
+      of a neighborhood or area. "Steering" includes describing neighborhoods
+      using protected-class-related characteristics.
+    required_data:
+      - housing_related
+      - message_body
+      - geographic_scope
+    disposition_when_missing: route_to_review
+    priority: 5
+    conditions:
+      - when:
+          housing_related: true
+          message_body_contains_steering_content: true
+        then:
+          decision: block
+          reason: "Housing advertisement steers prospects based on neighborhood composition"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604(c); HUD Revenue Ruling 24-10"
+
+  - rule_id: FH-006
+    name: "Block advertisement missing equal housing opportunity notice"
+    description: |
+      Fair housing advertising requires the equal housing opportunity
+      statement or logo in certain contexts. Block housing advertisements
+      missing the required notice where applicable.
+      Note: Digital ads may have modified requirements; route to review
+      when in doubt about the applicable advertising standard.
+    required_data:
+      - housing_related
+      - message_body
+      - advertising_platform
+    disposition_when_missing: allow
+    priority: 6
+    conditions:
+      - when:
+          housing_related: true
+          message_body_missing_equal_housing_notice: true
+          advertising_platform: ["print", "display", "direct_mail"]
+        then:
+          decision: route_to_review
+          reason: "Housing advertisement may be missing required equal housing notice — verify for platform"
+          citation: "24 C.F.R. § 109.30"
+
+  # ============================================================
+  # Disparate Impact — Fine Geographic Targeting
+  # ============================================================
+
+  - rule_id: FH-007
+    name: "Route to review for housing offers at fine geographic granularity"
+    description: |
+      Housing offers targeted to census tracts or block groups require
+      review for potential disparate impact. The statistical likelihood
+      of discriminatory effect is higher at fine geographic granularity.
+      Route to review for human analysis.
+    required_data:
+      - housing_related
+      - offer_type
+      - geographic_scope
+    disposition_when_missing: allow
+    priority: 10
+    conditions:
+      - when:
+          housing_related: true
+          offer_type: ["listing", "buyer_agent", "mortgage", "insurance", "rental"]
+          geographic_scope: "census_tract"
+        then:
+          decision: route_to_review
+          reason: "Housing offer targeted to census-tract granularity — review for disparate impact"
+          citation: "Fair Housing Act; ECOA, 15 U.S.C. § 1691"
+
+  # ============================================================
+  # State Overlays — Ohio
+  # ============================================================
+
+  - rule_id: OH-FH-001
+    name: "Block housing discrimination under Ohio Fair Housing Act"
+    description: |
+      Ohio Revised Code Chapter 4112 prohibits housing discrimination
+      based on protected class. Ohio law covers additional protected
+      classes including ancestry and military status. Applies to all
+      housing-related actions targeting Ohio residents.
+    required_data:
+      - housing_related
+      - target_jurisdiction
+      - protected_class_indicator_present
+    disposition_when_missing: route_to_review
+    priority: 20
+    conditions:
+      - when:
+          housing_related: true
+          target_jurisdiction: "US-OH"
+          protected_class_indicator_present: true
+        then:
+          decision: block
+          reason: "Housing action discriminates based on protected class — violates Ohio Fair Housing Act"
+          citation: "ORC Chapter 4112"
+
+  # ============================================================
+  # Broker / Agent Liability
+  # ============================================================
+
+  - rule_id: FH-008
+    name: "Block agent action that facilitates discriminatory housing"
+    description: |
+      Real estate agents and brokers are liable for their own discriminatory
+      actions and may face liability for facilitating discrimination by others.
+      Block agent actions that would implement or enable a discriminatory
+      housing practice, even if the agent did not originate the targeting criteria.
+    required_data:
+      - housing_related
+      - targeting_criteria_uses_protected_class
+      - actor_type
+    disposition_when_missing: route_to_review
+    priority: 1
+    conditions:
+      - when:
+          housing_related: true
+          targeting_criteria_uses_protected_class: true
+          actor_type: "agent"
+        then:
+          decision: block
+          reason: "Agent action would facilitate discriminatory housing practice"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604; HUD § 100.60"
+
+  # ============================================================
+  # Lead Gen / Data Collection
+  # ============================================================
+
+  - rule_id: FH-009
+    name: "Block lead-gen that collects protected-class data discriminatorily"
+    description: |
+      Collecting or using protected-class information in a way that
+      enables discrimination is itself a fair housing violation, even
+      if the final action does not explicitly discriminate.
+      Block lead-gen actions that collect data that could be used for
+      discriminatory targeting.
+    required_data:
+      - housing_related
+      - lead_gen_collects_protected_class_data
+    disposition_when_missing: route_to_review
+    priority: 8
+    conditions:
+      - when:
+          housing_related: true
+          lead_gen_collects_protected_class_data: true
+        then:
+          decision: block
+          reason: "Lead-gen collects data that could enable discriminatory targeting"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604; 24 C.F.R. § 100.70"
+
+  - rule_id: FH-010
+    name: "Block CRM write that tags contact with protected class discriminatorily"
+    description: |
+      Writing discriminatory tags, notes, or classifications to a contact
+      record based on protected class is a fair housing violation.
+      Block CRM write actions that would add protected-class-based
+      tags or classifications to contact records.
+    required_data:
+      - housing_related
+      - action_kind
+      - crm_tags_include_protected_class
+    disposition_when_missing: route_to_review
+    priority: 9
+    conditions:
+      - when:
+          housing_related: true
+          action_kind: "crm.write"
+          crm_tags_include_protected_class: true
+        then:
+          decision: block
+          reason: "CRM write would tag contact with protected-class indicator"
+          citation: "Fair Housing Act, 42 U.S.C. § 3604"
+
+---
+
+# Test fixtures — dry-run cases
+# Run with: agentworks pack dry-run fair-housing-v0.1.yaml --fixture=<name>
+
+test_fixtures:
+
+  - name: "Housing filter by protected class — should block"
+    input:
+      action_kind: "lead.generation"
+      housing_related: true
+      protected_class_indicator_present: true
+      targeting_criteria:
+        exclude: ["familial_status", "disability"]
+      geographic_scope: "zip_code"
+      target_jurisdiction: "US-OH"
+    expected:
+      decision: block
+      rule_id: "FH-001"
+
+  - name: "Housing advertisement with discriminatory language — should block"
+    input:
+      action_kind: "outbound.email"
+      housing_related: true
+      message_body: "This community is perfect for young professional couples — no children or loud families please"
+      geographic_scope: "zip_code"
+      target_jurisdiction: "US-OH"
+    expected:
+      decision: block
+      rule_id: "FH-004"
+
+  - name: "Housing offer at census tract — should route to review"
+    input:
+      action_kind: "outbound.email"
+      housing_related: true
+      offer_type: "listing"
+      geographic_scope: "census_tract"
+      targeting_criteria: {}
+      target_jurisdiction: "US-OH"
+    expected:
+      decision: route_to_review
+      rule_id: "FH-007"
+
+  - name: "Ohio housing discrimination — should block"
+    input:
+      action_kind: "crm.write"
+      housing_related: true
+      target_jurisdiction: "US-OH"
+      protected_class_indicator_present: true
+      crm_tags_include_protected_class: false
+    expected:
+      decision: block
+      rule_id: "OH-FH-001"
+
+  - name: "Lead-gen collects protected class data — should block"
+    input:
+      action_kind: "lead.enrich"
+      housing_related: true
+      lead_gen_collects_protected_class_data: true
+      target_jurisdiction: "US-OH"
+    expected:
+      decision: block
+      rule_id: "FH-009"
+
+  - name: "CRM write with protected class tag — should block"
+    input:
+      action_kind: "crm.write"
+      housing_related: true
+      crm_tags_include_protected_class: true
+      target_jurisdiction: "US-Federal"
+    expected:
+      decision: block
+      rule_id: "FH-010"
+
+  - name: "Non-housing action — should allow"
+    input:
+      action_kind: "outbound.email"
+      housing_related: false
+      message_body: "Check out our new financial planning services"
+      target_jurisdiction: "US-OH"
+    expected:
+      decision: allow
+      rule_id: null
+
+  - name: "Housing action, no protected class indicators — should allow"
+    input:
+      action_kind: "outbound.email"
+      housing_related: true
+      protected_class_indicator_present: false
+      message_body: "New listing at 123 Main St — 3BR/2BA. Call today."
+      geographic_scope: "city"
+      target_jurisdiction: "US-OH"
+    expected:
+      decision: allow
+      rule_id: null
+
+  - name: "Housing action, missing targeting criteria — should route to review"
+    input:
+      action_kind: "outbound.sms"
+      housing_related: true
+      message_body: "New listing alert in your area"
+      geographic_scope: "county"
+      target_jurisdiction: "US-OH"
+    expected:
+      decision: route_to_review
+      rule_id: "FH-002"
+
+  - name: "Steering content in advertisement — should block"
+    input:
+      action_kind: "outbound.email"
+      housing_related: true
+      message_body_contains_steering_content: true
+      geographic_scope: "zip_code"
+      target_jurisdiction: "US-Federal"
+    expected:
+      decision: block
+      rule_id: "FH-005"
+
+changelog:
+  - version: "0.1.0"
+    date: "2026-04-27"
+    changes: "Initial draft. Covers FHA core anti-discrimination, advertising restrictions, disparate impact, Ohio state overlay, broker liability, and lead-gen/CRM discriminatory data handling. Attorney review pending."

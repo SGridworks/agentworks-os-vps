@@ -1,0 +1,245 @@
+{
+  "name": "Real Estate Lead Enrichment → Policy Check → Outbound Queue",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": "onContactCreated"
+      },
+      "id": "trigger-contact",
+      "name": "Contact Created",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Enrich lead with third-party real estate data\nconst contact = $json;\nreturn [{
+n  json: {\n    ...contact,\n    property_interest: contact.property_type || 'single_family',\n    estimated_home_value: contact.estimated_value || null,\n    lead_source: 'web_form',\n    enrichment_timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "enrich-lead",
+      "name": "Lead Enrichment",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://agentos-d:3100/api/policy/check",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": {
+          "action": {
+            "request_id": "={{ $json.id }}",
+            "proposed_at": "={{ now() }}",
+            "tenant_id": "={{ $vars.tenant_id }}",
+            "actor": {
+              "id": "={{ $json.id }}",
+              "type": "system",
+              "label": "n8n-workflow"
+            },
+            "action_kind": "lead.enrichment",
+            "payload": {
+              "source": "={{ $json.lead_source }}",
+              "contact_fields": {
+                "property_interest": "={{ $json.property_interest }}",
+                "estimated_home_value": "={{ $json.estimated_home_value }}"
+              },
+              "consent_provenance": "={{ $json.consent_record_ref }}"
+            },
+            "context": {
+              "vault_refs": [],
+              "conversation_refs": [],
+              "project_refs": []
+            },
+            "contact": {
+              "id": "={{ $json.id }}",
+              "type": "person",
+              "label": "={{ $json.name || $json.email }}"
+            },
+            "channel": "api",
+            "jurisdiction": "={{ $json.target_jurisdiction || 'US-OH' }}",
+            "consent": {
+              "status": "={{ $json.consent_verified ? 'verified' : 'none' }}",
+              "source": "={{ $json.consent_source || 'none' }}",
+              "captured_at": "={{ $json.consent_date }}",
+              "record_ref": "={{ $json.consent_record_ref }}"
+            },
+            "metadata": {
+              "reviewed": false
+            }
+          },
+          "rule_pack_ids": ["real-estate-tcpa-fair-housing"],
+          "mode": "={{ $vars.policy_mode || 'enforce' }}",
+          "tenant_id": "={{ $vars.tenant_id }}"
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "policy-check",
+      "name": "Policy Check",
+      "type": "agentworks.policy_check",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "allowed",
+              "leftValue": "={{ $json.decision }}",
+              "rightValue": "allow",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "branch-decision",
+      "name": "Branch on Decision",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://agentos-d:3100/api/outbound/queue",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": {
+          "contact_id": "={{ $('Lead Enrichment').first().json.id }}",
+          "message_template": "Hi {{ $json.contact.label }}, we have a new listing that matches your interest. Reply STOP to unsubscribe.",
+          "action_kind": "outbound.sms",
+          "priority": "normal"
+        },
+        "options": {}
+      },
+      "id": "queue-outbound",
+      "name": "Queue Outbound SMS",
+      "type": "agentworks.dispatch",
+      "typeVersion": 1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://agentos-d:3100/api/approval-queue",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": {
+          "request_id": "={{ $('Policy Check').first().json.request_id }}",
+          "contact_id": "={{ $('Lead Enrichment').first().json.id }}",
+          "action_kind": "lead.enrichment",
+          "rule_pack_ids": ["real-estate-tcpa-fair-housing"],
+          "decisions": "={{ $('Policy Check').first().json.decisions }}",
+          "missing_data": "={{ $('Policy Check').first().json.missing_data }}"
+        },
+        "options": {}
+      },
+      "id": "route-to-review",
+      "name": "Route to Approval Queue",
+      "type": "agentworks.dispatch",
+      "typeVersion": 1,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Log the blocked decision and the reason\nconst policyResult = $('Policy Check').first().json;\nconst contact = $('Lead Enrichment').first().json;\nconsole.log('BLOCKED lead enrichment for contact:', contact.email || contact.id);\nconsole.log('Decision:', JSON.stringify(policyResult.decision, null, 2));\nreturn [{ json: { logged: true, contact_id: contact.id, decision: policyResult.decision } }];"
+      },
+      "id": "log-blocked",
+      "name": "Log Blocked",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 600]
+    }
+  ],
+  "connections": {
+    "Contact Created": {
+      "main": [
+        [
+          {
+            "node": "Lead Enrichment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Enrichment": {
+      "main": [
+        [
+          {
+            "node": "Policy Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Policy Check": {
+      "main": [
+        [
+          {
+            "node": "Branch on Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Branch on Decision": {
+      "main": [
+        [
+          {
+            "node": "Queue Outbound SMS",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route to Approval Queue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Blocked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1",
+  "id": "real-estate-lead-enrichment-workflow",
+  "tags": [
+    {
+      "name": "real-estate"
+    },
+    {
+      "name": "compliance"
+    },
+    {
+      "name": "tcpa"
+    }
+  ]
+}

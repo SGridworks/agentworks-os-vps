@@ -1,0 +1,18 @@
+export { createPolicyRouter } from "./policy.js";
+export { createScannerRouter } from "./scanner.js";
+export { createApprovalQueueRouter } from "./approval-queue.js";
+export { createActionRouter } from "./action.js";
+export { createMcpRouter } from "./mcp.js";
+export { createTenantsRouter } from "./tenants.js";
+export { createComplianceRouter } from "./compliance.js";
+export { createWebhooksRouter, createWebhooksAdminRouter } from "./webhooks.js";
+export { createMemoryRouter } from "./memory.js";
+export { createDispatchRouter } from "./dispatch.js";
+export { createExecutionRouter } from "./execution.js";
+export { createCircuitBreakerRouter } from "./circuit-breaker.js";
+export { createAdminRouter } from "./admin.js";
+export { createIssuesRouter } from "./issues.js";
+export { createAgentRouter } from "./agent.js";
+export { createEvidenceReportsRouter } from "./evidence-reports.js";
+export { createOnboardingRouter } from "./onboarding.js";
+export { createCompatProxyRouter } from "./compat-proxy.js";

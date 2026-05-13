@@ -1,0 +1,400 @@
+# SMB Compliance Starter Pack
+# Version: 0.1.0-draft
+# Tier: Free
+# Credentialed by: SGridworks (not attorney-reviewed — see tier notice)
+# Jurisdiction: United States (generic SMB, all industries)
+#
+# This pack provides baseline compliance guardrails for SMBs using AI agents.
+# It is not tailored to any specific regulatory regime.
+# For industry-specific rules (real estate, healthcare, finance), see the
+# attorney-reviewed packs in the AgentWorks rule pack library.
+#
+# Required-data declarations: see each rule's `required_data` field.
+# If data is missing for a rule, the action is routed to review by default.
+
+schema_version: "awcp/v0.1"
+pack_id: "smb-starter"
+pack_version: "0.1.0"
+pack_name: "SMB Compliance Starter"
+pack_description: |
+  Baseline compliance guardrails for small businesses running AI agents.
+  Covers do-not-contact, consent provenance, content boundaries, and data handling.
+  Not a substitute for industry-specific legal advice.
+tier: free
+credentialed_by: "SGridworks"
+attorney_reviewed: false
+
+# Default disposition when required data is missing
+missing_data_disposition: route_to_review
+
+required_data_declarations:
+  - field: contact_id
+    description: "Unique identifier of the contact being contacted"
+    data_provider: substrate
+  - field: dnc_status
+    description: "Boolean — is contact on internal do-not-contact list?"
+    data_provider: customer_integration
+  - field: subscription_status
+    description: "subscribed | unsubscribed | none — email subscription status"
+    data_provider: customer_integration
+  - field: consent.verified
+    description: "Boolean — has consent been verified (not self-asserted)?"
+    data_provider: customer_integration
+  - field: consent.source
+    description: "written | verbal | inferred | none | unknown"
+    data_provider: customer_integration
+  - field: consent.date
+    description: "ISO-8601 date when consent was captured"
+    data_provider: customer_integration
+  - field: action_kind
+    description: "Type of action being performed"
+    data_provider: substrate
+  - field: message_body
+    description: "Content of the outbound message"
+    data_provider: substrate
+  - field: sender_id
+    description: "Sender identifier for outbound messages"
+    data_provider: substrate
+  - field: email_address
+    description: "Email address of the contact"
+    data_provider: substrate
+  - field: payload_content
+    description: "Content being submitted to LLM or external system"
+    data_provider: substrate
+  - field: targeting_criteria
+    description: "Structured object describing targeting parameters"
+    data_provider: customer_integration
+  - field: targeting_criteria_uses_protected_class
+    description: "Boolean — do targeting criteria reference protected class characteristics?"
+    data_provider: customer_integration
+  - field: offer_type
+    description: "financial | insurance | health | legal | other"
+    data_provider: customer_integration
+  - field: geographic_scope
+    description: "census_tract | zip_code | city | county | state"
+    data_provider: substrate
+  - field: target_demographic
+    description: "Target demographic description or null"
+    data_provider: customer_integration
+  - field: contact_age
+    description: "Age of the contact in years, if known"
+    data_provider: customer_integration
+  - field: contact_age_known
+    description: "Boolean — is the contact's age known?"
+    data_provider: customer_integration
+  - field: storage_destination
+    description: "local | external — where is contact data being written?"
+    data_provider: substrate
+  - field: data_retention_disclosure
+    description: "Boolean — has data retention disclosure been provided to the contact?"
+    data_provider: customer_integration
+  - field: target_jurisdiction
+    description: "US state code or US-Federal"
+    data_provider: substrate
+  - field: local_time_of_contact
+    description: "HH:MM in 24-hour format in contact's local timezone"
+    data_provider: substrate
+
+rules:
+
+  - rule_id: SMB-001
+    name: "Do-Not-Contact check"
+    description: |
+      Block outbound contacts to individuals on an internal do-not-contact list.
+      Does not replace external DNC registry checks.
+    required_data:
+      - contact_id
+      - dnc_status
+    disposition_when_missing: route_to_review
+    conditions:
+      - when:
+          dnc_status: true
+        then:
+          decision: block
+          reason: "Contact is on internal do-not-contact list"
+          citation: "Internal policy"
+
+  - rule_id: SMB-002
+    name: "Outbound SMS disclosure"
+    description: |
+      Any outbound SMS must include required sender identification.
+      Applies to all SMS sent via the substrate.
+    required_data:
+      - action_kind
+      - message_body
+      - sender_id
+    disposition_when_missing: block
+    conditions:
+      - when:
+          message_body_missing_required_disclosure: true
+        then:
+          decision: block
+          reason: "SMS missing required sender disclosure"
+          citation: "CTIA guidelines, carrier requirements"
+
+  - rule_id: SMB-003
+    name: "Email unsubscribe compliance"
+    description: |
+      Outbound marketing email must honor unsubscribe requests within 10 business days.
+      This rule checks that the action does not target a known unsubscribed contact.
+    required_data:
+      - contact_id
+      - email_address
+      - subscription_status
+    disposition_when_missing: route_to_review
+    conditions:
+      - when:
+          subscription_status: "unsubscribed"
+        then:
+          decision: block
+          reason: "Contact has previously unsubscribed"
+          citation: "CAN-SPAM Act, 15 U.S.C. § 7704"
+      - when:
+          subscription_status: "none"
+        then:
+          decision: route_to_review
+          reason: "No subscription status on file — verify consent before sending"
+          citation: "CAN-SPAM Act"
+
+  - rule_id: SMB-004
+    name: "No PII in agent prompts"
+    description: |
+      Block actions that would submit personally identifiable information
+      to an LLM without a documented processing basis.
+      PII here means: SSN, driver's license number, financial account number.
+    required_data:
+      - payload_content
+    disposition_when_missing: route_to_review
+    conditions:
+      - when:
+          payload_contains_pii:
+            - ssn
+            - drivers_license
+            - financial_account
+        then:
+          decision: block
+          reason: "Payload contains PII that requires processing-basis documentation"
+          citation: "State data privacy laws (CCPA, VCDPA, CPA et al.)"
+
+  - rule_id: SMB-005
+    name: "No protected-class discrimination"
+    description: |
+      Block actions that use protected-class membership as a targeting criterion.
+      Protected classes: race, color, national origin, religion, sex, familial status,
+      handicap, disability, age (40+), credit history, previous bankruptcy.
+    required_data:
+      - targeting_criteria
+    disposition_when_missing: route_to_review
+    conditions:
+      - when:
+          targeting_criteria_uses_protected_class: true
+        then:
+          decision: block
+          reason: "Action uses protected-class membership as a targeting criterion"
+          citation: "Fair Housing Act, 42 U.S.C. § 3601 et seq.; ECOA, 15 U.S.C. § 1691"
+
+  - rule_id: SMB-006
+    name: "Outbound content review for sensitive offers"
+    description: |
+      Route to review any outbound action that includes a financial or health offer
+      targeting a specific demographic or geographic area smaller than a county.
+    required_data:
+      - action_kind
+      - offer_type
+      - geographic_scope
+      - target_demographic
+    disposition_when_missing: allow
+    conditions:
+      - when:
+          offer_type: ["financial", "insurance", "health", "legal"]
+          geographic_scope: "census_tract"
+        then:
+          decision: route_to_review
+          reason: "Sensitive offer targeted to small geographic area — review for disparate impact"
+          citation: "Fair Housing Act; ECOA"
+
+  - rule_id: SMB-007
+    name: "Consent provenance for lead-gen"
+    description: |
+      Any lead-gen action that will result in outbound contact must have
+      a documented consent provenance record.
+    required_data:
+      - action_kind
+      - contact_id
+      - consent.verified
+      - consent.source
+      - consent.date
+    disposition_when_missing: route_to_review
+    conditions:
+      - when:
+          action_kind: "lead.generation"
+          consent.verified: false
+        then:
+          decision: block
+          reason: "Lead-gen action missing verified consent provenance"
+          citation: "TCPA, 47 U.S.C. § 227; FCC rules 47 C.F.R. § 64.1200"
+      - when:
+          action_kind: "lead.generation"
+          consent.verified: true
+        then:
+          decision: allow
+          reason: "Verified consent provenance on file"
+
+  - rule_id: SMB-008
+    name: "No action on minor contact"
+    description: |
+      Block any outbound contact action targeting a known minor.
+    required_data:
+      - contact_age
+    disposition_when_missing: allow
+    conditions:
+      - when:
+          contact_age_known: true
+          contact_age: "< 18"
+        then:
+          decision: block
+          reason: "Outbound contact to known minor — age-verified contact record required"
+          citation: "COPPA, 15 U.S.C. § 6501 et seq.; state child privacy laws"
+
+  - rule_id: SMB-009
+    name: "Data retention notice"
+    description: |
+      Any action that writes contact data to a persistent store must
+      include a data-retention disclosure in the action record.
+    required_data:
+      - action_kind
+      - storage_destination
+    disposition_when_missing: allow
+    conditions:
+      - when:
+          storage_destination: "external"
+          data_retention_disclosure: false
+        then:
+          decision: route_to_review
+          reason: "Data being written externally without retention disclosure — verify notice was provided"
+          citation: "CCPA, Cal. Civ. Code § 1798.100 et seq.; state privacy laws"
+
+  - rule_id: SMB-010
+    name: "Jurisdiction declaration"
+    description: |
+      Any outbound action must declare the target jurisdiction(s) for
+      regulatory applicability review.
+    required_data:
+      - action_kind
+      - target_jurisdiction
+    disposition_when_missing: route_to_review
+    conditions:
+      - when:
+          action_kind: ["outbound.sms", "outbound.email", "outbound.call", "outbound.direct_message"]
+          target_jurisdiction: null
+        then:
+          decision: route_to_review
+          reason: "Outbound action with no declared jurisdiction — cannot verify applicable rules"
+          citation: "TCPA; CAN-SPAM; state consumer protection laws"
+
+---
+
+# Test fixtures — dry-run cases
+# Run with: agentworks pack dry-run smb-starter-v0.1.yaml --fixture=<name>
+
+test_fixtures:
+
+  - name: "DNC contact — should block"
+    input:
+      action_kind: "outbound.email"
+      contact_id: "contact-001"
+      dnc_status: true
+      message_body: "Hi, we noticed your property is listed..."
+    expected:
+      decision: block
+      rule_id: "SMB-001"
+
+  - name: "Subscribed contact — should allow"
+    input:
+      action_kind: "outbound.email"
+      contact_id: "contact-002"
+      subscription_status: "subscribed"
+      message_body: "Your monthly statement is ready"
+    expected:
+      decision: allow
+      rule_id: null
+
+  - name: "Unsubscribed contact — should block"
+    input:
+      action_kind: "outbound.email"
+      contact_id: "contact-003"
+      subscription_status: "unsubscribed"
+    expected:
+      decision: block
+      rule_id: "SMB-003"
+
+  - name: "Lead-gen missing consent — should block"
+    input:
+      action_kind: "lead.generation"
+      contact_id: "contact-004"
+      consent:
+        verified: false
+        source: "none"
+        date: null
+    expected:
+      decision: block
+      rule_id: "SMB-007"
+
+  - name: "Lead-gen with verified consent — should allow"
+    input:
+      action_kind: "lead.generation"
+      contact_id: "contact-005"
+      consent:
+        verified: true
+        source: "web_form"
+        date: "2026-01-15"
+    expected:
+      decision: allow
+      rule_id: null
+
+  - name: "PII in prompt — should block"
+    input:
+      action_kind: "llm.completion"
+      payload_content: "Summarize this SSN: 123-45-6789"
+    expected:
+      decision: block
+      rule_id: "SMB-004"
+
+  - name: "Missing jurisdiction on SMS — should route to review"
+    input:
+      action_kind: "outbound.sms"
+      contact_id: "contact-006"
+      message_body: "Your appointment is tomorrow"
+      target_jurisdiction: null
+    expected:
+      decision: route_to_review
+      rule_id: "SMB-010"
+
+  - name: "Sensitive offer at census tract — should route to review"
+    input:
+      action_kind: "outbound.email"
+      offer_type: "financial"
+      geographic_scope: "census_tract"
+      target_demographic: null
+    expected:
+      decision: route_to_review
+      rule_id: "SMB-006"
+
+  - name: "Age unknown — default allow for SMB-008"
+    input:
+      action_kind: "outbound.email"
+      contact_id: "contact-007"
+      contact_age_known: false
+    expected:
+      decision: allow
+      rule_id: "SMB-008"
+
+  - name: "Known minor — should block"
+    input:
+      action_kind: "outbound.sms"
+      contact_id: "contact-008"
+      contact_age_known: true
+      contact_age: 16
+    expected:
+      decision: block
+      rule_id: "SMB-008"

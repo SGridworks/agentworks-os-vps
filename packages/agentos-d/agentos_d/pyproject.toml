@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentos-d"
+version = "0.1.0"
+description = "AgentWorks OS — MCP test client"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+# No direct CLI entry points; use: python -m agentos_d.mcp_test_client

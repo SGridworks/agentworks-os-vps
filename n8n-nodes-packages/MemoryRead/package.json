@@ -1,0 +1,9 @@
+{
+  "name": "n8n-nodes-agentworks-memory-read",
+  "version": "0.1.0",
+  "description": "AgentWorks Memory Read node for n8n",
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "nodes": ["MemoryRead.node.js"]
+  }
+}

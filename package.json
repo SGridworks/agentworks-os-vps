@@ -1,0 +1,31 @@
+{
+  "name": "agentworks-os",
+  "version": "0.1.9",
+  "private": true,
+  "description": "AgentWorks OS \u2014 AI compliance firewall for regulated SMBs",
+  "type": "module",
+  "scripts": {
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r --workspace-concurrency=1 test",
+    "test:e2e": "vitest run tests/substrate-e2e.test.ts",
+    "test:vps-e2e": "node scripts/awos-vps-e2e.mjs",
+    "build": "pnpm -r build",
+    "dev": "pnpm --filter @agentworks/agentos-d dev",
+    "verify": "pnpm build && pnpm test:e2e"
+  },
+  "devDependencies": {
+    "@agentworks/n8n-nodes": "workspace:*",
+    "@agentworks/policy-engine": "workspace:*",
+    "@agentworks/shared": "workspace:*",
+    "@types/node": "^25.6.0",
+    "@vitest/coverage-v8": "^4.1.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.9"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild"
+    ]
+  }
+}

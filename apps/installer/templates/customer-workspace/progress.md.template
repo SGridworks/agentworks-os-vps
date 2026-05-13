@@ -1,0 +1,30 @@
+# Task Progress Log
+
+## Active
+
+### TASK-001: <title>
+- **Status:** in_progress
+- **Opened:** YYYY-MM-DD
+- **Goal:** <one-line description>
+- **Acceptance:**
+  - [ ] criterion 1
+  - [ ] criterion 2
+- **Notes:**
+  - <timestamp> — started
+  - <timestamp> — checkpoint
+
+## Completed
+
+### TASK-000: <title>
+- **Status:** done
+- **Closed:** YYYY-MM-DD
+- **Deliverable:** <file path or URL>
+- **Verification:** <command + output>
+
+## Blocked
+
+### TASK-000: <title>
+- **Status:** blocked
+- **Blocked since:** YYYY-MM-DD
+- **Reason:** <why>
+- **Escalation:** <who or what is needed>
