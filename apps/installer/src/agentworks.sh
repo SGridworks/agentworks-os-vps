@@ -92,6 +92,12 @@ get_compose_cmd() {
 # compose() runs docker compose from the source root with the absolute data
 # and config dirs exported, matching what install.sh does. Bind mounts in
 # docker-compose.yml resolve under $AGENTWORKS_DIR rather than the source dir.
+awos_compose_project_name() {
+  local raw
+  raw="$(basename "$AGENTWORKS_DIR")"
+  printf '%s' "$raw" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9_-' '-' | sed 's/^-*//;s/-*$//'
+}
+
 compose() {
   local cc
   cc=$(get_compose_cmd)
@@ -100,6 +106,7 @@ compose() {
   ( cd "$SOURCE_DIR" \
     && AGENTWORKS_DATA_DIR="$DATA_DIR" \
        AGENTWORKS_CONFIG_DIR="$CONFIG_DIR" \
+       COMPOSE_PROJECT_NAME="$(awos_compose_project_name)" \
        $cc "${env_args[@]}" "$@" )
 }
 
@@ -274,7 +281,36 @@ cmd_backup() {
 # -----------------------------------------------------------------------------
 cmd_restore() {
   require_installed
-  local input="${1:-}"
+  local input=""
+
+  # Accept both forms: `restore <file>` and `restore --input <file>`.
+  # `--input=<file>` and `-i <file>` also work.
+  while (( $# > 0 )); do
+    case "$1" in
+      --input)        input="${2:-}"; shift 2 ;;
+      --input=*)      input="${1#--input=}"; shift ;;
+      -i)             input="${2:-}"; shift 2 ;;
+      -h|--help)
+        echo "Usage: agentworks restore --input <file.tar.gz>"
+        echo "       agentworks restore <file.tar.gz>"
+        return 0
+        ;;
+      --*)
+        log_error "Unknown option: $1"
+        log_error "Usage: agentworks restore --input <file.tar.gz>"
+        exit 1
+        ;;
+      *)
+        if [[ -z "$input" ]]; then
+          input="$1"
+        else
+          log_error "Unexpected extra argument: $1"
+          exit 1
+        fi
+        shift
+        ;;
+    esac
+  done
 
   if [[ -z "$input" ]]; then
     log_error "Usage: agentworks restore --input <file.tar.gz>"
@@ -404,7 +440,16 @@ USAGE
   fi
   if [[ -z "$node_path" || ! -x "$node_path" ]]; then
     log_error "node executable not found on PATH."
-    log_error "Install Node.js (>=18) and re-run, or set node on PATH for the user that runs Claude."
+    log_error ""
+    log_error "The MCP stdio bridge is a JavaScript program; configuring Claude Desktop"
+    log_error "or Claude Code to talk to AgentWorks requires Node.js >= 18 on the host."
+    log_error ""
+    log_error "Install Node.js:"
+    log_error "  macOS:        brew install node"
+    log_error "  Ubuntu/Deb:   curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && sudo apt-get install -y nodejs"
+    log_error "  nvm (any OS): https://github.com/nvm-sh/nvm  (then: nvm install --lts)"
+    log_error ""
+    log_error "Then re-run: agentworks mcp configure"
     exit 1
   fi
 

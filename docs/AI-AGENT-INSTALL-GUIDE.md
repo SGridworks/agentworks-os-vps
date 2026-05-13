@@ -126,13 +126,23 @@ The MCP bridge lets a coding agent read/write the vault and submit actions throu
 
 Ask the operator:
 
-> *"Which MCP client should I wire up first? Options: Claude Desktop, Cursor, Codex CLI, or skip. Default Claude Desktop."*
+> *"Which MCP client should I wire up first? Options: Claude Desktop, Claude
+> Code, both, or skip. Default Claude Desktop. (Cursor and Codex CLI also
+> support MCP — see docs/install-runbook.md for stdio bridge config.)"*
 
-The wrapper handles platform-specific config:
+The wrapper handles platform-specific config for the supported targets
+(`claude-desktop`, `claude-code`, `both`):
 
 ```bash
-agentworks mcp configure
+agentworks mcp configure --target claude-desktop
+# or
+agentworks mcp configure --target claude-code
+# or
+agentworks mcp configure --target both
 ```
+
+For Cursor or Codex CLI, point them at the same stdio bridge manually — see
+[install-runbook.md](./install-runbook.md#cursor) for the exact config.
 
 Reads the active platform's Claude config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, `~/.config/Claude/claude_desktop_config.json` on Linux), merges in the AgentWorks server entry (does NOT clobber other MCP servers), and points it at the bridge installed under the source clone.
 

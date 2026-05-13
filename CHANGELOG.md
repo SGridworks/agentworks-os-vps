@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.9-vps] — 2026-05-13
+
+First clean public release after the OSS launch-prep refactor. Ships a
+default-on admin UI, loopback-bound host ports, a VPS install runbook, and a
+scripted full-stack E2E verification path. Includes the fixes called out by
+the pre-release adversarial audit.
+
+### Fixed
+
+- `apps/installer/src/install.sh` preflight now resolves both `docker compose`
+  (v2) and legacy `docker-compose`, and the installer's `compose()` helper uses
+  whichever was detected. Previously hosts with only the legacy v1 CLI passed
+  preflight but failed during pull/up.
+- `agentworks mcp configure` emits an actionable error when host `node` is
+  missing, including OS-specific install hints. Install runbook now lists
+  Node.js 18+ as a prerequisite for that step.
+- `docs/install-runbook.md` Cursor and Codex CLI sections now wire the bundled
+  MCP stdio bridge (`packages/agentos-d/dist/bin/mcp-stdio.js`) instead of
+  pointing clients at the daemon's HTTP endpoint directly.
+- `docs/AI-AGENT-INSTALL-GUIDE.md` MCP-client decision prompt matches the
+  wrapper's actual targets (`claude-desktop`, `claude-code`, `both`), with a
+  pointer to install-runbook for Cursor/Codex.
+- `agentworks restore` accepts both `restore <file>` and
+  `restore --input <file>` (also `--input=<file>` and `-i <file>`); the
+  documented flag form now matches the parser.
+- `docker-compose.yml` no longer hardcodes `container_name`/`name` on every
+  service, network, or volume. `compose()` in both the installer and the
+  wrapper sets `COMPOSE_PROJECT_NAME` from `AGENTWORKS_DIR`, so two parallel
+  installs on the same Docker host (different `AGENTWORKS_DIR` paths) don't
+  collide on resource names.
+
+### Added
+
+- `scripts/awos-vps-e2e.mjs` — full-stack E2E (`pnpm test:vps-e2e`) exercising
+  preflight, tenant/company/project/agent creation, issue lifecycle, dispatch
+  + wakeup, policy `route_to_review` queueing, scanner submit/poll, and
+  cross-record visibility.
+- `docs/e2e-verification.md` — operator-facing guide for running the E2E
+  against a live install (loopback or SSH-tunneled).
+
+### Known limitations
+
+- The smoke-test script (`apps/installer/scripts/smoke-test.sh`) still creates
+  a `smoke-test` tenant that persists between runs. Repeated runs accumulate
+  tenants visible in the admin UI. Deferred to a future release; clean up
+  manually if you smoke-test repeatedly.
+- Real-VPS install verification for this release was performed against a
+  local OrbStack docker-compose stack on canonical ports, not on an actual
+  remote VPS. The bundled E2E passed end-to-end against that stack.
+
 ## [0.1.9] — 2026-05-05
 
 Patch release focused on release hardening, stale-update safety, and clean

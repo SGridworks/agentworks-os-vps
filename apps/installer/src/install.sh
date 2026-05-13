@@ -78,13 +78,18 @@ check_docker() {
 }
 
 check_docker_compose() {
-  if ! docker compose version &>/dev/null && ! command -v docker-compose &>/dev/null; then
+  if docker compose version &>/dev/null; then
+    COMPOSE_CMD=(docker compose)
+  elif command -v docker-compose &>/dev/null; then
+    COMPOSE_CMD=(docker-compose)
+  else
     log_error "Docker Compose is not installed."
     exit 1
   fi
   local compose_version
-  compose_version=$(docker compose version --short 2>/dev/null || docker-compose --version | sed -nE 's/.*[Vv]ersion[[:space:]]+([0-9]+\.[0-9]+).*/\1/p' | head -1)
-  log_info "Docker Compose version: ${compose_version}"
+  compose_version=$("${COMPOSE_CMD[@]}" version --short 2>/dev/null \
+    || "${COMPOSE_CMD[@]}" --version | sed -nE 's/.*[Vv]ersion[[:space:]]+([0-9]+\.[0-9]+).*/\1/p' | head -1)
+  log_info "Docker Compose version: ${compose_version} (cli: ${COMPOSE_CMD[*]})"
 }
 
 check_curl() {
@@ -340,12 +345,23 @@ acquire_source() {
 # compose() runs `docker compose` from the source root with the absolute data
 # and config dirs exported, so bind-mount paths in docker-compose.yml resolve
 # under $AGENTWORKS_DIR rather than relative to the source checkout.
+#
+# COMPOSE_PROJECT_NAME is derived from AGENTWORKS_DIR so two installs on the
+# same host (different AGENTWORKS_DIR) don't collide on container/network
+# names. Docker normalizes project names: lowercase, [a-z0-9_-] only.
 # -----------------------------------------------------------------------------
+awos_compose_project_name() {
+  local raw
+  raw="$(basename "${AGENTWORKS_DIR}")"
+  printf '%s' "${raw}" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9_-' '-' | sed 's/^-*//;s/-*$//'
+}
+
 compose() {
   ( cd "${SOURCE_DIR}" \
     && AGENTWORKS_DATA_DIR="${DATA_DIR}" \
        AGENTWORKS_CONFIG_DIR="${CONFIG_DIR}" \
-       docker compose --env-file "${ENV_FILE}" "$@" )
+       COMPOSE_PROJECT_NAME="$(awos_compose_project_name)" \
+       "${COMPOSE_CMD[@]}" --env-file "${ENV_FILE}" "$@" )
 }
 
 # -----------------------------------------------------------------------------

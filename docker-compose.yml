@@ -24,7 +24,6 @@ services:
     # Override with AGENTWORKS_IMAGE_REGISTRY=docker.io/agentworks for a
     # private mirror, or AGENTWORKS_VERSION to pin a different release.
     image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/agentworks}/agentos-d:${AGENTWORKS_VERSION:-0.1.9}
-    container_name: agentos-d
     restart: unless-stopped
     ports:
       - "127.0.0.1:7710:7710"   # REST + MCP
@@ -76,7 +75,6 @@ services:
   # --------------------------------------------------------------------------
   postgres:
     image: postgres:16-alpine
-    container_name: agentos-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-agentworks}
@@ -100,7 +98,6 @@ services:
       context: ./packages/scanner-worker
       dockerfile: Dockerfile
     image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/agentworks}/scanner-worker:${AGENTWORKS_VERSION:-0.1.9}
-    container_name: scanner-worker
     restart: unless-stopped
     ports:
       - "127.0.0.1:3101:3101"   # Health + findings API
@@ -145,7 +142,6 @@ services:
     build:
       context: .
       dockerfile: packages/n8n-nodes/Dockerfile
-    container_name: agentworks-n8n
     restart: unless-stopped
     ports:
       - "127.0.0.1:5678:5678"   # n8n UI
@@ -182,7 +178,6 @@ services:
       context: .
       dockerfile: packages/admin-ui/Dockerfile
     image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/agentworks}/admin-ui:${AGENTWORKS_VERSION:-0.1.9}
-    container_name: agentworks-admin-ui
     restart: unless-stopped
     ports:
       - "127.0.0.1:3000:3000"
@@ -206,12 +201,10 @@ services:
 # ------------------------------------------------------------------------------
 networks:
   agentworks:
-    name: agentworks
     driver: bridge
 
 # ------------------------------------------------------------------------------
 # Volumes
 # ------------------------------------------------------------------------------
 volumes:
-  agentworks-postgres-data:
-    name: agentworks-postgres-data
+  agentworks-postgres-data: {}

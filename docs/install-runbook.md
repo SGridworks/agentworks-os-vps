@@ -101,6 +101,12 @@ curl -fsSI http://127.0.0.1:3000/mission-control
 
 ## Step 4 — Connect an Agent via MCP
 
+> **Prerequisite:** `agentworks mcp configure` runs a JavaScript stdio bridge on
+> the host, so it needs **Node.js 18+** on `PATH`. Install with `brew install
+> node` (macOS), `apt install nodejs` (Debian/Ubuntu 22.04+) or via
+> [nvm](https://github.com/nvm-sh/nvm). The daemon itself runs in Docker and
+> does not require host Node.
+
 ### Claude Desktop
 
 1. Run:
@@ -121,13 +127,35 @@ If AgentWorks OS is connected, Claude will return vault content. An empty vault 
 
 ### Cursor
 
-Cursor Settings → Features → MCP → Add server URL: `http://localhost:7710`
+Cursor expects an MCP **stdio** transport, not a raw HTTP URL. Wire the bundled
+stdio bridge into your Cursor MCP config:
+
+```jsonc
+{
+  "mcpServers": {
+    "agentworks": {
+      "command": "node",
+      "args": ["~/.agentworks/source/packages/agentos-d/dist/bin/mcp-stdio.js"],
+      "env": { "AGENTOS_API_URL": "http://localhost:7710" }
+    }
+  }
+}
+```
+
+Restart Cursor after editing the config.
 
 ### Codex CLI
 
+Codex MCP also uses stdio. Register the bridge:
+
 ```bash
-codex mcp add agentworks http://localhost:7710
+codex mcp add agentworks \
+  -- node ~/.agentworks/source/packages/agentos-d/dist/bin/mcp-stdio.js
 ```
+
+The HTTP endpoint `http://localhost:7710/api/mcp` is JSON-RPC over HTTP and is
+intended for clients that speak HTTP MCP directly (custom agents, the admin UI
+proxy). Cursor and Codex CLI both require stdio — use the bridge above.
 
 ### Custom Agents (REST)
 
