@@ -51,6 +51,9 @@ services:
       # container layer) instead of /data (the bind mount), and loses every tenant,
       # vault page, and audit-log row on the next 'docker compose down'.
       AGENTOS_DATA_DIR: /data
+      # Agent instruction files edited through the Admin UI/API. Keep them
+      # under /data so container recreates do not wipe operator-authored files.
+      AWOS_AGENTS_ROOT: /data/agents
       AGENTWORKS_SESSION_SECRET: ${AGENTWORKS_SESSION_SECRET}
       AGENTOS_EXECUTION_DATABASE_URL: postgres://${POSTGRES_USER:-agentworks}:${POSTGRES_PASSWORD:-agentworks-local}@postgres:5432/${POSTGRES_DB:-agentworks}
       # Scanner sidecar URL (config.ts reads SCANNER_SIDECAR_URL; default

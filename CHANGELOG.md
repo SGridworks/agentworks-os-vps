@@ -253,6 +253,14 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
 - Installer and MCP docs now use the real v0.1.9 GitHub Release asset URL,
   current Codex MCP verification command, and the mounted rule-pack path.
 
+### Fixed (audit round 16)
+
+- Persisted Admin UI/API agent instruction files by setting `AWOS_AGENTS_ROOT`
+  to `/data/agents` in Docker installs, keeping operator-authored
+  instructions under the existing data bind mount across container recreates.
+- Corrected the failed-update rollback runbook to update both the source
+  checkout and persisted `AGENTWORKS_VERSION` before recreating services.
+
 ### Known limitations
 
 - Real-VPS install verification for this release was performed against a

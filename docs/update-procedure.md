@@ -70,12 +70,21 @@ agentworks status
 
 ## Reverting a failed update
 
-If the update fails before migrations or data changes, return to the previous tag from the source clone and restart:
+If the update fails before migrations or data changes, return to the previous
+tag from the source clone, persist that same version in `.env`, and restart:
 
 ```bash
 cd ~/.agentworks/source
 git tag --sort=-version:refname | head
-git checkout <previous-good-tag>
+PREVIOUS_GOOD_TAG=<previous-good-tag>
+git checkout "$PREVIOUS_GOOD_TAG"
+PREVIOUS_GOOD_VERSION="${PREVIOUS_GOOD_TAG#v}"
+awk -v v="$PREVIOUS_GOOD_VERSION" '
+  /^AGENTWORKS_VERSION=/ { print "AGENTWORKS_VERSION=" v; found=1; next }
+  { print }
+  END { if (!found) print "AGENTWORKS_VERSION=" v }
+' ~/.agentworks/config/.env > ~/.agentworks/config/.env.tmp
+mv ~/.agentworks/config/.env.tmp ~/.agentworks/config/.env
 agentworks restart
 ~/.agentworks/source/apps/installer/scripts/smoke-test.sh
 ```
