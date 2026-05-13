@@ -8,6 +8,7 @@ import {
   listTenants,
   listEvidenceReports,
   generateEvidenceReport,
+  downloadEvidenceReport,
   type EvidenceReportRow,
 } from '@/lib/api';
 import { Copy, Download } from 'lucide-react';
@@ -17,6 +18,10 @@ function fmtBytes(n: number): string {
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
   if (n < 1024 * 1024 * 1024) return `${(n / 1024 / 1024).toFixed(1)} MB`;
   return `${(n / 1024 / 1024 / 1024).toFixed(2)} GB`;
+}
+
+function dateOnlyToIsoStart(date: string): string {
+  return `${date}T00:00:00.000Z`;
 }
 
 export default function EvidenceV2() {
@@ -52,13 +57,34 @@ export default function EvidenceV2() {
     }
     setGenerating(true);
     try {
-      await generateEvidenceReport({ tenantId, periodStart, periodEnd });
+      await generateEvidenceReport({
+        tenantId,
+        periodStart: dateOnlyToIsoStart(periodStart),
+        periodEnd: dateOnlyToIsoStart(periodEnd),
+      });
       setShowGen(false);
       await load(tenantId);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Generate failed');
     } finally {
       setGenerating(false);
+    }
+  }
+
+  async function download(row: EvidenceReportRow) {
+    try {
+      const blob = await downloadEvidenceReport(row.tenantId, row.periodStart, row.periodEnd);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `evidence-report-${row.periodStart.slice(0, 10)}-${row.periodEnd.slice(0, 10)}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setError(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Download failed');
     }
   }
 
@@ -141,6 +167,12 @@ export default function EvidenceV2() {
                       : <StatusPill kind="error">Failed</StatusPill>}
                   </td>
                   <td>
+                    <button
+                      className="btn btn-sm"
+                      onClick={() => download(r)}
+                    >
+                      <Download size={12} strokeWidth={1.6} />PDF
+                    </button>
                     <button
                       className="btn btn-sm"
                       title={r.pdfHash ?? 'no hash'}

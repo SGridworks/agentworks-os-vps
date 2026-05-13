@@ -217,6 +217,16 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
   optional Node/Corepack/pnpm requirements on the paths that actually need
   them.
 
+### Fixed (audit round 13)
+
+- Scanner migration docs now set `SCANNER_WATCH_DIRS` to container-visible
+  `/config/...` paths that match the compose mount, rather than host
+  `~/.agentworks/config/...` paths the scanner container cannot see.
+- Evidence Report dashboard generation now converts date-picker values to ISO
+  datetimes before calling `/api/evidence-reports/generate`.
+- Evidence Report download helper now calls the PDF route with
+  `tenant_id`/`from`/`to` query parameters and requests `application/pdf`.
+
 ### Known limitations
 
 - Real-VPS install verification for this release was performed against a

@@ -862,28 +862,27 @@ export async function verifyEvidenceReportHash(pdfBase64: string, expectedPdfHas
 }
 
 /**
- * Fetch the evidence report and return it as a Blob ready for download.
- *
- * Today the substrate serves a structured JSON digest. When the PDF
- * templating engine lands (AWO-74 et al), this helper switches to
- * Accept: application/pdf and returns the rendered PDF; callers don't change.
+ * Fetch the PDF evidence report bytes from the compliance route.
  */
 export async function downloadEvidenceReport(
   tenantId: string,
   periodStart: string,
   periodEnd: string,
 ): Promise<Blob> {
-  const url = `${BASE}/api/compliance/evidence-report?tenantId=${tenantId}&periodStart=${periodStart}&periodEnd=${periodEnd}`;
+  const q = new URLSearchParams({
+    tenant_id: tenantId,
+    from: periodStart,
+    to: periodEnd,
+  });
+  const url = `${BASE}/api/compliance/evidence-report?${q.toString()}`;
   const res = await fetch(url, {
-    headers: { Accept: 'application/json' },
+    headers: { Accept: 'application/pdf' },
   });
   if (!res.ok) {
     const body = await res.text().catch(() => '');
     throw new Error(`${res.status} ${res.statusText} — ${body}`);
   }
-  const json = await res.json();
-  const text = JSON.stringify(json, null, 2);
-  return new Blob([text], { type: 'application/json' });
+  return res.blob();
 }
 
 // ---------------------------------------------------------------------------

@@ -182,7 +182,7 @@ agentworks logs scanner-worker
 
 The scanner ran but didn't find any agent configs to scan.
 
-**Fix:** Scheduled watch scans are disabled until you configure `SCANNER_WATCH_DIRS` in `~/.agentworks/config/.env`. Add the absolute paths to your agent config directories, then run `agentworks restart scanner-worker`.
+**Fix:** Scheduled watch scans are disabled until you configure `SCANNER_WATCH_DIRS` in `~/.agentworks/config/.env`. Add container-visible paths under `/config` that correspond to directories in `~/.agentworks/config`, for example `/config/claude:/config/cursor`, then run `agentworks restart scanner-worker`.
 
 ---
 

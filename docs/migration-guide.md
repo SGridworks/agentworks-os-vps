@@ -141,10 +141,13 @@ cp ~/path/to/your/.cursorrules ~/.agentworks/config/cursor/
 ```
 
 3. Register them with the scanner. Scheduled watch scans are disabled by
-   default; add explicit watch paths to `~/.agentworks/config/.env`:
+   default; add explicit container-visible watch paths to
+   `~/.agentworks/config/.env`. The host config directory is mounted into the
+   scanner container at `/config`, so use `/config/...` paths here, not
+   `$HOME/.agentworks/config/...` host paths:
 
 ```bash
-printf '\nSCANNER_WATCH_DIRS=%s\n' "$HOME/.agentworks/config/claude:$HOME/.agentworks/config/cursor" \
+printf '\nSCANNER_WATCH_DIRS=%s\n' "/config/claude:/config/cursor" \
   >> ~/.agentworks/config/.env
 agentworks restart scanner-worker
 ```
@@ -288,8 +291,9 @@ agentworks logs scanner-worker
 ```
 
 The scanner does not watch `/config/claude/` or `/config/cursor/` by default
-in v0.1.9. Copy configs into your chosen host paths, set
-`SCANNER_WATCH_DIRS`, restart `scanner-worker`, then trigger a manual scan.
+in v0.1.9. Copy configs into your chosen host paths under
+`~/.agentworks/config`, set `SCANNER_WATCH_DIRS` to the matching container
+paths under `/config`, restart `scanner-worker`, then trigger a manual scan.
 
 ---
 
