@@ -4,6 +4,7 @@
  *   GET  /api/tenants           — list all tenants
  *   POST /api/tenants           — create a tenant + seed vault directory
  *   GET  /api/tenants/:id       — get one tenant
+ *   DELETE /api/tenants/:id     — remove a tenant registry row + vault directory
  *
  * On create, the substrate:
  *   1. Generates a UUID for tenantId
@@ -17,12 +18,18 @@
 import { Router } from "express";
 import { z } from "zod";
 import { randomUUID } from "node:crypto";
-import { mkdirSync } from "node:fs";
-import { join } from "node:path";
+import { mkdirSync, rmSync } from "node:fs";
+import { isAbsolute, join, relative } from "node:path";
 import { homedir } from "node:os";
 import { eq, desc } from "drizzle-orm";
 import { getDb } from "../db/index.js";
-import { tenants, type NewTenantRow } from "../db/schema.js";
+import {
+  tenantProviderConfigs,
+  tenantRulePackAssignments,
+  tenantWebhooks,
+  tenants,
+  type NewTenantRow,
+} from "../db/schema.js";
 import {
   assignPackToTenant,
   listAssignments,
@@ -41,6 +48,12 @@ const CreateTenantSchema = z.object({
 
 function defaultVaultRoot(): string {
   return process.env.VAULT_ROOT ?? join(homedir(), "vault");
+}
+
+function isSafeTenantVaultRoot(vaultRoot: string): boolean {
+  if (!isAbsolute(vaultRoot)) return false;
+  const rel = relative(defaultVaultRoot(), vaultRoot);
+  return rel !== "" && !rel.startsWith("..") && !isAbsolute(rel);
 }
 
 export function createTenantsRouter(_config: Config): Router {
@@ -115,6 +128,49 @@ export function createTenantsRouter(_config: Config): Router {
       return;
     }
     res.json(row);
+  });
+
+  router.delete("/:id", (req, res) => {
+    const id = req.params.id;
+    if (!id) {
+      res.status(400).json({ error: "invalid_request" });
+      return;
+    }
+
+    const db = getDb();
+    const row = db
+      .select({ id: tenants.id, vaultRoot: tenants.vaultRoot })
+      .from(tenants)
+      .where(eq(tenants.id, id))
+      .get();
+    if (!row) {
+      res.status(404).json({ error: "not_found" });
+      return;
+    }
+
+    if (!isSafeTenantVaultRoot(row.vaultRoot)) {
+      res.status(409).json({ error: "unsafe_vault_root" });
+      return;
+    }
+    try {
+      rmSync(row.vaultRoot, { recursive: true, force: true });
+    } catch (err) {
+      res.status(500).json({ error: "vault_delete_failed", message: String(err) });
+      return;
+    }
+
+    db
+      .delete(tenantRulePackAssignments)
+      .where(eq(tenantRulePackAssignments.tenantId, id))
+      .run();
+    db.delete(tenantWebhooks).where(eq(tenantWebhooks.tenantId, id)).run();
+    db
+      .delete(tenantProviderConfigs)
+      .where(eq(tenantProviderConfigs.tenantId, id))
+      .run();
+    db.delete(tenants).where(eq(tenants.id, id)).run();
+
+    res.status(204).send();
   });
 
   // -------------------------------------------------------------------------

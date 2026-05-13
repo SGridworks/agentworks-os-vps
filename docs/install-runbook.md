@@ -53,7 +53,7 @@ The script will:
 4. Generate secrets (admin password, session secret, hex DB password) into `~/.agentworks/config/{.env,secrets.json}` mode 600. **The admin password is in `~/.agentworks/config/secrets.json`.**
 5. `docker compose pull` (best effort — falls through to local build).
 6. `docker compose up -d --build`. First build is 5-15 minutes.
-7. Wait up to 120s for `/api/health` to return 200, then run the end-to-end smoke test (POST /api/tenants + POST /api/policy/check + scanner/n8n/admin health assertions).
+7. Wait up to 120s for `/api/health` to return 200, then run the end-to-end smoke test (create/delete disposable tenant + POST /api/policy/check + scanner/n8n/admin health assertions).
 
 If the script fails, see [Common Errors](#common-errors) at the end of this document.
 

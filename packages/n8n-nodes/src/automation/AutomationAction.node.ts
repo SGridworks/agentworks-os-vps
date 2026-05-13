@@ -68,7 +68,7 @@ const description: N8nNodeDescription = {
       displayName: "Daemon Base URL",
       name: "baseUrl",
       type: "string",
-      default: "http://127.0.0.1:7710",
+      default: "http://agentos-d:7710",
     },
   ],
 };
@@ -90,7 +90,7 @@ export class AutomationAction {
       if (companyId) params.companyId = companyId;
       const issueId = this.getNodeParameter("issueId", i, "") as string;
       if (issueId) params.issueId = issueId;
-      const baseUrl = this.getNodeParameter("baseUrl", i, "http://127.0.0.1:7710") as string;
+      const baseUrl = this.getNodeParameter("baseUrl", i, "http://agentos-d:7710") as string;
 
       const result = await runAutomationAction(params, { baseUrl });
       out.push({ json: { ...items[i]?.json, automation: result } });
@@ -114,4 +114,3 @@ function parseJsonParam(raw: unknown): Record<string, unknown> {
   if (typeof raw === "object" && raw !== null) return raw as Record<string, unknown>;
   return {};
 }
-

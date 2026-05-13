@@ -7,10 +7,8 @@ on:
       # tag (e.g. 'vendored', 'v-old') cannot trigger a release run before
       # the resolve-tag validation fails downstream.
       #
-      # GitHub Actions filter globs treat `*` as "zero or more chars except
-      # `/`", so `v[0-9]*` is "v then a digit then anything" — looser than
-      # a regex `v[0-9]+` would be, but resolve-tag's `case` validation
-      # below catches anything that isn't strict vN.N.N.
+      # GitHub Actions filter globs are intentionally broader than strict
+      # semver; resolve-tag below applies the anchored vN.N.N regex gate.
       - 'v[0-9]*.[0-9]*.[0-9]*'
   workflow_dispatch:
     inputs:
@@ -61,13 +59,10 @@ jobs:
           if [ -z "$tag" ]; then
             tag="${{ github.ref_name }}"
           fi
-          case "$tag" in
-            v[0-9]*.[0-9]*.[0-9]*) ;;
-            *)
-              echo "::error::release workflow requires a vN.N.N tag, got '$tag'. Dispatch with the 'ref' input set to the tag you want to release."
-              exit 1
-              ;;
-          esac
+          if [[ ! "$tag" =~ ^v[0-9]+[.][0-9]+[.][0-9]+$ ]]; then
+            echo "::error::release workflow requires a vN.N.N tag, got '$tag'. Dispatch with the 'ref' input set to the tag you want to release."
+            exit 1
+          fi
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
         with:

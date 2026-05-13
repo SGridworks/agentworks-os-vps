@@ -6,7 +6,7 @@ The AI compliance firewall for regulated small businesses.
 
 Agents (Claude Desktop, Cursor, Codex, ChatGPT via browser extension in v2) connect to AgentWorks OS over a local API. Every action the agent takes passes through a policy engine that checks it against rule packs you configure. Violations are either blocked with a plain‑English explanation or routed to a human approval queue.
 
-The substrate also gives agents persistent memory of your business, a durable system of record for their outputs, and an embedded security scanner that audits agent configurations nightly.
+The substrate also gives agents persistent memory of your business, a durable system of record for their outputs, and an embedded security scanner for posture review of agent configurations.
 
 ## Who it's for
 
@@ -39,7 +39,7 @@ cd agentworks-os-vps
   && ./apps/installer/scripts/smoke-test.sh
 ```
 
-If both scripts exit 0 — done. The installer prints `Smoke test PASSED` at the end; the standalone smoke run is a second gate that POSTs a tenant and a `policy.check` end‑to‑end.
+If both scripts exit 0 — done. The installer prints `Smoke test PASSED` at the end; the standalone smoke run is a second gate that creates a disposable tenant, runs a `policy.check` end‑to‑end, and deletes the disposable tenant.
 
 **Admin dashboard included.** Default install starts the daemon, scanner, n8n, Postgres, and the browser dashboard at `http://localhost:3000`. All host ports are loopback-bound by default; on a VPS, use an SSH tunnel or authenticated TLS reverse proxy instead of opening service ports directly.
 
@@ -67,7 +67,7 @@ For a human‑oriented walk‑through: [docs/install-runbook.md](./docs/install-
 | Compliance engine | YAML rule packs with allow / block / route‑to‑review outcomes. Ships with TCPA and fair‑housing packs for real estate. |
 | Human approval queue | Rule packs can return “route to review.” Approvers can inspect queued actions through the API and, when enabled, the admin UI. |
 | Workflow automation | Bundled n8n with substrate‑aware nodes (memory read/write, policy check, dispatch). |
-| Security scanner | AgentGuard scanner runs nightly on your agent configs (CLAUDE.md, .cursorrules, MCP configs). Findings surface as Issues. |
+| Security scanner | AgentGuard scanner reviews submitted agent configs (CLAUDE.md, .cursorrules, MCP configs). Scheduled watch scans require setting `SCANNER_WATCH_DIRS`. Findings surface through scanner APIs and admin views. |
 | Compliance evidence report | Monthly PDF summarizing policy decisions, approval‑queue activity, and scanner findings. Signed and hash‑chained. |
 
 ## What’s NOT in v1

@@ -107,11 +107,12 @@ From the installed source tree:
 The smoke test is the release-grade install check. It:
 
 - polls `/api/health`
-- creates a tenant with `POST /api/tenants`
+- creates a disposable tenant with `POST /api/tenants`
 - evaluates a test action with `POST /api/policy/check`
 - verifies scanner `/health`
 - verifies n8n `/healthz`
 - verifies admin-ui `/mission-control`
+- deletes the disposable smoke tenant before exit
 
 Scanner, n8n, and admin-ui are fatal by default in v0.1.9. Only set `SMOKE_SCANNER_OPTIONAL=1`, `SMOKE_N8N_OPTIONAL=1`, or `SMOKE_ADMIN_OPTIONAL=1` for narrow daemon-only debugging.
 

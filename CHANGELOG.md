@@ -11,7 +11,7 @@ First public release of AgentWorks OS from the dedicated
 [`SGridworks/agentworks-os-vps`](https://github.com/SGridworks/agentworks-os-vps)
 repository. Ships a default-on admin UI, loopback-bound host ports, a VPS
 install runbook, and a scripted full-stack E2E verification path. Includes
-the fixes called out by two rounds of the pre-release adversarial audit.
+the fixes called out by successive rounds of the pre-release adversarial audit.
 
 > Predecessor: the archived
 > [`SGridworks/agentworks-os`](https://github.com/SGridworks/agentworks-os)
@@ -129,8 +129,7 @@ the fixes called out by two rounds of the pre-release adversarial audit.
 ### Fixed (audit round 8)
 
 - `apps/installer/scripts/smoke-test.sh` no longer creates a persistent
-  smoke-test tenant. It uses an ephemeral UUID for the policy round-trip so
-  repeated release gates cannot pollute the normal Admin UI tenant list.
+  smoke-test tenant row that pollutes the normal Admin UI tenant list.
 - Dockerized Admin UI onboarding no longer attempts to write host editor MCP
   configs from inside the `agentos-d` container. First-run pairing now points
   operators to the host wrapper command, `agentworks mcp configure`, and the
@@ -146,6 +145,27 @@ the fixes called out by two rounds of the pre-release adversarial audit.
 - `packages/agentos-d/CLAUDE.md` now catalogs the daemon startup environment
   variables used by execution, legacy-adapter, dispatch, and Kimi-backed
   adapter paths.
+
+### Fixed (audit round 9)
+
+- `apps/installer/scripts/smoke-test.sh` no longer depends on host Python.
+  The script creates a real disposable tenant via `POST /api/tenants`, runs
+  the policy round-trip against that tenant, parses the response with shell
+  tools, and deletes the disposable tenant before exit.
+- `agentos-d` now supports `DELETE /api/tenants/:id` for operator cleanup of
+  tenant registry rows, associated rule-pack/webhook/provider config rows, and
+  the tenant vault directory.
+- README and scanner positioning docs no longer claim default nightly scanner
+  runs or Issue creation. They now describe submitted scans and configured
+  watch scans accurately.
+- The Automation n8n node now defaults to `http://agentos-d:7710` inside the
+  compose network, and the installer smoke test verifies all five AgentWorks
+  n8n nodes plus that Docker-default daemon URL.
+- Release workflow tag validation now uses an anchored `^vN.N.N$` regex, so
+  prerelease or suffixed tags cannot pass the release gate.
+- Backup/restore docs now match the wrapper's supported
+  `agentworks restore --input <file>` form, and agent-facing doc headers now
+  target v0.1.9.
 
 ### Known limitations
 

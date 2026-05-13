@@ -86,7 +86,11 @@ agentworks restore /path/to/agentworks-backup.tar.gz
 agentworks restore /tmp/agentworks-backup.tar.gz
 ```
 
-Known v0.1.9 CLI limit: `agentworks restore --input <file>` appears in the CLI help, but the wrapper currently accepts the backup path as the first positional argument.
+The wrapper also accepts the explicit input flag:
+
+```bash
+agentworks restore --input /path/to/agentworks-backup.tar.gz
+```
 
 After restore:
 

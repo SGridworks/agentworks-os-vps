@@ -7,7 +7,7 @@
 
 **Name:** Posture Review (not "continuous compliance")
 
-The AgentGuard scanner embedded in AgentWorks OS reviews your agent configurations — CLAUDE.md files, .cursorrules, MCP server settings — and surfaces findings as Issues in your admin dashboard. It runs on a configurable schedule (default: nightly).
+The AgentGuard scanner embedded in AgentWorks OS reviews your agent configurations — CLAUDE.md files, .cursorrules, MCP server settings — and surfaces findings through scanner APIs and admin views. Scheduled watch scans run only when the operator configures watch directories.
 
 **What it does:** snapshots your agent security posture and flags known-bad patterns, configuration errors, and excessive agency grants.
 
@@ -39,7 +39,7 @@ The AgentGuard scanner embedded in AgentWorks OS reviews your agent configuratio
 | Instead of | Use |
 |---|---|
 | "continuous compliance" | "posture review" |
-| "real-time monitoring" | "scheduled review" or "nightly scan" |
+| "real-time monitoring" | "scheduled review" or "configured watch scan" |
 | "compliance scanner" | "configuration security review" |
 | "scans your agents" | "reviews your agent configurations" |
 | "ensures compliance" | "surfaces configuration risks" |
@@ -49,9 +49,9 @@ The AgentGuard scanner embedded in AgentWorks OS reviews your agent configuratio
 
 ## Customer-Facing Explanation
 
-> AgentWorks includes a Posture Review scanner that periodically examines your agent configuration files — including CLAUDE.md, .cursorrules, and MCP server settings — and surfaces findings in your admin dashboard.
+> AgentWorks includes a Posture Review scanner that examines your agent configuration files — including CLAUDE.md, .cursorrules, and MCP server settings — and surfaces findings in scanner APIs and admin views.
 >
-> Posture Review is not real-time monitoring. It runs on a schedule you configure and produces a snapshot of your agent configurations at scan time. It does not block, intercept, or log agent actions in real time.
+> Posture Review is not real-time monitoring. It produces a snapshot of submitted agent configurations at scan time. Scheduled watch scans require configured watch directories. It does not block, intercept, or log agent actions in real time.
 >
 > Think of it like a security audit: it tells you what it found when it looked. It does not watch your agents work.
 

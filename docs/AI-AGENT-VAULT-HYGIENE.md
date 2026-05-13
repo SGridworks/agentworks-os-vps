@@ -10,7 +10,7 @@
 
 This file is operational: a six-stage cleanup loop with verifications, decision points, and explicit "don't touch this" rules.
 
-**Target version:** v0.1.1.
+**Target version:** v0.1.9.
 
 ---
 

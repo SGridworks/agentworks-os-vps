@@ -30,9 +30,9 @@ curl -fsSL https://get.agentworks.os/install.sh | bash -s -- --unattended
 3. **Generates secrets** — `AGENTWORKS_SESSION_SECRET`, admin password, DB password
 4. **Writes `~/.agentworks/.env`** — consumed by `docker compose`
 5. **Seeds rule-packs** — copies the default compliance packs into the volume
-6. **Starts services** — `agentos-d`, `scanner-worker`, `n8n`
+6. **Starts services** — `agentos-d`, `scanner-worker`, `n8n`, `postgres`, and `admin-ui`
 7. **Waits for health** — polls `http://localhost:7710/api/health` (up to 60s)
-8. **Creates default tenant** — via `POST /api/tenants`
+8. **Runs smoke test** — creates a disposable tenant, checks policy, scanner, n8n, admin, and postgres, then deletes the disposable tenant
 9. **Prints next steps** — URLs, credentials, and CLI commands
 
 ## Services
@@ -42,6 +42,7 @@ curl -fsSL https://get.agentworks.os/install.sh | bash -s -- --unattended
 | `agentos-d` | 7710 | Main substrate daemon (REST + MCP) |
 | `scanner-worker` | 3101 | Compliance scanner sidecar |
 | `n8n` | 5678 | Workflow automation |
+| `admin-ui` | 3000 | Browser dashboard |
 
 ## Post-Install
 

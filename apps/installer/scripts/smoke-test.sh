@@ -39,7 +39,20 @@ require_cmd() {
 }
 
 require_cmd curl
-require_cmd python3
+
+extract_json_string() {
+  local key="$1"
+  sed -n 's/.*"'"$key"'"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1
+}
+
+smoke_tenant_id=""
+cleanup_smoke_tenant() {
+  if [[ -n "${smoke_tenant_id:-}" ]]; then
+    curl -fsS -X DELETE "${DAEMON_URL}/api/tenants/${smoke_tenant_id}" >/dev/null 2>&1 \
+      || warn "Could not delete disposable smoke tenant ${smoke_tenant_id}; remove it from the admin tenant registry."
+  fi
+}
+trap cleanup_smoke_tenant EXIT
 
 # -----------------------------------------------------------------------------
 # Step 1 — daemon is reachable
@@ -65,10 +78,24 @@ if ! echo "$health_body" | grep -q '"status"[[:space:]]*:[[:space:]]*"ok"'; then
 fi
 
 # -----------------------------------------------------------------------------
-# Step 2 — allocate an ephemeral tenant id
+# Step 2 — create a disposable tenant through the public API
 # -----------------------------------------------------------------------------
-tenant_id=$(python3 -c 'import uuid; print(uuid.uuid4())')
-pass "Using ephemeral tenant id for smoke policy check: ${tenant_id}"
+info "POST ${DAEMON_URL}/api/tenants — creating disposable smoke tenant..."
+tenant_resp=$(curl -fsS -X POST "${DAEMON_URL}/api/tenants" \
+  -H 'content-type: application/json' \
+  -d '{"name":"Installer Smoke Test","description":"Disposable tenant created by apps/installer/scripts/smoke-test.sh","industry":"other"}' 2>&1) || {
+  fail "POST /api/tenants failed: $tenant_resp"
+  fail "Diagnose: docker compose logs agentos-d --tail 100"
+  exit 1
+}
+
+tenant_id=$(printf '%s' "$tenant_resp" | extract_json_string id)
+if [[ -z "$tenant_id" ]]; then
+  fail "POST /api/tenants response had no id field: $tenant_resp"
+  exit 1
+fi
+smoke_tenant_id="$tenant_id"
+pass "Created disposable smoke tenant: ${tenant_id}"
 
 # -----------------------------------------------------------------------------
 # Step 3 — policy.check round-trip
@@ -93,9 +120,7 @@ EOF
   exit 1
 }
 
-decision=$(printf '%s' "$policy_resp" \
-  | python3 -c 'import sys,json; d=json.load(sys.stdin); print(d.get("decision") or "")' 2>/dev/null) \
-  || decision=""
+decision=$(printf '%s' "$policy_resp" | extract_json_string decision)
 
 case "$decision" in
   allow|block|route_to_review)
@@ -239,6 +264,7 @@ if [[ "$n8n_optional" != "1" ]]; then
     "/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/memory/MemoryRead.node.js"
     "/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/memory/MemoryWrite.node.js"
     "/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/dispatch/Dispatch.node.js"
+    "/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/automation/AutomationAction.node.js"
   )
   # Find the n8n container by image label, regardless of compose project name.
   n8n_container="$(docker ps --filter 'label=com.docker.compose.service=n8n' --format '{{.ID}}' | head -1)"
@@ -257,7 +283,13 @@ if [[ "$n8n_optional" != "1" ]]; then
       fail "Diagnose: docker exec ${n8n_container} ls -R /opt/agentworks-extensions"
       exit 1
     fi
-    pass "AgentWorks n8n nodes load (4/4 .node.js files present)."
+    automation_node="/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/automation/AutomationAction.node.js"
+    if ! docker exec "$n8n_container" node -e "const fs=require('fs');const file='${automation_node}';const source=fs.readFileSync(file,'utf8');if(!source.includes('http://agentos-d:7710')){console.error('Automation node default daemon URL is not http://agentos-d:7710');process.exit(1);}fetch('http://agentos-d:7710/api/health').then(async r=>{if(!r.ok)throw new Error('HTTP '+r.status);const body=await r.json();if(body.status!=='ok')throw new Error('health status is not ok');}).catch(e=>{console.error(e.message);process.exit(1);})"; then
+      fail "Automation n8n node cannot reach the daemon at its Docker default URL."
+      fail "Diagnose: docker exec ${n8n_container} node -e \"fetch('http://agentos-d:7710/api/health').then(r=>console.log(r.status))\""
+      exit 1
+    fi
+    pass "AgentWorks n8n nodes load (5/5 .node.js files present; automation default URL works)."
   fi
 fi
 

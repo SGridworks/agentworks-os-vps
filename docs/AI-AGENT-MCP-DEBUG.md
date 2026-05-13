@@ -6,7 +6,7 @@
 
 **Companion doc:** [docs/mcp-integration.md](./mcp-integration.md) — canonical MCP wiring instructions. This guide is diagnostic — what to check when wiring is supposedly done but doesn't work.
 
-**Target version:** v0.1.1.
+**Target version:** v0.1.9.
 
 ---
 

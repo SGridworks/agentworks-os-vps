@@ -6,7 +6,7 @@
 
 **Companion doc (canonical schema reference):** [docs/rule-pack-authoring.md](./rule-pack-authoring.md). This file is operational — what to do, in what order, with verification. The companion is the schema dictionary.
 
-**Target version:** v0.1.1.
+**Target version:** v0.1.9.
 
 ---
 

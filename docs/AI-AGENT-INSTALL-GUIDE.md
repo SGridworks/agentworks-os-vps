@@ -109,6 +109,7 @@ Belt and suspenders — run the smoke test once more standalone to be sure:
 - POSTs `/api/tenants` and parses the returned tenant id
 - POSTs `/api/policy/check` for that tenant and asserts the response has a `decision` field of `allow`, `block`, or `route_to_review`
 - checks scanner-worker `/health`, n8n `/healthz`, and admin-ui `/mission-control` as fatal install gates by default
+- deletes the disposable smoke tenant before exit
 
 A fresh install with no rule packs loaded returns `route_to_review` — that is correct. The point of the smoke test is shape, not policy outcome.
 
