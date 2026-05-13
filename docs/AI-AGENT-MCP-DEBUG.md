@@ -94,13 +94,16 @@ Each client has its own config file. Read them — don't write them blindly.
 |---|---|
 | Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` |
 | Cursor | `~/.cursor/mcp.json` |
-| Codex CLI | `~/.codex/mcp.json` |
+| Codex CLI | `~/.codex/config.toml` via `codex mcp list/get/add/remove` |
 
 ```bash
-# pick the one the operator named:
+# For Claude Desktop or Cursor, pick the JSON file the operator named:
 CLIENT_CFG="$HOME/Library/Application Support/Claude/claude_desktop_config.json"
 test -f "$CLIENT_CFG" && echo "exists" || echo "missing"
 cat "$CLIENT_CFG" | head -40
+
+# Codex CLI is managed by command, not by hand-editing JSON:
+codex mcp list
 ```
 
 ### §3.2 Validate the config
@@ -229,10 +232,20 @@ The bridge expects MCP-protocol input on stdin; with `/dev/null` it will hand-sh
 
 If §1–§4 are clean and the client still says tools fail, the daemon is reachable but per-tool semantics are off. Test each one directly via REST first:
 
-### §5.1 memory.read
+### §5.1 Get a tenant ID
 
 ```bash
-curl -sS "http://127.0.0.1:7710/api/memory/read?tenantId=$TENANT_ID&key=hot" | head -c 500
+TENANT_ID="$(curl -fsS http://127.0.0.1:7710/api/tenants \
+  | python3 -c 'import json,sys; data=json.load(sys.stdin); items=data.get("items", data) if isinstance(data, dict) else data; print(items[0]["id"])')"
+echo "$TENANT_ID"
+```
+
+### §5.2 memory.read
+
+```bash
+curl -sS -X POST http://127.0.0.1:7710/api/memory/read \
+  -H "content-type: application/json" \
+  -d '{"tenantId":"'"$TENANT_ID"'","key":"hot"}' | head -c 500
 ```
 
 | Symptom | Cause |
@@ -241,7 +254,7 @@ curl -sS "http://127.0.0.1:7710/api/memory/read?tenantId=$TENANT_ID&key=hot" | h
 | `200` with empty body | Key doesn't exist. Not an error. |
 | `403` | Auth not forwarding (current v0.1.x: MCP route is open on localhost only; if you're getting 403, something else is in front of the daemon). |
 
-### §5.2 memory.write
+### §5.3 memory.write
 
 ```bash
 curl -sS -X POST http://127.0.0.1:7710/api/memory/write \
@@ -256,8 +269,10 @@ curl -sS -X POST http://127.0.0.1:7710/api/memory/write \
 Then confirm it lands:
 
 ```bash
-curl -sS "http://127.0.0.1:7710/api/memory/read?tenantId=$TENANT_ID&key=scratch/mcp-debug-test" | head -c 300
-ls -lt $HOME/vault/wiki/$TENANT_ID/scratch/mcp-debug-test.md 2>/dev/null
+curl -sS -X POST http://127.0.0.1:7710/api/memory/read \
+  -H "content-type: application/json" \
+  -d '{"tenantId":"'"$TENANT_ID"'","key":"scratch/mcp-debug-test"}' | head -c 300
+ls -lt "${AGENTWORKS_DIR:-$HOME/.agentworks}/data/vault/$TENANT_ID/scratch/mcp-debug-test.md" 2>/dev/null
 ```
 
 **Verify:** body matches what you just wrote, and the file exists on disk.
@@ -267,35 +282,48 @@ ls -lt $HOME/vault/wiki/$TENANT_ID/scratch/mcp-debug-test.md 2>/dev/null
 | `key escapes tenant subtree` | Key has `..` or starts with `/` — sanitize. |
 | Disk write fails | `VAULT_ROOT` mounted read-only or wrong path. Check `docker compose exec agentos-d env \| grep VAULT_ROOT` and `ls -ld <path>`. |
 
-Clean up after the test:
+Clean up after the test by replacing the scratch page with an empty body, or remove the file from the tenant vault path above if the operator permits direct filesystem cleanup:
 
 ```bash
-curl -sS -X DELETE "http://127.0.0.1:7710/api/memory/delete?tenantId=$TENANT_ID&key=scratch/mcp-debug-test"
+curl -sS -X POST http://127.0.0.1:7710/api/memory/write \
+  -H "content-type: application/json" \
+  -d '{"tenantId":"'"$TENANT_ID"'","key":"scratch/mcp-debug-test","body":"","mode":"replace"}'
 ```
 
-### §5.3 policy.check
+### §5.4 policy.check
 
 ```bash
 curl -sS -X POST http://127.0.0.1:7710/api/policy/check \
   -H "content-type: application/json" \
-  -d '{"tenantId":"'"$TENANT_ID"'","action":{"kind":"email.send","payload":{"to":"x@example.com","subject":"t","body":"t"}}}' \
+  -d '{
+    "tenantId": "'"$TENANT_ID"'",
+    "actorId": "mcp-debug-agent",
+    "actorType": "agent",
+    "actionKind": "email.send",
+    "payload": {"to":"x@example.com","subject":"t","body":"t"}
+  }' \
   | head -c 500
 ```
 
 Expect a `decision` field. If you get `route_to_review` and the operator expected `allow`, the rule packs are doing their job — that's not a bug.
 
-### §5.4 activity.log
+### §5.5 activity.log
 
 ```bash
-curl -sS -X POST http://127.0.0.1:7710/api/audit \
+curl -sS -X POST http://127.0.0.1:7710/api/action \
   -H "content-type: application/json" \
-  -d '{"tenantId":"'"$TENANT_ID"'","actor":"mcp-debug","action":"diagnostic.ping","detail":{"note":"debug"}}'
+  -d '{
+    "tenantId": "'"$TENANT_ID"'",
+    "actor": {"id":"mcp-debug","type":"agent","label":"MCP Debug"},
+    "actionKind":"diagnostic.ping",
+    "payloadSnapshot":{"note":"debug"}
+  }'
 ```
 
 Then read it back:
 
 ```bash
-curl -sS "http://127.0.0.1:7710/api/audit?tenantId=$TENANT_ID&limit=1" | head -c 500
+curl -sS "http://127.0.0.1:7710/api/action?tenantId=$TENANT_ID&limit=1" | head -c 500
 ```
 
 The entry you just wrote should be at the top.
@@ -341,7 +369,7 @@ If the writes are landing on disk but graph is empty even after rebuild, check t
 
 ```bash
 docker compose exec agentos-d env | grep -E "VAULT_ROOT|AGENTOS_DATA_DIR"
-ls -la $HOME/vault/wiki/$TENANT_ID/ | head
+ls -la "${AGENTWORKS_DIR:-$HOME/.agentworks}/data/vault/$TENANT_ID/" | head
 ```
 
 The v0.1.1 fix to `FileVaultStore.list()` follows symlinks — if you're on v0.1.0, upgrade.
@@ -404,7 +432,7 @@ python3 -c "import json; print(list(json.load(open('<config-path>'))['mcpServers
 ps aux | grep mcp-stdio-bridge | grep -v grep
 
 # 5. Tool calls
-curl -sS "http://127.0.0.1:7710/api/memory/read?tenantId=$TENANT_ID&key=hot"
+curl -sS -X POST http://127.0.0.1:7710/api/memory/read -H "content-type: application/json" -d '{"tenantId":"'"$TENANT_ID"'","key":"hot"}'
 curl -sS -X POST http://127.0.0.1:7710/api/policy/check -H "content-type: application/json" -d '...'
 ```
 

@@ -432,9 +432,26 @@ awos_compose_project_name() {
     | sed 's/^-*//;s/-*$//'
 }
 
+resolve_vault_host_dir() {
+  if [[ -n "${AGENTWORKS_VAULT_HOST_DIR:-}" ]]; then
+    printf '%s\n' "${AGENTWORKS_VAULT_HOST_DIR}"
+    return 0
+  fi
+  if [[ -f "${ENV_FILE}" ]]; then
+    local configured
+    configured="$(awk -F= '$1 == "AGENTWORKS_VAULT_HOST_DIR" { print substr($0, index($0, "=") + 1); exit }' "${ENV_FILE}" 2>/dev/null || true)"
+    if [[ -n "${configured}" ]]; then
+      printf '%s\n' "${configured}"
+      return 0
+    fi
+  fi
+  printf '%s\n' "${DATA_DIR}/vault"
+}
+
 compose() {
   ( cd "${SOURCE_DIR}" \
     && AGENTWORKS_DATA_DIR="${DATA_DIR}" \
+       AGENTWORKS_VAULT_HOST_DIR="$(resolve_vault_host_dir)" \
        AGENTWORKS_CONFIG_DIR="${CONFIG_DIR}" \
        AGENTWORKS_SOURCE_DIR="${SOURCE_DIR}" \
        COMPOSE_PROJECT_NAME="$(awos_compose_project_name)" \
@@ -477,6 +494,7 @@ generate_secrets() {
 # DO NOT COMMIT THIS FILE
 AGENTWORKS_VERSION=${INSTALLER_VERSION}
 AGENTWORKS_DATA_DIR=${DATA_DIR}
+AGENTWORKS_VAULT_HOST_DIR=${DATA_DIR}/vault
 AGENTWORKS_CONFIG_DIR=${CONFIG_DIR}
 AGENTWORKS_SOURCE_DIR=${SOURCE_DIR}
 AGENTWORKS_SESSION_SECRET=${session_secret}

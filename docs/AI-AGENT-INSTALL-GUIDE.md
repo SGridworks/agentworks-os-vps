@@ -169,7 +169,7 @@ that's `~/.agentworks/data/vault`. Three layouts make sense:
 > *"Three vault layouts. Which fits your situation?
 > A) Fresh vault, no shared content. I create a clean tenant dir and that's it. Default.
 > B) Existing vault, want to share it across tenants. I symlink shared subdirs into the tenant dir; the substrate's `FileVaultStore.list()` walks symlinks safely (cycle-detected via realpath dedup).
-> C) External vault path (`~/Documents/notes/`, etc.). I edit the compose bind mount so the daemon sees the external path at `/data/vault`."*
+> C) External vault path (`~/Documents/notes/`, etc.). I set `AGENTWORKS_VAULT_HOST_DIR` in the installer env so the daemon sees the external path at `/data/vault`."*
 
 For (A), no action needed — the daemon creates the tenant dir on first write.
 
@@ -190,20 +190,22 @@ to the canonical files. Do NOT symlink the operator's `~/.claude/projects/.../me
 directory unless they ask — that folder is operator-private memory and may
 include secrets.
 
-For (C): the daemon reads the vault from `/data/vault` **inside the container**,
-which is bind-mounted from `${AGENTWORKS_DATA_DIR}/vault` on the host. To
-relocate the vault, point the data dir at the external location and bind it
-in by editing `docker-compose.yml`:
+For (C): the daemon reads the vault from `/data/vault` **inside the container**.
+To relocate only the vault while leaving SQLite, uploads, scanner state, and
+n8n data in the normal data dir, set `AGENTWORKS_VAULT_HOST_DIR` in
+`$AGENTWORKS_DIR/config/.env`:
 
-```yaml
-# in services.agentos-d.volumes (and scanner-worker if needed):
-- /absolute/path/to/external/vault:/data/vault
+```bash
+mkdir -p /absolute/path/to/external/vault
+printf '\nAGENTWORKS_VAULT_HOST_DIR=%s\n' /absolute/path/to/external/vault \
+  >> "${AGENTWORKS_DIR:-$HOME/.agentworks}/config/.env"
+agentworks restart agentos-d admin-ui
 ```
 
-Then `agentworks restart agentos-d`. Setting `VAULT_ROOT` in
-`$AGENTWORKS_DIR/config/.env` alone has no effect — compose hardcodes the
-in-container `VAULT_ROOT=/data/vault` and the env override is shadowed.
-A future release will surface this as a first-class `--vault-root` option.
+Do not edit `~/.agentworks/source/docker-compose.yml` for this. The source
+tree is replaced during updates; operator-specific mount choices belong in
+`$AGENTWORKS_DIR/config/.env`. Setting `VAULT_ROOT` in `.env` alone has no
+effect because the container always uses `/data/vault` internally.
 
 
 ---

@@ -9,19 +9,18 @@
 
 ## Quick Start
 
-1. Connect your agent to the MCP endpoint above.
+1. Connect your agent through the AgentWorks MCP stdio bridge. The raw HTTP endpoint above is for diagnostics.
 2. Read `progress.md` for active tasks.
-3. Call `memory_hot` before any other vault read to get recent context cheaply.
+3. Call `memory.hot` before any other vault read to get recent context cheaply.
 
 ## Available MCP Tools
 
-- `memory_read` — read a key from the tenant vault
-- `memory_write` — write a key to the tenant vault
-- `memory_list` — list vault keys
-- `memory_hot` — curated recent-context summary (call this first)
-- `policy_check` — evaluate an action against active rule packs
-- `dispatch` — submit a task to the substrate for execution
-- `scanner_run` — trigger a compliance scan
+- `memory.read` — read a key from the tenant vault
+- `memory.write` — write a key to the tenant vault
+- `memory.list` — list vault keys
+- `memory.hot` — curated recent-context summary (call this first)
+- `policy.check` — evaluate an action against active rule packs
+- `activity.log` — append an action-log entry
 
 ## Rules of Engagement
 

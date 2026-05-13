@@ -73,7 +73,8 @@ services:
       SCANNER_SIDECAR_URL: http://scanner-worker:3101
       SCANNER_POLL_INTERVAL_MS: "${SCANNER_POLL_INTERVAL_MS:-30000}"
     volumes:
-      - ${AGENTWORKS_DATA_DIR:-./data}:/data            # SQLite DB, WAL, vault, uploads
+      - ${AGENTWORKS_DATA_DIR:-./data}:/data            # SQLite DB, WAL, uploads
+      - ${AGENTWORKS_VAULT_HOST_DIR:-${AGENTWORKS_DATA_DIR:-./data}/vault}:/data/vault # Tenant vault pages
       - ${AGENTWORKS_CONFIG_DIR:-./config}:/config:ro    # .env and secrets (read-only at runtime)
       - ${AGENTWORKS_SOURCE_DIR:-.}/rule-packs:/opt/agentworks/rule-packs:ro
     depends_on:
@@ -222,7 +223,7 @@ services:
       agentos-d:
         condition: service_healthy
     volumes:
-      - ${AGENTWORKS_DATA_DIR:-./data}/vault:/data/vault:ro
+      - ${AGENTWORKS_VAULT_HOST_DIR:-${AGENTWORKS_DATA_DIR:-./data}/vault}:/data/vault:ro
     healthcheck:
       test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3000/mission-control').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
       interval: 30s

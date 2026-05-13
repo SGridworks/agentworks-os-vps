@@ -121,9 +121,10 @@ curl -fsSI http://127.0.0.1:3000/mission-control
 
 > **Prerequisite:** `agentworks mcp configure` runs a JavaScript stdio bridge on
 > the host, so it needs **Node.js 18+** on `PATH`. Install with `brew install
-> node` (macOS), `apt install nodejs` (Debian/Ubuntu 22.04+) or via
-> [nvm](https://github.com/nvm-sh/nvm). The daemon itself runs in Docker and
-> does not require host Node.
+> node` (macOS), [NodeSource](https://github.com/nodesource/distributions) or
+> [nvm](https://github.com/nvm-sh/nvm) on Debian/Ubuntu. Do not rely on the
+> distro `nodejs` package until `node --version` confirms 18+.
+> The daemon itself runs in Docker and does not require host Node.
 
 ### Claude Desktop
 
@@ -138,10 +139,10 @@ agentworks mcp configure --target claude-desktop
 3. In a new conversation, verify the connection:
 
 ```
-/memory read
+/mcp list
 ```
 
-If AgentWorks OS is connected, Claude will return vault content. An empty vault returns `{ "existed": false }` — this is normal on a fresh install.
+If AgentWorks OS is connected, Claude will list `agentworks` as an active MCP server. For a tool-call smoke test, ask Claude to call `memory.list` with a real tenant UUID from `curl -s http://127.0.0.1:7710/api/tenants`.
 
 ### Cursor
 

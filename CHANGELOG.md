@@ -68,8 +68,9 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
   so the documented path `~/.agentworks/data/backups/<file>.tar.gz` works
   out of the box.
 - `docs/AI-AGENT-INSTALL-GUIDE.md` vault-relocation guidance now reflects how
-  the daemon actually reads the vault path — relocating means editing the
-  compose bind mount, not setting `VAULT_ROOT` in `.env`.
+  the daemon actually reads the vault path. In the final v0.1.9 candidate,
+  relocation is controlled by `AGENTWORKS_VAULT_HOST_DIR` in `.env`, not by
+  overriding `VAULT_ROOT`.
 - `agentworks support-bundle` redacts secret-shaped env values from the
   embedded compose config (`AGENTWORKS_SESSION_SECRET`, `POSTGRES_PASSWORD`,
   `*_API_KEY`, `*_TOKEN`, `*PASSWORD*`, `*SECRET*`), drops the postgres dump
@@ -312,6 +313,20 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
 - AI-agent docs no longer use stale `§` cross-references to sections that do
   not exist in the current guides.
 
+### Fixed (audit round 21)
+
+- Docker compose now accepts `AGENTWORKS_VAULT_HOST_DIR` for external vault
+  storage, keeping operator-specific mount choices in `.env` instead of tracked
+  source files.
+- `agentworks update` now preserves a dirty source tree as
+  `~/.agentworks/source.previous` and installs a clean release source tree,
+  preventing local compose edits from aborting updates.
+- Workspace scaffolding now emits the real `/api/mcp` endpoint and current MCP
+  tool names (`memory.read`, `memory.write`, `memory.list`, `memory.hot`,
+  `policy.check`, and `activity.log`).
+- MCP debug and install docs now use current REST endpoints, Codex MCP config
+  behavior, Node.js 18+ Ubuntu guidance, and Claude connection verification.
+
 ### Known limitations
 
 - Real-VPS install verification for this release was performed against a
@@ -320,8 +335,9 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
 - Default dispatch uses the stub adapter unless `AWOS_ADAPTER` and matching
   provider credentials are configured. This verifies queue/wakeup plumbing but
   does not execute autonomous LLM work.
-- `VAULT_ROOT` relocation requires editing the compose bind mount; a
-  first-class `--vault-root` configuration is on the next-release backlog.
+- `AGENTWORKS_VAULT_HOST_DIR` supports external vault storage, but there is no
+  dedicated `agentworks config set vault-root ...` wrapper yet; edit
+  `$AGENTWORKS_DIR/config/.env` directly.
 
 ## [0.1.9-archived] — 2026-05-05
 

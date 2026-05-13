@@ -97,7 +97,7 @@ curl -sS --max-time 5 http://127.0.0.1:7710/api/health | head -c 300
 ### 1.3 Recent audit-log activity?
 
 ```bash
-curl -sS "http://127.0.0.1:7710/api/audit?tenantId=$TENANT_ID&limit=10" | head -c 1000
+curl -sS "http://127.0.0.1:7710/api/action?tenantId=$TENANT_ID&limit=10" | head -c 1000
 ```
 
 **Verify:** at least one entry, with a recent timestamp if the operator was using agents recently.
@@ -214,10 +214,10 @@ If the audit log has no entries when it should:
 3. The audit log is hash-chained; gaps are detectable. Run:
 
 ```bash
-curl -sS "http://127.0.0.1:7710/api/audit/verify?tenantId=$TENANT_ID" | head -c 500
+curl -sS "http://127.0.0.1:7710/api/compliance/verify-chain?tenantId=$TENANT_ID" | head -c 500
 ```
 
-**Verify:** `valid: true`. If `false`, the chain is broken — surface immediately to the operator. This is a possible compliance incident.
+**Verify:** `ok: true`. If `false`, the chain is broken — surface immediately to the operator. This is a possible compliance incident.
 
 ---
 
@@ -380,7 +380,7 @@ agentworks restart agentos-d
 curl -sS -X POST http://127.0.0.1:7710/api/policy/packs/reload
 
 # Audit log (last 50)
-curl -sS "http://127.0.0.1:7710/api/audit?tenantId=$TENANT_ID&limit=50"
+curl -sS "http://127.0.0.1:7710/api/action?tenantId=$TENANT_ID&limit=50"
 
 # Approval queue (pending)
 curl -sS "http://127.0.0.1:7710/api/approvals?tenantId=$TENANT_ID&status=pending"

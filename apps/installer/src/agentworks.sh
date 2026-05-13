@@ -108,6 +108,22 @@ awos_compose_project_name() {
     | sed 's/^-*//;s/-*$//'
 }
 
+resolve_vault_host_dir() {
+  if [[ -n "${AGENTWORKS_VAULT_HOST_DIR:-}" ]]; then
+    printf '%s\n' "$AGENTWORKS_VAULT_HOST_DIR"
+    return 0
+  fi
+  if [[ -f "$ENV_FILE" ]]; then
+    local configured
+    configured="$(awk -F= '$1 == "AGENTWORKS_VAULT_HOST_DIR" { print substr($0, index($0, "=") + 1); exit }' "$ENV_FILE" 2>/dev/null || true)"
+    if [[ -n "$configured" ]]; then
+      printf '%s\n' "$configured"
+      return 0
+    fi
+  fi
+  printf '%s\n' "${DATA_DIR}/vault"
+}
+
 compose() {
   local cc
   cc=$(get_compose_cmd)
@@ -115,6 +131,7 @@ compose() {
   [[ -f "$ENV_FILE" ]] && env_args=(--env-file "$ENV_FILE")
   ( cd "$SOURCE_DIR" \
     && AGENTWORKS_DATA_DIR="$DATA_DIR" \
+       AGENTWORKS_VAULT_HOST_DIR="$(resolve_vault_host_dir)" \
        AGENTWORKS_CONFIG_DIR="$CONFIG_DIR" \
        AGENTWORKS_SOURCE_DIR="$SOURCE_DIR" \
        COMPOSE_PROJECT_NAME="$(awos_compose_project_name)" \
@@ -125,6 +142,23 @@ clear_dir_contents() {
   local dir="$1"
   mkdir -p "$dir"
   find "$dir" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+}
+
+source_has_local_changes() {
+  [[ -n "$(git -C "$SOURCE_DIR" status --porcelain)" ]]
+}
+
+replace_source_from_tag() {
+  local latest_version="$1"
+  local tmp_source backup_source
+  tmp_source="$(mktemp -d "${AGENTWORKS_DIR}/source-update.XXXXXX")"
+  backup_source="${SOURCE_DIR}.previous"
+  git clone --depth=1 --branch "v${latest_version}" "https://github.com/${REPO}.git" "${tmp_source}/source" 2>&1 | sed 's/^/  /'
+  rm -rf "$backup_source"
+  mv "$SOURCE_DIR" "$backup_source"
+  mv "${tmp_source}/source" "$SOURCE_DIR"
+  rm -rf "$tmp_source"
+  log_warn "Previous source tree preserved at ${backup_source}"
 }
 
 # -----------------------------------------------------------------------------
@@ -235,17 +269,15 @@ cmd_update() {
 
   log_step "Updating source to v${latest_version}..."
   if [[ -d "${SOURCE_DIR}/.git" ]]; then
-    git -C "$SOURCE_DIR" fetch --tags --depth=1 origin "v${latest_version}" 2>&1 | sed 's/^/  /'
-    git -C "$SOURCE_DIR" checkout -q FETCH_HEAD
+    if source_has_local_changes; then
+      log_warn "Local changes found under ${SOURCE_DIR}; replacing with a clean release source tree."
+      replace_source_from_tag "$latest_version"
+    else
+      git -C "$SOURCE_DIR" fetch --tags --depth=1 origin "v${latest_version}" 2>&1 | sed 's/^/  /'
+      git -C "$SOURCE_DIR" checkout -q FETCH_HEAD
+    fi
   else
-    local tmp_source backup_source
-    tmp_source="$(mktemp -d "${AGENTWORKS_DIR}/source-update.XXXXXX")"
-    backup_source="${SOURCE_DIR}.previous"
-    git clone --depth=1 --branch "v${latest_version}" "https://github.com/${REPO}.git" "${tmp_source}/source" 2>&1 | sed 's/^/  /'
-    rm -rf "$backup_source"
-    mv "$SOURCE_DIR" "$backup_source"
-    mv "${tmp_source}/source" "$SOURCE_DIR"
-    rm -rf "$tmp_source" "$backup_source"
+    replace_source_from_tag "$latest_version"
   fi
 
   log_step "Pulling and restarting services..."

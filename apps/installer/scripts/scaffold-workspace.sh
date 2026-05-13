@@ -25,7 +25,7 @@ Required:
   --daemon-url=<url>     Base URL of the agentos-d daemon
 
 Optional:
-  --mcp-endpoint=<url>   MCP server URL (default: \${DAEMON_URL}/mcp)
+  --mcp-endpoint=<url>   MCP server URL (default: \${DAEMON_URL}/api/mcp)
   --vault-path=<path>    Tenant vault directory (default: \${target-dir}/vault)
 EOF
 }
@@ -53,7 +53,7 @@ parse_args() {
   [[ -n "$TENANT_ID" ]] || die "--tenant-id is required"
   [[ -n "$DAEMON_URL" ]] || die "--daemon-url is required"
 
-  MCP_ENDPOINT="${MCP_ENDPOINT:-${DAEMON_URL}/mcp}"
+  MCP_ENDPOINT="${MCP_ENDPOINT:-${DAEMON_URL}/api/mcp}"
   VAULT_PATH="${VAULT_PATH:-${TARGET_DIR}/vault}"
 }
 
