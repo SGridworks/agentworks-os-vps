@@ -78,6 +78,6 @@ ENV NODE_ENV=production \
 EXPOSE 7710
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
-    CMD curl -f http://localhost:${AGENTOS_PORT}/api/health || exit 1
+    CMD curl -f http://127.0.0.1:${AGENTOS_PORT}/api/health || exit 1
 
 ENTRYPOINT ["node", "dist/cli.js"]

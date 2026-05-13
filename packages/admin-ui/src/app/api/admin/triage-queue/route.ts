@@ -86,7 +86,7 @@ async function resolveTenantId(): Promise<string> {
   const tenants = await fetchAgentos<AwosTenant[]>("/api/tenants");
   const firstTenant = tenants[0];
   if (!firstTenant) {
-    throw new Error("No AWOS tenant exists");
+    throw new Error("No tenant exists yet");
   }
   return firstTenant.id;
 }
@@ -99,7 +99,7 @@ async function resolveCompanyId(): Promise<string> {
   const selected =
     companies.items.find((c) => c.name === COMPANY_NAME) ?? companies.items[0];
   if (!selected) {
-    throw new Error(`No AWOS company exists for tenant ${tenantId}`);
+    throw new Error(`No company exists yet for tenant ${tenantId}`);
   }
   return selected.id;
 }
@@ -143,7 +143,25 @@ function extractSuggestedRoles(description: string): string[] {
 
 export async function GET(): Promise<Response> {
   try {
-    const companyId = await resolveCompanyId();
+    let companyId: string;
+    try {
+      companyId = await resolveCompanyId();
+    } catch (resolveErr) {
+      // A clean install has a tenant but no company yet. Return an empty
+      // queue with setup guidance instead of a 500 — the dashboard renders
+      // a "create your first company" state.
+      const reason = resolveErr instanceof Error ? resolveErr.message : String(resolveErr);
+      if (/No (tenant|company) /i.test(reason)) {
+        return Response.json({
+          issues: [],
+          agents: [],
+          count: 0,
+          setupRequired: true,
+          notice: "No company found for the active tenant yet. Create one to populate the triage queue.",
+        });
+      }
+      throw resolveErr;
+    }
     const issueResponse = await fetchAgentos<AwosList<AwosIssue>>(
       `/api/companies/${companyId}/issues`
     );

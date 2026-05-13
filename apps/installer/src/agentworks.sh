@@ -435,6 +435,13 @@ cmd_mcp_configure() {
         ;;
       --target=*)
         target="${1#--target=}"
+        case "$target" in
+          claude-desktop|claude-code|both) ;;
+          *)
+            log_error "Invalid --target: '${target}'. Must be one of: claude-desktop, claude-code, both."
+            exit 1
+            ;;
+        esac
         ;;
       -h|--help)
         cat <<USAGE
@@ -649,6 +656,10 @@ PY
     both)
       _write_mcp_config "$desktop_path" "Claude Desktop"
       _write_mcp_config "$code_path"    "Claude Code"
+      ;;
+    *)
+      log_error "Invalid target '${target}'. Must be one of: claude-desktop, claude-code, both."
+      exit 1
       ;;
   esac
 

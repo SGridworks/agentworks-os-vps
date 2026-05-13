@@ -211,6 +211,22 @@ until curl -sf -m 5 "${admin_url}/mission-control" >/dev/null 2>&1; do
 done
 [[ "$admin_optional" == "1" && $elapsed -ge $admin_timeout ]] || pass "admin-ui /mission-control is up."
 
+# Postgres health — without this the smoke gate can pass while a service has
+# silently failed (you'd see it in `agentworks status`, but only if you check).
+info "Checking postgres readiness..."
+pg_container="$(docker ps --filter 'label=com.docker.compose.service=postgres' --format '{{.ID}}' | head -1)"
+if [[ -z "$pg_container" ]]; then
+  fail "postgres container not running (compose label lookup returned nothing)."
+  fail "Diagnose: agentworks status ; agentworks logs postgres"
+  exit 1
+fi
+if ! docker exec "$pg_container" pg_isready -U agentworks -d agentworks &>/dev/null; then
+  fail "postgres pg_isready returned non-zero."
+  fail "Diagnose: agentworks logs postgres"
+  exit 1
+fi
+pass "postgres is accepting connections."
+
 # Sanity-check the admin BFF endpoints that back documented first-run features.
 # A 500 here means the admin shell renders but the page returns broken data.
 if [[ "$admin_optional" != "1" ]]; then

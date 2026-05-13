@@ -108,10 +108,16 @@ services:
       # was set here in v0.1.0–v0.1.7 but the Python code never read it.
       # Removed in v0.1.8.
       SCANNER_POLL_INTERVAL_MS: "30000"
-      # Paths watched by the scanner. The Python module reads WATCH_DIRS
-      # (packages/scanner-worker/src/scanner_worker/app.py), and expects
-      # ':' separators (not ','). The poller never starts otherwise.
-      WATCH_DIRS: "/config/claude:/config/cursor"
+      # WATCH_DIRS lists host-managed agent-config directories the scanner
+      # polls for new CLAUDE.md / .cursorrules / MCP-config drops. They're
+      # bind-mounted from $AGENTWORKS_CONFIG_DIR (default ./config) into
+      # /config inside the container. Operators wire their own paths by
+      # creating subdirectories under config/ and adding the colon-separated
+      # path here (e.g. "/config/agent-configs/claude:/config/agent-configs/cursor").
+      # Default is empty so a clean install starts cleanly with no missing-
+      # directory noise; turn on watch by adding paths and `agentworks restart
+      # scanner-worker`.
+      WATCH_DIRS: "${SCANNER_WATCH_DIRS:-}"
       # Default to stub embedding/rerank so /health responds in <1s on first
       # boot. The "real" modes (BAAI/bge-base-en-v1.5 + bge-reranker-base)
       # download ~1.4 GB from HuggingFace synchronously inside the FastAPI

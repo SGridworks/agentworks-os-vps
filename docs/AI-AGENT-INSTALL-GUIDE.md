@@ -161,16 +161,17 @@ that's `~/.agentworks/data/vault`. Three layouts make sense:
 > *"Three vault layouts. Which fits your situation?
 > A) Fresh vault, no shared content. I create a clean tenant dir and that's it. Default.
 > B) Existing vault, want to share it across tenants. I symlink shared subdirs into the tenant dir; the substrate's `FileVaultStore.list()` walks symlinks safely (cycle-detected via realpath dedup).
-> C) External vault path (`~/Documents/notes/`, etc.). I set `VAULT_ROOT` in the daemon env."*
+> C) External vault path (`~/Documents/notes/`, etc.). I edit the compose bind mount so the daemon sees the external path at `/data/vault`."*
 
 For (A), no action needed — the daemon creates the tenant dir on first write.
 
-For (B), in `$VAULT_ROOT/<tenant_id>/`, symlink the directories you want
-shared. Example:
+For (B), in `$AGENTWORKS_DIR/data/vault/<tenant_id>/`, symlink the directories
+you want shared. Example:
 
 ```bash
-TENANT_ID=$(curl -s http://127.0.0.1:7710/api/tenants | python3 -c 'import json,sys;print(json.load(sys.stdin)[0]["id"])')
-cd "${VAULT_ROOT:-$HOME/vault}/$TENANT_ID"
+TENANT_ID=$(curl -s http://127.0.0.1:7710/api/tenants \
+  | python3 -c 'import json,sys; data=json.load(sys.stdin); items=data.get("items", data) if isinstance(data, dict) else data; print(items[0]["id"])')
+cd "${AGENTWORKS_DIR:-$HOME/.agentworks}/data/vault/$TENANT_ID"
 ln -s ../wiki wiki
 ln -s ../shared-runbooks runbooks
 ```
