@@ -1,11 +1,17 @@
 # AgentWorks OS — Docker Compose
 #
 # Services:
-#   agentos-d       Main substrate daemon (REST API + MCP)
-#   postgres       Local execution database
+#   agentos-d       Main substrate daemon (REST API + MCP). Owns its own
+#                   SQLite under AGENTOS_DATA_DIR — does NOT use the
+#                   postgres service below for its primary store.
+#   postgres        Reserved for future execution-workflow features. The
+#                   v0.1.x daemon reads AGENTOS_EXECUTION_DATABASE_URL but
+#                   does not yet write to it; the service is provisioned
+#                   here so future minor releases can adopt it without
+#                   forcing operators to re-do their compose stack.
 #   scanner-worker  AgentGuard Python sidecar
-#   n8n            Workflow automation
-#   admin-ui       Browser dashboard
+#   n8n             Workflow automation (uses its own bundled SQLite)
+#   admin-ui        Browser dashboard
 #
 # Usage:
 #   docker compose up -d
@@ -55,6 +61,11 @@ services:
       # under /data so container recreates do not wipe operator-authored files.
       AWOS_AGENTS_ROOT: /data/agents
       AGENTWORKS_SESSION_SECRET: ${AGENTWORKS_SESSION_SECRET}
+      # Reserved for future execution-workflow support. The v0.1.x daemon
+      # parses this URL into config but does not yet open a connection;
+      # tenants, vault pages, audit log, and the dispatch queue all live in
+      # the SQLite DB under AGENTOS_DATA_DIR. Leave wired so a future minor
+      # release can light up Postgres without changing operator config.
       AGENTOS_EXECUTION_DATABASE_URL: postgres://${POSTGRES_USER:-agentworks}:${POSTGRES_PASSWORD:-agentworks-local}@postgres:5432/${POSTGRES_DB:-agentworks}
       # Scanner sidecar URL (config.ts reads SCANNER_SIDECAR_URL; default
       # http://127.0.0.1:3101 is unreachable from inside the agentos-d
@@ -82,7 +93,10 @@ services:
       - agentworks
 
   # --------------------------------------------------------------------------
-  # postgres - local execution database
+  # postgres — reserved for future execution-workflow support
+  # The v0.1.x daemon does not yet read from this service; agentos-d's
+  # primary store is SQLite under AGENTOS_DATA_DIR. See the AGENTOS_EXECUTION_DATABASE_URL
+  # comment above.
   # --------------------------------------------------------------------------
   postgres:
     image: postgres:16-alpine

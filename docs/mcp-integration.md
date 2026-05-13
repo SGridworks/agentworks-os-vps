@@ -160,27 +160,27 @@ Restart Cursor after saving. Use the Cursor MCP connection panel to verify the `
 
 ## Connecting Codex CLI
 
-Codex CLI connects to MCP servers declared in its config. Add the `agentworks` entry:
+Codex CLI manages MCP servers through its own `codex mcp` command, not a
+hand-edited JSON file. Register the AgentWorks bridge with:
 
-```json
-{
-  "mcpServers": {
-    "agentworks": {
-      "command": "node",
-      "args": ["/FULL/PATH/TO/mcp-stdio-bridge.js"],
-      "env": {
-        "AGENTOS_URL": "http://127.0.0.1:7710"
-      }
-    }
-  }
-}
+```bash
+codex mcp add agentworks \
+  --env AGENTOS_URL=http://127.0.0.1:7710 \
+  -- node /FULL/PATH/TO/mcp-stdio-bridge.js
 ```
 
-Restart Codex. Verify with:
+Replace `/FULL/PATH/TO/mcp-stdio-bridge.js` with the path printed by
+`agentworks mcp configure` (typically `~/.agentworks/config/mcp-stdio-bridge.js`).
 
-```
+Codex writes the entry into `~/.codex/config.toml`. Restart any running
+Codex session, then verify with:
+
+```bash
 codex mcp list
 ```
+
+You should see `agentworks` listed with the bridge command. To remove it
+later: `codex mcp remove agentworks`.
 
 ---
 

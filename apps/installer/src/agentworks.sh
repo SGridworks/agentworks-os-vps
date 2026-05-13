@@ -543,6 +543,31 @@ USAGE
     exit 1
   fi
 
+  # Ubuntu 22.04's `apt-get install nodejs` ships Node 12.x. The MCP stdio
+  # bridge uses native fetch / top-level await and silently fails on <18, so
+  # validate the major version before writing config that points at a broken
+  # interpreter.
+  local node_version_raw node_major
+  node_version_raw=$("$node_path" --version 2>/dev/null || echo "")
+  node_major=$(printf '%s' "$node_version_raw" | sed -E 's/^v([0-9]+).*/\1/')
+  if ! [[ "$node_major" =~ ^[0-9]+$ ]] || (( node_major < 18 )); then
+    log_error "node at ${node_path} is ${node_version_raw:-unknown}; Node.js >= 18 required."
+    log_error ""
+    log_error "The MCP stdio bridge uses native fetch and ES2022 features only"
+    log_error "available in Node 18+. Older Node versions parse the bridge but"
+    log_error "fail at runtime, leaving Claude Desktop / Claude Code with a"
+    log_error "broken MCP server."
+    log_error ""
+    log_error "Install a supported Node.js (note: Ubuntu 22.04's nodejs package"
+    log_error "ships 12.x — use NodeSource or nvm instead):"
+    log_error "  macOS:        brew install node"
+    log_error "  Ubuntu/Deb:   curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && sudo apt-get install -y nodejs"
+    log_error "  nvm (any OS): https://github.com/nvm-sh/nvm  (then: nvm install --lts)"
+    log_error ""
+    log_error "Then re-run: agentworks mcp configure"
+    exit 1
+  fi
+
   # Bridge resolution order:
   #   1. install.sh extracts the bridge from the running container into
   #      ${CONFIG_DIR}/mcp-stdio-bridge.js — preferred (no source build needed).

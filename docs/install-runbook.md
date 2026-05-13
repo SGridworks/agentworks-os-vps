@@ -91,7 +91,7 @@ All default services should show `Up` within 30 seconds of the installer complet
 | `scanner-worker` | AgentGuard sidecar — security scanner | 3101 |
 | `n8n` | Workflow automation | 5678 |
 | `admin-ui` | Browser operator dashboard | 3000 |
-| `postgres` | Local execution database | internal only |
+| `postgres` | Reserved for future execution-workflow support (not yet used by the daemon in v0.1.x) | internal only |
 
 All host ports are loopback-bound by default. On a VPS, use SSH tunnels or an authenticated TLS reverse proxy rather than opening service ports directly.
 

@@ -226,7 +226,7 @@ Expected services:
 | `scanner-worker` | Security scanner | 3101 |
 | `n8n` | Workflow automation | 5678 |
 | `admin-ui` | Browser operator dashboard | 3000 |
-| `postgres` | Local execution database | internal only |
+| `postgres` | Reserved for future execution-workflow support (not yet used by the daemon in v0.1.x) | internal only |
 
 Check daemon health:
 

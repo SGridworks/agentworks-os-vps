@@ -72,7 +72,7 @@ Expected default services:
 | `scanner-worker` | security scanner sidecar | `3101` |
 | `n8n` | workflow automation | `5678` |
 | `admin-ui` | operator dashboard | `3000` |
-| `postgres` | local execution database | internal only |
+| `postgres` | reserved for future execution-workflow support (not yet used by the daemon in v0.1.x) | internal only |
 
 Default v0.1.9 uses fixed loopback-bound host ports `7710`, `3101`, `5678`, and `3000`. Custom host ports are not supported by the installer, smoke test, or docs in v0.1.x.
 
