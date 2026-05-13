@@ -198,7 +198,7 @@ cmd_update() {
   # (e.g. "0.1.9-rc1", "0.1.9-vps", "0.1.10+build.42"), so comparison against
   # the installed AGENTWORKS_VERSION works for suffixed releases.
   latest_version=$(curl -s "$GITHUB_RELEASES/latest" 2>/dev/null \
-    | sed -n 's/.*"tag_name":[[:space:]]*"v\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\(-[0-9A-Za-z.+-][0-9A-Za-z.+-]*\)*\)".*/\1/p' \
+    | sed -n 's/.*"tag_name":[[:space:]]*"v\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\(-[0-9A-Za-z.-][0-9A-Za-z.-]*\)*\(+[0-9A-Za-z.-][0-9A-Za-z.-]*\)*\)".*/\1/p' \
     | head -1 || true)
 
   if [[ -z "$latest_version" ]]; then
@@ -237,7 +237,7 @@ cmd_update() {
     if grep -q '^AGENTWORKS_VERSION=' "$ENV_FILE"; then
       # GNU vs BSD sed: write to a temp file and replace to stay portable.
       local tmp_env
-      tmp_env=$(mktemp)
+      tmp_env=$(mktemp "${TMPDIR:-/tmp}/agentworks-update.XXXXXX")
       awk -v v="$latest_version" '
         /^AGENTWORKS_VERSION=/ { print "AGENTWORKS_VERSION=" v; next }
         { print }
@@ -277,7 +277,7 @@ cmd_backup() {
 
   # Create a temp dir for the backup
   local tmpdir
-  tmpdir=$(mktemp -d)
+  tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/agentworks.XXXXXX")
   trap "rm -rf $tmpdir" EXIT
 
   # Collect data dirs
@@ -367,7 +367,7 @@ cmd_restore() {
   log_step "Restoring from: ${input}"
 
   local tmpdir
-  tmpdir=$(mktemp -d)
+  tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/agentworks.XXXXXX")
   trap "rm -rf $tmpdir" EXIT
 
   tar -xzf "$input" -C "$tmpdir"
@@ -683,7 +683,7 @@ cmd_support_bundle() {
   log_step "Collecting support bundle: ${output}"
 
   local tmpdir
-  tmpdir=$(mktemp -d)
+  tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/agentworks.XXXXXX")
   trap "rm -rf $tmpdir" EXIT
 
   # Service logs (last 500 lines each)

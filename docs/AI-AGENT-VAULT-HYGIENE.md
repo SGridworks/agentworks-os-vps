@@ -129,11 +129,11 @@ ls -lh "$BACKUP_DIR"/vault-prelint-*.tar.gz | tail -1
 
 **Verify:** the tarball exists and isn't suspiciously small.
 
-Also take a daemon-DB backup so any reference-cleanup that touches DB-backed data can be rolled back:
+Also take a substrate backup so any reference-cleanup that touches DB-backed
+data can be rolled back:
 
 ```bash
-docker compose -f $HOME/.agentworks/docker-compose.yml exec -T agentos-d \
-  agentos backup --output /app/data/backups/vault-prelint-$(date +%Y%m%d-%H%M%S).tar.gz
+agentworks backup "$HOME/.agentworks/data/backups/vault-prelint-$(date +%Y%m%d-%H%M%S).tar.gz"
 ```
 
 **Hard rule:** if either backup fails, do not proceed. Surface to the operator.

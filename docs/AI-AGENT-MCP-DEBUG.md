@@ -114,8 +114,7 @@ The `agentworks` server entry should look like this. The four common errors:
       "command": "node",
       "args": ["/Users/<NAME>/.agentworks/config/mcp-stdio-bridge.js"],
       "env": {
-        "AGENTOS_URL": "http://127.0.0.1:7710",
-        "AGENTOS_TENANT_ID": "<UUID>"
+        "AGENTOS_URL": "http://127.0.0.1:7710"
       }
     }
   }
@@ -149,12 +148,12 @@ p = c['mcpServers']['agentworks']['args'][0]
 print('bridge file exists' if os.path.isfile(p) else f'MISSING: {p}')
 "
 
-# AGENTOS_TENANT_ID set?
+# AGENTOS_URL set?
 python3 -c "
 import json
 c = json.load(open('$CLIENT_CFG'))
 env = c['mcpServers']['agentworks'].get('env', {})
-print('tenant ok' if env.get('AGENTOS_TENANT_ID') else 'TENANT MISSING')
+print('AGENTOS_URL=' + (env.get('AGENTOS_URL') or 'NOT SET (will default to http://127.0.0.1:7710)'))
 "
 ```
 
@@ -310,7 +309,7 @@ The entry you just wrote should be at the top.
 The MCP client tries to connect, the bridge starts, then the bridge exits, then the client retries. Causes:
 
 1. Daemon is up but `/api/health` returns >5xx — bridge gives up on first health check.
-2. `AGENTOS_TENANT_ID` is unset — bridge refuses to start.
+2. Bridge can't reach the daemon — `AGENTOS_URL` is unset or points at the wrong host/port (the bridge defaults to `http://127.0.0.1:7710`). Tenant IDs are passed per-call as MCP tool arguments, not via an env var.
 3. Node version on the host is too old (<18). Claude Desktop uses the user's `PATH` `node`, which on some machines is an ancient global install.
 
 Fix in order: §1 → §3 → `node --version`.

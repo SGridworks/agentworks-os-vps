@@ -39,7 +39,7 @@ Run these before any action that changes state.
 
 ```bash
 hostname
-docker compose --env-file $HOME/.agentworks/config/.env -f $HOME/.agentworks/source/docker-compose.yml ps --format "table {{.Service}}\t{{.Status}}"
+agentworks status
 ```
 
 If `~/.agentworks/source/docker-compose.yml` doesn't exist, this host doesn't have AgentWorks installed. Stop and ask the operator which host they meant.
@@ -76,7 +76,7 @@ When the operator says "check on the substrate" or reports a vague problem, run 
 ### 1.1 Containers up?
 
 ```bash
-docker compose --env-file $HOME/.agentworks/config/.env -f $HOME/.agentworks/source/docker-compose.yml ps --format "{{.Service}} {{.Status}}"
+agentworks status
 ```
 
 **Verify:** `agentos-d`, `scanner-worker`, `n8n`, and `postgres` all show `Up`.
@@ -140,8 +140,8 @@ This goes in your final report. Don't lose it.
 ### §2.1 Container restart loop
 
 ```bash
-docker compose --env-file $HOME/.agentworks/config/.env -f $HOME/.agentworks/source/docker-compose.yml ps
-docker compose --env-file $HOME/.agentworks/config/.env -f $HOME/.agentworks/source/docker-compose.yml logs --tail 100 <service>
+agentworks status
+agentworks logs <service>
 ```
 
 Read the last 100 lines. The exit cause is almost always in there:
@@ -156,7 +156,7 @@ Read the last 100 lines. The exit cause is almost always in there:
 Backup first if you haven't (§0.2). Then:
 
 ```bash
-docker compose --env-file $HOME/.agentworks/config/.env -f $HOME/.agentworks/source/docker-compose.yml logs --tail 200 agentos-d
+agentworks logs agentos-d (last 200 lines)
 ```
 
 If logs show a clean start but `/api/health` doesn't answer:
@@ -171,7 +171,7 @@ If logs end at "Listening on :7710" but health still won't answer, port-mapping 
 After an update, the daemon may serve stale code if the image wasn't actually pulled.
 
 ```bash
-docker compose --env-file $HOME/.agentworks/config/.env -f $HOME/.agentworks/source/docker-compose.yml images agentos-d
+agentworks status (image tag column)
 docker inspect agentos-d --format '{{.Created}} {{.Config.Image}}'
 ```
 
@@ -182,7 +182,7 @@ If the image creation date predates the announced release: `docker compose pull 
 Stop the daemon (do NOT kill -9):
 
 ```bash
-docker compose --env-file $HOME/.agentworks/config/.env -f $HOME/.agentworks/source/docker-compose.yml stop agentos-d
+agentworks restart agentos-d   # stop+start via recreate
 ```
 
 Restore from the most recent good backup:
@@ -363,7 +363,7 @@ If everything was clean, that's fine — your report says so concisely. Don't pa
 
 ```bash
 # State of everything
-docker compose --env-file $HOME/.agentworks/config/.env -f $HOME/.agentworks/source/docker-compose.yml ps
+agentworks status
 
 # Tail daemon
 agentworks logs agentos-d

@@ -195,14 +195,14 @@ test_fixtures:
       rule_id: "<which rule should fire>"  # null if expecting allow with no fire
 ```
 
-Run them:
+Run them via the policy-engine package tests:
 
 ```bash
-docker compose -f $HOME/.agentworks/docker-compose.yml exec -T agentos-d \
-  agentos rule-packs test /tmp/<pack-id>-draft.yaml
+# From the repo checkout:
+pnpm --filter @agentworks/policy-engine test -- /tmp/<pack-id>-draft.yaml
 ```
 
-**Verify:** all fixtures pass.
+**Verify:** vitest exits 0; all fixtures pass.
 
 **Fix:** if a fixture says `expected: block` but got `route_to_review`, the most common cause is missing-data disposition firing first (the action didn't include the field the rule needs). Add the field to `payload:` or set `disposition_when_missing: <expected>` on that rule.
 

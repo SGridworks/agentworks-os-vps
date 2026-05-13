@@ -334,18 +334,50 @@ create_directories() {
 acquire_source() {
   log_step "Resolving AgentWorks source tree..."
 
-  # If we're being run from inside a checkout, prefer it over re-cloning.
+  # Canonical path: source lives at $AGENTWORKS_DIR/source so the installed
+  # wrapper (agentworks.sh) — which defaults SOURCE_DIR to that path — can
+  # always find it. If we're running from a local checkout, copy it into the
+  # canonical path; if not, clone there.
+  #
   # Sentinel: the AWOS docker-compose.yml has a build directive for the
-  # agentos-d package; an unrelated docker-compose.yml in the cwd will not.
+  # agentos-d package; an unrelated docker-compose.yml in cwd will not match.
+  local from_local_checkout=0
   if [[ -f "$(pwd)/docker-compose.yml" ]] \
       && [[ -d "$(pwd)/packages/agentos-d" ]] \
       && grep -qE "packages/agentos-d/Dockerfile|agentos-d:" "$(pwd)/docker-compose.yml" 2>/dev/null; then
-    SOURCE_DIR="$(pwd)"
-    log_info "Using local checkout: ${SOURCE_DIR}"
-    return 0
+    from_local_checkout=1
   fi
 
-  if [[ -d "${SOURCE_DIR}/.git" ]]; then
+  if (( from_local_checkout )); then
+    # If the local checkout IS the canonical path, just use it. Otherwise
+    # rsync it into place so the installed wrapper resolves correctly.
+    if [[ "$(cd "$(pwd)" && pwd -P)" == "$(cd "${SOURCE_DIR%/}" 2>/dev/null && pwd -P)" ]]; then
+      log_info "Using local checkout at canonical path: ${SOURCE_DIR}"
+    else
+      log_info "Materializing local checkout -> canonical path ${SOURCE_DIR}"
+      mkdir -p "$(dirname "${SOURCE_DIR}")"
+      rm -rf "${SOURCE_DIR}"
+      # Mirror everything except node_modules / build artifacts. The
+      # daemon container does its own pnpm install + tsc.
+      if command -v rsync &>/dev/null; then
+        rsync -a \
+          --exclude='node_modules' \
+          --exclude='.next' \
+          --exclude='dist' \
+          --exclude='build' \
+          --exclude='coverage' \
+          --exclude='*.tsbuildinfo' \
+          "$(pwd)/" "${SOURCE_DIR}/"
+      else
+        # rsync should exist everywhere, but fall back to cp -R if not.
+        mkdir -p "${SOURCE_DIR}"
+        ( cd "$(pwd)" && tar --exclude='node_modules' --exclude='.next' \
+                            --exclude='dist' --exclude='build' \
+                            --exclude='coverage' --exclude='*.tsbuildinfo' \
+                            -cf - . ) | tar -xf - -C "${SOURCE_DIR}"
+      fi
+    fi
+  elif [[ -d "${SOURCE_DIR}/.git" ]]; then
     log_info "Updating existing source clone at ${SOURCE_DIR}"
     git -C "${SOURCE_DIR}" fetch --tags --depth=1 origin "${INSTALLER_REF}" 2>&1 | sed 's/^/  /'
     git -C "${SOURCE_DIR}" checkout -q FETCH_HEAD
