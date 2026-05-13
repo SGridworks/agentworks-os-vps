@@ -50,7 +50,7 @@ The normal work path is:
 1. A task or issue is created.
 2. AgentWorks OS assigns it to the right agent when the lane is clear.
 3. Ambiguous work goes to the Triage Queue.
-4. The assigned agent works, posts status, and records outputs.
+4. The assigned agent works, posts status, and records outputs once a real dispatch adapter is configured. The default v0.1.9 install uses a stub adapter that verifies queue plumbing but does not run autonomous LLM work.
 5. Process Health watches for stale work, off-lane work, failed runs, and premature completion.
 6. Important outcomes are written back to the vault.
 

@@ -139,12 +139,16 @@ stdio bridge into your Cursor MCP config:
   "mcpServers": {
     "agentworks": {
       "command": "node",
-      "args": ["~/.agentworks/config/mcp-stdio-bridge.js"],
+      "args": ["/Users/<your-mac-user>/.agentworks/config/mcp-stdio-bridge.js"],
       "env": { "AGENTOS_URL": "http://localhost:7710" }
     }
   }
 }
 ```
+
+On Linux or WSL, use the expanded absolute path, for example
+`/home/<user>/.agentworks/config/mcp-stdio-bridge.js`. You can also let the
+wrapper write supported Claude configs with `agentworks mcp configure`.
 
 Restart Cursor after editing the config.
 
@@ -244,15 +248,14 @@ owner account, then seed by hand.
 
 **Access:** `http://localhost:5678`
 
-1. On first launch, n8n prompts you to create an owner account. Pick an
-   email and password and save them somewhere — the seed script needs them.
+1. On first launch, n8n prompts you to create an owner account. After login,
+   create an API key under **Settings -> API**.
 
 2. After the owner account is created, seed the two starter workflows
    (`workflows/01-lead-intake.json` and `workflows/02-outbound-dispatch.json`):
 
 ```bash
-N8N_ADMIN_EMAIL="you@example.com" \
-N8N_ADMIN_PASSWORD="<your-n8n-owner-password>" \
+N8N_API_KEY="<your-n8n-api-key>" \
 node ~/.agentworks/source/scripts/n8n-workflow-seed.js
 ```
 
@@ -282,7 +285,7 @@ After import, edit each workflow and set:
 | `ACTOR_ID` | Identifier for this workflow, e.g. `n8n-workflow` |
 | `DEFAULT_AGENT_ID` | Target agent ID for dispatch nodes |
 
-For production, create a dedicated API key in n8n under **Settings → API Key** rather than using the owner account credentials.
+For production, create a dedicated API key in n8n under **Settings -> API** and rotate it on the same cadence as other service credentials.
 
 ---
 
@@ -330,7 +333,7 @@ Claude Desktop can't reach the AgentWorks OS MCP server.
 
 1. Confirm AgentWorks OS is running: `agentworks status` — `agentos-d` should show `Up`
 2. Confirm the machine can reach the host: `curl http://localhost:7710/api/health` from the machine running Claude Desktop
-3. If on different machines, use the IP address instead of `localhost`: `http://192.168.x.x:7710`
+3. If Claude Desktop is on a different machine, use an SSH tunnel or authenticated TLS reverse proxy. The default compose stack binds ports to `127.0.0.1`, so a LAN IP will not work unless you intentionally change the deployment.
 4. Check your Claude Desktop config has the correct URL with no trailing slash
 
 ---

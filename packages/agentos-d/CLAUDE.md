@@ -42,7 +42,7 @@ sub-systems read at startup. All are optional unless marked **Required**.
 | Variable | Default | Description |
 |---|---|---|
 | `AWOS_AGENTS_ROOT` | `<repo>/agents` | Root directory for agent instruction files and migration backfills. |
-| `AWOS_ADAPTER` | `router` | Dispatch adapter selection. Use `stub`, `off`, or `none` for no-op dispatch. |
+| `AWOS_ADAPTER` | `stub` | Dispatch adapter selection. Use `router`, `spec`, or `kimi` only when Kimi credentials are configured. |
 | `AWOS_REPO_ROOT` | current working directory | Repository root used by Kimi adapters when building task context. |
 | `AGENTOS_DISPATCH_CONSUMER_ENABLED` | `true` | Set to `false` to stop the dispatch queue consumer. |
 | `AGENTOS_DISPATCH_CONSUMER_INTERVAL_MS` | internal default | Dispatch consumer polling interval. |

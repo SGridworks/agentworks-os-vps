@@ -16,7 +16,15 @@ RUN corepack enable && corepack prepare pnpm@9 --activate
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY packages/shared/package.json ./packages/shared/package.json
+COPY packages/policy-engine/package.json ./packages/policy-engine/package.json
+COPY packages/memory/package.json ./packages/memory/package.json
+COPY packages/pdf/package.json ./packages/pdf/package.json
+COPY packages/agentos-d/package.json ./packages/agentos-d/package.json
+COPY packages/n8n-nodes/package.json ./packages/n8n-nodes/package.json
 COPY packages/admin-ui/package.json ./packages/admin-ui/package.json
+COPY packages/awcp/package.json ./packages/awcp/package.json
+COPY packages/agent-adapters/package.json ./packages/agent-adapters/package.json
+COPY apps/installer/package.json ./apps/installer/package.json
 
 RUN pnpm install --frozen-lockfile --prod=false
 

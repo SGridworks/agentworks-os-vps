@@ -172,6 +172,9 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
 - Real-VPS install verification for this release was performed against a
   local OrbStack docker-compose stack on canonical ports, not on an actual
   remote VPS. The bundled E2E passed end-to-end against that stack.
+- Default dispatch uses the stub adapter unless `AWOS_ADAPTER` and matching
+  provider credentials are configured. This verifies queue/wakeup plumbing but
+  does not execute autonomous LLM work.
 - `VAULT_ROOT` relocation requires editing the compose bind mount; a
   first-class `--vault-root` configuration is on the next-release backlog.
 

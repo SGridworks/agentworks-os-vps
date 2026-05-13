@@ -39,10 +39,47 @@ require_cmd() {
 }
 
 require_cmd curl
+require_cmd docker
 
 extract_json_string() {
   local key="$1"
   sed -n 's/.*"'"$key"'"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1
+}
+
+compose_project="${SMOKE_COMPOSE_PROJECT:-}"
+detect_compose_project() {
+  if [[ -n "$compose_project" ]]; then
+    return 0
+  fi
+
+  local compose_agentos_container
+  compose_agentos_container="$(docker compose ps -q agentos-d 2>/dev/null | head -n 1 || true)"
+  if [[ -n "$compose_agentos_container" ]]; then
+    compose_project="$(docker inspect \
+      --format '{{ index .Config.Labels "com.docker.compose.project" }}' \
+      "$compose_agentos_container")"
+    return 0
+  fi
+
+  local projects
+  projects="$(docker ps \
+    --filter 'label=com.docker.compose.service=agentos-d' \
+    --format '{{.Label "com.docker.compose.project"}}' \
+    | sort -u)"
+  if [[ "$(printf '%s\n' "$projects" | sed '/^$/d' | wc -l | tr -d ' ')" != "1" ]]; then
+    fail "Could not infer a single compose project for agentos-d. Set SMOKE_COMPOSE_PROJECT and re-run."
+    exit 1
+  fi
+  compose_project="$projects"
+}
+
+service_container() {
+  local service="$1"
+  local args=(--filter "label=com.docker.compose.service=${service}")
+  if [[ -n "$compose_project" ]]; then
+    args+=(--filter "label=com.docker.compose.project=${compose_project}")
+  fi
+  docker ps "${args[@]}" --format '{{.ID}}' | head -n 1
 }
 
 smoke_tenant_id=""
@@ -70,6 +107,7 @@ until curl -sf -m 3 "${DAEMON_URL}/api/health" >/dev/null 2>&1; do
   elapsed=$(( elapsed + 3 ))
 done
 pass "agentos-d /api/health is up."
+detect_compose_project
 
 health_body=$(curl -sf "${DAEMON_URL}/api/health")
 if ! echo "$health_body" | grep -q '"status"[[:space:]]*:[[:space:]]*"ok"'; then
@@ -222,7 +260,7 @@ done
 # Postgres health — without this the smoke gate can pass while a service has
 # silently failed (you'd see it in `agentworks status`, but only if you check).
 info "Checking postgres readiness..."
-pg_container="$(docker ps --filter 'label=com.docker.compose.service=postgres' --format '{{.ID}}' | head -1)"
+pg_container="$(service_container postgres)"
 if [[ -z "$pg_container" ]]; then
   fail "postgres container not running (compose label lookup returned nothing)."
   fail "Diagnose: agentworks status ; agentworks logs postgres"
@@ -266,8 +304,7 @@ if [[ "$n8n_optional" != "1" ]]; then
     "/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/dispatch/Dispatch.node.js"
     "/opt/agentworks-extensions/node_modules/@agentworks/n8n-nodes/dist/automation/AutomationAction.node.js"
   )
-  # Find the n8n container by image label, regardless of compose project name.
-  n8n_container="$(docker ps --filter 'label=com.docker.compose.service=n8n' --format '{{.ID}}' | head -1)"
+  n8n_container="$(service_container n8n)"
   if [[ -z "$n8n_container" ]]; then
     warn "Could not locate n8n container (compose label lookup failed); skipping nodes check."
   else

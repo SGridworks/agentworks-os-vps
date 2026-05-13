@@ -40,6 +40,9 @@ services:
       # auto-assignment entirely. The TS daemon reads the env var directly;
       # the smb-starter default lives here in compose, not in code.
       AGENTWORKS_DEFAULT_PACK_ID: ${AGENTWORKS_DEFAULT_PACK_ID:-smb-starter}
+      # Default install verifies the dispatch queue with the no-op adapter.
+      # Set AWOS_ADAPTER=router/spec/kimi plus KIMI_API_KEY to run real LLM work.
+      AWOS_ADAPTER: ${AWOS_ADAPTER:-stub}
       # Daemon reads AGENTOS_DATA_DIR (see packages/agentos-d/src/config.ts:50).
       # Without this, the daemon writes SQLite to /app/data (ephemeral inside the
       # container layer) instead of /data (the bind mount), and loses every tenant,

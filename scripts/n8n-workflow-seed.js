@@ -10,9 +10,8 @@
  *
  * What it does:
  *   1. Waits for n8n /healthz to return 200
- *   2. Creates an owner account (if n8n has no users yet)
- *   3. Gets an API key for that account
- *   4. POSTs each .json workflow file to /rest/workflows
+ *   2. Uses a caller-supplied n8n API key
+ *   3. Creates or updates each .json workflow file through /api/v1/workflows
  *
  * The script is idempotent — re-running it updates workflows with the same name.
  */
@@ -31,16 +30,11 @@ const N8N_URL = process.argv.find((a) => a.startsWith("--n8n-url="))?.split("=")
   ?? "http://localhost:5678";
 // Repo layout: scripts/ is sibling to workflows/, not parent.
 const WORKFLOWS_DIR = join(__dirname, "..", "workflows");
-// n8n owner credentials must be supplied by the caller. The script no longer
-// assumes a hard-coded admin account that would collide with the operator's
-// first-launch n8n owner-setup screen.
-const ADMIN_EMAIL = process.env.N8N_ADMIN_EMAIL;
-const ADMIN_PASSWORD = process.env.N8N_ADMIN_PASSWORD;
-if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
-  console.error("[seed] N8N_ADMIN_EMAIL and N8N_ADMIN_PASSWORD are required.");
-  console.error(`[seed] Create the n8n owner account at ${N8N_URL} first, then run:`);
-  console.error("[seed]   N8N_ADMIN_EMAIL=you@example.com \\");
-  console.error("[seed]   N8N_ADMIN_PASSWORD='...' \\");
+const N8N_API_KEY = process.env.N8N_API_KEY;
+if (!N8N_API_KEY) {
+  console.error("[seed] N8N_API_KEY is required.");
+  console.error(`[seed] Create an owner account at ${N8N_URL}, generate an API key, then run:`);
+  console.error("[seed]   N8N_API_KEY='...' \\");
   console.error("[seed]   node scripts/n8n-workflow-seed.js");
   process.exit(2);
 }
@@ -72,69 +66,29 @@ function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-async function getApiKey() {
-  // Step 1: Create owner account if no users exist
-  try {
-    const resp = await fetch(`${N8N_URL}/rest/users`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    if (resp.ok) {
-      const users = await resp.json();
-      if (users.length === 0) {
-        console.log("[seed] No users found — creating owner account");
-        const createResp = await fetch(`${N8N_URL}/rest/users`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: ADMIN_EMAIL,
-            password: ADMIN_PASSWORD,
-            firstName: "Admin",
-            lastName: "AgentWorks",
-            role: "owner",
-          }),
-        });
-        if (!createResp.ok) {
-          const err = await createResp.text();
-          throw new Error(`Failed to create owner: ${createResp.status} ${err}`);
-        }
-        console.log("[seed] Owner account created");
-      } else {
-        console.log(`[seed] ${users.length} user(s) already exist — skipping account creation`);
-      }
-    }
-  } catch (err) {
-    // If the GET fails (e.g. auth required), try logging in directly
-    console.warn(`[seed] User check note: ${err.message}`);
-  }
-
-  // Step 2: Get API key via login
-  console.log("[seed] Logging in to get API key");
-  const loginResp = await fetch(`${N8N_URL}/rest/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: ADMIN_EMAIL, password: ADMIN_PASSWORD }),
+async function n8nApi(path, init = {}) {
+  const res = await fetch(`${N8N_URL}/api/v1${path}`, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      "X-N8N-API-KEY": N8N_API_KEY,
+      ...(init.headers ?? {}),
+    },
   });
-
-  if (!loginResp.ok) {
-    // Try the newer /rest/auth/sso/login endpoint
-    const ssoResp = await fetch(`${N8N_URL}/rest/auth/sso/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: ADMIN_EMAIL, password: ADMIN_PASSWORD }),
-    });
-    if (!ssoResp.ok) {
-      throw new Error(`Login failed: ${loginResp.status} / ${ssoResp.status}`);
-    }
-    const ssoData = await ssoResp.json();
-    return ssoData.data?.token ?? ssoData.token;
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`${init.method ?? "GET"} ${path} failed: ${res.status} ${body}`);
   }
-
-  const loginData = await loginResp.json();
-  return loginData.data?.token ?? loginData.token;
+  return res.status === 204 ? null : res.json();
 }
 
-async function importWorkflow(apiKey, workflowPath) {
+async function listWorkflowsByName() {
+  const payload = await n8nApi("/workflows");
+  const workflows = Array.isArray(payload?.data) ? payload.data : [];
+  return new Map(workflows.map((w) => [w.name, w]));
+}
+
+async function importWorkflow(existingByName, workflowPath) {
   const raw = readFileSync(workflowPath, "utf8");
   const workflow = JSON.parse(raw);
   const name = workflow.name ?? "Untitled";
@@ -149,21 +103,19 @@ async function importWorkflow(apiKey, workflowPath) {
     active: false,
   };
 
-  const res = await fetch(`${N8N_URL}/rest/workflows`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-N8N-API-KEY": apiKey,
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (res.ok) {
-    const created = await res.json();
-    console.log(`  [seed] ✓ "${name}" imported (id=${created.data?.id ?? created.id})`);
+  const existing = existingByName.get(name);
+  if (existing?.id) {
+    const updated = await n8nApi(`/workflows/${existing.id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+    console.log(`  [seed] ✓ "${name}" updated (id=${updated.data?.id ?? updated.id ?? existing.id})`);
   } else {
-    const err = await res.text();
-    console.warn(`  [seed] ✗ "${name}" failed: ${res.status} ${err}`);
+    const created = await n8nApi("/workflows", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+    console.log(`  [seed] ✓ "${name}" imported (id=${created.data?.id ?? created.id})`);
   }
 }
 
@@ -175,11 +127,8 @@ async function main() {
   console.log(`[seed] Waiting for n8n at ${N8N_URL}...`);
   await waitForN8n();
 
-  const apiKey = await getApiKey();
-  if (!apiKey) {
-    throw new Error("Could not obtain an API key from n8n");
-  }
-  console.log("[seed] API key obtained");
+  const existingByName = await listWorkflowsByName();
+  console.log("[seed] API key accepted");
 
   const files = readdirSync(WORKFLOWS_DIR)
     .filter((f) => f.endsWith(".json"))
@@ -192,7 +141,7 @@ async function main() {
 
   console.log(`[seed] Found ${files.length} workflow(s) to seed:`);
   for (const file of files) {
-    await importWorkflow(apiKey, join(WORKFLOWS_DIR, file));
+    await importWorkflow(existingByName, join(WORKFLOWS_DIR, file));
   }
 
   console.log("[seed] Done");

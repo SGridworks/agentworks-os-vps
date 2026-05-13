@@ -62,7 +62,7 @@ For a human‑oriented walk‑through: [docs/install-runbook.md](./docs/install-
 | Pillar | What it does |
 |---|---|
 | Memory | Persistent vault that agents read and write. Survives restarts. Seeds from your onboarding answers. |
-| Orchestration | Cross‑agent task coordination. One agent can hand off to another with full context. |
+| Orchestration | Cross-agent task coordination primitives: issues, dispatch queue, and wakeups. The default install uses a stub dispatch adapter; configure a real adapter before relying on autonomous work execution. |
 | System of record | Append‑only audit log of every action: who did what, when, and the policy decision. |
 | Compliance engine | YAML rule packs with allow / block / route‑to‑review outcomes. Ships with TCPA and fair‑housing packs for real estate. |
 | Human approval queue | Rule packs can return “route to review.” Approvers can inspect queued actions through the API and, when enabled, the admin UI. |

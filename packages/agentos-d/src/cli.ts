@@ -24,7 +24,7 @@ import { createProcessWatcher, ProcessWatcher } from "./services/process-watcher
 import type { ProcessWatcherConfig } from "./services/process-watcher/index.js";
 
 function buildAdapter(sqlite: ReturnType<typeof getSqlite>): AgentAdapter | undefined {
-  const choice = (process.env.AWOS_ADAPTER ?? "router").toLowerCase();
+  const choice = (process.env.AWOS_ADAPTER ?? "stub").toLowerCase();
   if (choice === "stub" || choice === "off" || choice === "none") {
     console.log("[dispatch-consumer] AWOS_ADAPTER=stub — using no-op stub adapter");
     return undefined;

@@ -580,16 +580,20 @@ USAGE
   # The WSL form is required when the consumer is a Windows process (Claude
   # Desktop or Claude Code on Windows) — Windows cannot run a WSL-side
   # `node` binary directly. The Linux-side `node` is invoked through `wsl -e`.
+  _json_string() {
+    AGENTWORKS_JSON_VALUE="$1" node -e 'process.stdout.write(JSON.stringify(process.env.AGENTWORKS_JSON_VALUE ?? ""))'
+  }
+
   local mcp_command mcp_args_json
   if [[ "$is_wsl" == "true" ]]; then
     mcp_command="wsl"
     mcp_args_json="$(printf '["-e", %s, %s]' \
-      "$(printf '%s' "$node_path"   | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))')" \
-      "$(printf '%s' "$bridge_path" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))')")"
+      "$(_json_string "$node_path")" \
+      "$(_json_string "$bridge_path")")"
   else
     mcp_command="$node_path"
     mcp_args_json="$(printf '[%s]' \
-      "$(printf '%s' "$bridge_path" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))')")"
+      "$(_json_string "$bridge_path")")"
   fi
 
   local mcp_url="http://localhost:7710"
@@ -622,28 +626,29 @@ JSON
     AGENTWORKS_MCP_COMMAND="$mcp_command" \
     AGENTWORKS_MCP_ARGS_JSON="$mcp_args_json" \
     AGENTWORKS_MCP_URL="$mcp_url" \
-    python3 - <<'PY'
-import json, os
-cfg = os.environ["AGENTWORKS_MCP_CFG"]
-command = os.environ["AGENTWORKS_MCP_COMMAND"]
-args = json.loads(os.environ["AGENTWORKS_MCP_ARGS_JSON"])
-url = os.environ["AGENTWORKS_MCP_URL"]
-try:
-    with open(cfg) as f:
-        config = json.load(f)
-except (FileNotFoundError, json.JSONDecodeError):
-    config = {}
-config.setdefault("mcpServers", {})
-config["mcpServers"]["agentworks"] = {
-    "command": command,
-    "args": args,
-    "env": {"AGENTOS_URL": url},
+    node <<'NODE'
+const fs = require("node:fs");
+const path = require("node:path");
+const cfg = process.env.AGENTWORKS_MCP_CFG;
+const command = process.env.AGENTWORKS_MCP_COMMAND;
+const args = JSON.parse(process.env.AGENTWORKS_MCP_ARGS_JSON ?? "[]");
+const url = process.env.AGENTWORKS_MCP_URL;
+let config = {};
+try {
+  config = JSON.parse(fs.readFileSync(cfg, "utf8"));
+} catch {
+  config = {};
 }
-os.makedirs(os.path.dirname(cfg), exist_ok=True)
-with open(cfg, "w") as f:
-    json.dump(config, f, indent=2)
-print("ok:", cfg)
-PY
+config.mcpServers = config.mcpServers ?? {};
+config.mcpServers.agentworks = {
+  command,
+  args,
+  env: { AGENTOS_URL: url },
+};
+fs.mkdirSync(path.dirname(cfg), { recursive: true });
+fs.writeFileSync(cfg, `${JSON.stringify(config, null, 2)}\n`);
+console.log("ok:", cfg);
+NODE
     log_info "${label} MCP configured: ${cfg}"
   }
 
