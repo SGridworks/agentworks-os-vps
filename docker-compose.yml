@@ -60,6 +60,7 @@ services:
       # http://127.0.0.1:3101 is unreachable from inside the agentos-d
       # container — the sidecar is reachable as the docker network hostname).
       SCANNER_SIDECAR_URL: http://scanner-worker:3101
+      SCANNER_POLL_INTERVAL_MS: "${SCANNER_POLL_INTERVAL_MS:-30000}"
     volumes:
       - ${AGENTWORKS_DATA_DIR:-./data}:/data            # SQLite DB, WAL, vault, uploads
       - ${AGENTWORKS_CONFIG_DIR:-./config}:/config:ro    # .env and secrets (read-only at runtime)
@@ -117,7 +118,6 @@ services:
       # it answers HTTP requests but is not a producer. SCANNER_SIDECAR_URL
       # was set here in v0.1.0–v0.1.7 but the Python code never read it.
       # Removed in v0.1.8.
-      SCANNER_POLL_INTERVAL_MS: "30000"
       # WATCH_DIRS lists host-managed agent-config directories the scanner
       # polls for new CLAUDE.md / .cursorrules / MCP-config drops. They're
       # bind-mounted from $AGENTWORKS_CONFIG_DIR (default ./config) into

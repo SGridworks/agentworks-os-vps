@@ -16,6 +16,10 @@ The v0.1.9 `agentworks backup` command archives:
 - `~/.agentworks/config/` including `.env`, `secrets.json`, and MCP bridge config
 - a best-effort Postgres dump when the Postgres service is reachable
 
+When `sqlite3` is available, `agentworks backup` uses SQLite's online backup API
+for `agentworks.db`. Without `sqlite3`, it briefly stops `agentos-d` while
+copying the SQLite files.
+
 It does not include:
 
 - container images

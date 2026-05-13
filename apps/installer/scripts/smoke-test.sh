@@ -91,6 +91,46 @@ service_container() {
   docker ps "${args[@]}" --format '{{.ID}}' | head -n 1
 }
 
+assert_service_health() {
+  local service="$1"
+  local container
+  container="$(service_container "$service")"
+  if [[ -z "$container" ]]; then
+    fail "${service} container not running (compose label lookup returned nothing)."
+    diagnose_service "$service"
+    exit 1
+  fi
+
+  local status elapsed=0 timeout="${SMOKE_DOCKER_HEALTH_TIMEOUT:-90}"
+  while true; do
+    status="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$container")"
+    case "$status" in
+      healthy)
+        pass "${service} container health is healthy."
+        return 0
+        ;;
+      none)
+        pass "${service} has no Docker healthcheck."
+        return 0
+        ;;
+      unhealthy)
+        fail "${service} container health is unhealthy."
+        diagnose_service "$service"
+        exit 1
+        ;;
+      *)
+        if (( elapsed >= timeout )); then
+          fail "${service} container health is ${status} after ${timeout}s."
+          diagnose_service "$service"
+          exit 1
+        fi
+        sleep 3
+        elapsed=$(( elapsed + 3 ))
+        ;;
+    esac
+  done
+}
+
 smoke_tenant_id=""
 cleanup_smoke_tenant() {
   if [[ -n "${smoke_tenant_id:-}" ]]; then
@@ -302,6 +342,13 @@ if ! docker exec "$pg_container" pg_isready -U agentworks -d agentworks &>/dev/n
   exit 1
 fi
 pass "postgres is accepting connections."
+
+info "Checking Docker health status for default services..."
+assert_service_health agentos-d
+assert_service_health postgres
+[[ "$scanner_optional" == "1" ]] || assert_service_health scanner-worker
+[[ "$n8n_optional" == "1" ]] || assert_service_health n8n
+[[ "$admin_optional" == "1" ]] || assert_service_health admin-ui
 
 # Sanity-check the admin BFF endpoint that backs documented vault graph data.
 # It must see a real note for the disposable tenant, not merely return HTTP 200

@@ -272,6 +272,24 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
   custom-node container lookup is fatal by default, and disposable tenant
   cleanup failures fail the install gate unless explicitly downgraded.
 
+### Fixed (audit round 18)
+
+- `agentworks restore` now clears and copies directory contents with dotfiles,
+  so restored config includes `.env` instead of silently skipping it.
+- Installer PATH shims now persist the resolved `AGENTWORKS_DIR` and
+  `AGENTWORKS_SOURCE_DIR`, so custom install directories continue to work after
+  the installer environment is gone.
+- Scanner-worker standalone health checks use `127.0.0.1`, matching compose and
+  avoiding the known IPv6 `localhost` trap.
+- `SCANNER_POLL_INTERVAL_MS` is now set on `agentos-d`, which is the service
+  that reads it.
+- Installer smoke tests fail on unhealthy Docker services instead of passing
+  solely on HTTP endpoint checks.
+- `agentworks backup` now takes a SQLite-consistent backup by using the online
+  backup API when available, or briefly quiescing `agentos-d` when it is not.
+- CLI help now points operators to the installed local docs instead of an
+  unshipped external documentation domain.
+
 ### Known limitations
 
 - Real-VPS install verification for this release was performed against a

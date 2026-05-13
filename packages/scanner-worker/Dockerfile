@@ -49,6 +49,6 @@ EXPOSE 3101
 # 3101 if unset. Standalone `docker run scanner-worker` (no compose) lands on
 # this default — keep them in sync if you change one.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD python -c "import httpx, os; httpx.get(f\"http://localhost:{os.environ.get('SCANNER_WORKER_PORT', '3101')}/health\").raise_for_status()"
+    CMD python -c "import httpx, os; httpx.get(f\"http://127.0.0.1:{os.environ.get('SCANNER_WORKER_PORT', '3101')}/health\").raise_for_status()"
 
 ENTRYPOINT ["python", "-m", "scanner_worker.main"]

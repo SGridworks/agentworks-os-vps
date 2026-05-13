@@ -121,6 +121,12 @@ compose() {
        $cc "${env_args[@]}" "$@" )
 }
 
+clear_dir_contents() {
+  local dir="$1"
+  mkdir -p "$dir"
+  find "$dir" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+}
+
 # -----------------------------------------------------------------------------
 # Command: status
 # -----------------------------------------------------------------------------
@@ -300,10 +306,26 @@ cmd_backup() {
   tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/agentworks.XXXXXX")
   trap "rm -rf $tmpdir" EXIT
 
-  # Collect data dirs
+  # Collect data dirs. Use SQLite's online backup API when available so the
+  # archived DB is consistent even while the daemon is writing WAL frames.
   mkdir -p "$tmpdir/data" "$tmpdir/config"
-  cp -r "$DATA_DIR/." "$tmpdir/data/"
-  cp -r "$CONFIG_DIR/." "$tmpdir/config/"
+  if [[ -f "${DATA_DIR}/agentworks.db" ]] && command -v sqlite3 &>/dev/null; then
+    cp -a "$DATA_DIR/." "$tmpdir/data/"
+    rm -f "$tmpdir/data/agentworks.db" "$tmpdir/data/agentworks.db-wal" "$tmpdir/data/agentworks.db-shm"
+    sqlite3 "${DATA_DIR}/agentworks.db" ".backup '$tmpdir/data/agentworks.db'"
+  elif [[ -f "${DATA_DIR}/agentworks.db" ]] && compose ps -q agentos-d &>/dev/null; then
+    log_warn "sqlite3 not found; stopping agentos-d briefly for a consistent SQLite copy."
+    compose stop agentos-d
+    if cp -a "$DATA_DIR/." "$tmpdir/data/"; then
+      compose up -d agentos-d
+    else
+      compose up -d agentos-d
+      return 1
+    fi
+  else
+    cp -a "$DATA_DIR/." "$tmpdir/data/"
+  fi
+  cp -a "$CONFIG_DIR/." "$tmpdir/config/"
 
   # chmod secrets to readable only
   chmod 600 "$tmpdir/config"/*.json 2>/dev/null || true
@@ -394,9 +416,11 @@ cmd_restore() {
 
   compose stop
 
-  # Restore data
-  rm -rf "$DATA_DIR"/* && cp -r "$tmpdir/data/"* "$DATA_DIR/"
-  rm -rf "$CONFIG_DIR"/* && cp -r "$tmpdir/config/"* "$CONFIG_DIR/"
+  # Restore data, including dotfiles such as config/.env.
+  clear_dir_contents "$DATA_DIR"
+  clear_dir_contents "$CONFIG_DIR"
+  cp -a "$tmpdir/data/." "$DATA_DIR/"
+  cp -a "$tmpdir/config/." "$CONFIG_DIR/"
 
   compose up -d
 
@@ -831,7 +855,7 @@ Examples:
   agentworks backup
   agentworks restore --input agentworks-backup-20260427.tar.gz
 
-For more help: https://docs.agentworks.os
+For more help, see the docs in ~/.agentworks/source/docs
 EOF
 }
 

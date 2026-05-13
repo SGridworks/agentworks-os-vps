@@ -662,7 +662,7 @@ verify_install() {
 # tell the operator (or an agent) to run a command that does not exist.
 # Tries /usr/local/bin first (writable on most macOS, not on most Linux without
 # sudo); falls back to ~/.local/bin and warns if it is not on PATH.
-# Idempotent — replaces an existing symlink that points at our wrapper.
+# Idempotent — replaces an existing shim with the current install paths.
 # -----------------------------------------------------------------------------
 install_cli_wrapper() {
   local wrapper="${SOURCE_DIR}/apps/installer/src/agentworks.sh"
@@ -679,7 +679,19 @@ install_cli_wrapper() {
     target="${HOME}/.local/bin/agentworks"
   fi
 
-  ln -sf "$wrapper" "$target"
+  local quoted_dir quoted_source quoted_wrapper
+  printf -v quoted_dir '%q' "$AGENTWORKS_DIR"
+  printf -v quoted_source '%q' "$SOURCE_DIR"
+  printf -v quoted_wrapper '%q' "$wrapper"
+
+  rm -f "$target"
+  {
+    echo '#!/usr/bin/env bash'
+    echo 'set -euo pipefail'
+    printf 'export AGENTWORKS_DIR=%s\n' "$quoted_dir"
+    printf 'export AGENTWORKS_SOURCE_DIR=%s\n' "$quoted_source"
+    printf 'exec %s "$@"\n' "$quoted_wrapper"
+  } > "$target"
   chmod +x "$target" 2>/dev/null || true
   AGENTWORKS_CLI_PATH="$target"
 
