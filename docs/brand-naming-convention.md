@@ -32,7 +32,7 @@
     32|| `AgentWorks/packages/db` | `packages/db` | Unchanged — DB schema package. |
     33|| `@AgentWorks/...` | `@agentworks/...` | npm scope. |
     34|| `AgentWorks-ui` | `admin-ui` | The Next.js admin interface. |
-    35|| `AgentWorks.docker` image | `agentos-d` image | GHCR: `ghcr.io/sgridworks/agentos-d`. |
+    35|| `AgentWorks.docker` image | `agentos-d` image | GHCR: `ghcr.io/sgridworks/awos/agentos-d` (v0.1.9+; pre-0.1.9 lived at `ghcr.io/sgridworks/agentworks/agentos-d`). |
     36|| `AgentWorks/scanner` | `scanner-worker` | The AgentGuard sidecar service. |
     37|| `~/AgentWorks` | `~/agentworks` | Local install root on the customer's machine. |
     38|
@@ -106,7 +106,7 @@
    106|Paperclip, Inc. → SGridworks
    107|PAPERCLIP_ → AGENTWORKS_  (env vars)
    108|AgentWorks-ui → admin-ui    (directory name)
-   109|ghcr.io/AgentWorks → ghcr.io/sgridworks/agentos-d
+   109|ghcr.io/AgentWorks → ghcr.io/sgridworks/awos/agentos-d
    110|```
    111|
    112|---

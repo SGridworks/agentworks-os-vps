@@ -18,6 +18,58 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
 > repository carries the prior 0.1.0–0.1.9 history (private). This is the
 > open-source successor and the first public-facing tag.
 
+### Highlights
+
+- **Default-on admin UI** at `http://localhost:3000`. Smoke test treats
+  `/mission-control` as a fatal gate; `agentworks status` includes port 3000.
+- **All host ports loopback-bound by default** (`7710`, `3101`, `5678`,
+  `3000`). VPS guidance is to expose via SSH tunnel or authenticated TLS
+  reverse proxy, not by rebinding to `0.0.0.0`.
+- **VPS blank-slate install runbook** (`docs/vps-blank-slate-install.md`)
+  plus a reusable full-stack E2E gate (`pnpm test:vps-e2e`,
+  `scripts/awos-vps-e2e.mjs`).
+- **Installer hardening**: detects `docker compose` v2 and legacy
+  `docker-compose`; preflights ports/disk/RAM/network; supports custom
+  `AGENTWORKS_DIR` via a PATH shim that exports the install root and source
+  dir; idempotent re-runs refresh `~/.agentworks/source` to the installer
+  ref before handing off to `agentworks update`.
+- **MCP wiring**: `agentworks mcp configure --target {claude-desktop |
+  claude-code | both}` writes the bundled stdio bridge config, validates
+  host Node.js ≥18 before writing, and the runbook documents Codex's
+  current `codex mcp add` command form.
+- **Operator wrapper polish**: `agentworks restart` recreates services with
+  the current compose file and prunes orphans; `agentworks restore <file>`
+  accepts the documented positional and `--input` forms; `agentworks update`
+  persists the resolved version into `config/.env` so subsequent restarts
+  do not silently downgrade.
+- **22 rounds of adversarial pre-release audit fixes** — full per-round
+  log below.
+
+### Deployment impact
+
+- **GHCR namespace moved** from `ghcr.io/sgridworks/agentworks/{agentos-d,
+  admin-ui, scanner-worker}` to `ghcr.io/sgridworks/awos/{agentos-d,
+  admin-ui, scanner-worker}`. The old packages were bound to the archived
+  `SGridworks/agentworks-os` repo and could not be written to by this
+  repository's release workflow. Fresh installs of v0.1.9 pull from the new
+  namespace automatically. Any pinned `image:` references or
+  `AGENTWORKS_IMAGE_REGISTRY` overrides must be updated.
+- **Re-install over a pre-0.1.9 install is supported and idempotent.** The
+  installer refreshes `~/.agentworks/source` and re-runs `agentworks
+  update`; existing tenants, rule packs, and vault content are preserved.
+
+### Known limitations
+
+- Real-VPS install verification for this release was performed against a
+  local OrbStack docker-compose stack on canonical ports, not on an actual
+  remote VPS. The bundled E2E passed end-to-end against that stack.
+- Default dispatch uses the stub adapter unless `AWOS_ADAPTER` and matching
+  provider credentials are configured. This verifies queue/wakeup plumbing
+  but does not execute autonomous LLM work.
+- `AGENTWORKS_VAULT_HOST_DIR` supports external vault storage, but there is
+  no dedicated `agentworks config set vault-root ...` wrapper yet; edit
+  `$AGENTWORKS_DIR/config/.env` directly.
+
 ### Fixed (audit round 1)
 
 - `apps/installer/src/install.sh` preflight now resolves both `docker compose`
@@ -337,18 +389,6 @@ the fixes called out by successive rounds of the pre-release adversarial audit.
   first-pushed by this repo, so the release workflow owns publishing rights.
   `docker-compose.yml`, `docker-compose.dev.yml`, the installer cleanup hints,
   and the release workflow's `image_prefix` were updated together.
-
-### Known limitations
-
-- Real-VPS install verification for this release was performed against a
-  local OrbStack docker-compose stack on canonical ports, not on an actual
-  remote VPS. The bundled E2E passed end-to-end against that stack.
-- Default dispatch uses the stub adapter unless `AWOS_ADAPTER` and matching
-  provider credentials are configured. This verifies queue/wakeup plumbing but
-  does not execute autonomous LLM work.
-- `AGENTWORKS_VAULT_HOST_DIR` supports external vault storage, but there is no
-  dedicated `agentworks config set vault-root ...` wrapper yet; edit
-  `$AGENTWORKS_DIR/config/.env` directly.
 
 ## [0.1.9-archived] — 2026-05-05
 
