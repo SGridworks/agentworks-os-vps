@@ -58,6 +58,7 @@ beforeAll(async () => {
       AGENTOS_PORT: String(port),
       AGENTOS_HOST: "127.0.0.1",
       AGENTOS_LOG_LEVEL: "warn",
+      AGENTWORKS_DEFAULT_PACK_ID: "smb-starter",
       RULE_PACKS_DIR: RULE_PACKS,
       VAULT_ROOT: join(tmpRoot, "vault"),
       AGENTOS_DATA_DIR: join(tmpRoot, "data"),
