@@ -32,7 +32,7 @@ services:
     image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/awos}/agentos-d:${AGENTWORKS_VERSION:-0.1.9}
     restart: unless-stopped
     ports:
-      - "127.0.0.1:7710:7710"   # REST + MCP
+      - "${AGENTOS_BIND_ADDR:-127.0.0.1}:${AGENTOS_HOST_PORT:-7710}:7710"   # REST + MCP, loopback by default
     environment:
       AGENTOS_HOST: "0.0.0.0"
       AGENTOS_PORT: "7710"
@@ -60,13 +60,13 @@ services:
       # Agent instruction files edited through the Admin UI/API. Keep them
       # under /data so container recreates do not wipe operator-authored files.
       AWOS_AGENTS_ROOT: /data/agents
-      AGENTWORKS_SESSION_SECRET: ${AGENTWORKS_SESSION_SECRET}
+      AGENTWORKS_SESSION_SECRET: ${AGENTWORKS_SESSION_SECRET:?set AGENTWORKS_SESSION_SECRET in .env (cp .env.example .env, then openssl rand -hex 32)}
       # Reserved for future execution-workflow support. The v0.1.x daemon
       # parses this URL into config but does not yet open a connection;
       # tenants, vault pages, audit log, and the dispatch queue all live in
       # the SQLite DB under AGENTOS_DATA_DIR. Leave wired so a future minor
       # release can light up Postgres without changing operator config.
-      AGENTOS_EXECUTION_DATABASE_URL: postgres://${POSTGRES_USER:-agentworks}:${POSTGRES_PASSWORD:-agentworks-local}@postgres:5432/${POSTGRES_DB:-agentworks}
+      AGENTOS_EXECUTION_DATABASE_URL: postgres://${POSTGRES_USER:-agentworks}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env (cp .env.example .env, then openssl rand -hex 32)}@postgres:5432/${POSTGRES_DB:-agentworks}
       # Scanner sidecar URL (config.ts reads SCANNER_SIDECAR_URL; default
       # http://127.0.0.1:3101 is unreachable from inside the agentos-d
       # container — the sidecar is reachable as the docker network hostname).
@@ -104,7 +104,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-agentworks}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-agentworks-local}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env (cp .env.example .env, then openssl rand -hex 32)}
       POSTGRES_DB: ${POSTGRES_DB:-agentworks}
     volumes:
       - agentworks-postgres-data:/var/lib/postgresql/data
@@ -126,7 +126,7 @@ services:
     image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/awos}/scanner-worker:${AGENTWORKS_VERSION:-0.1.9}
     restart: unless-stopped
     ports:
-      - "127.0.0.1:3101:3101"   # Health + findings API
+      - "${SCANNER_BIND_ADDR:-127.0.0.1}:${SCANNER_HOST_PORT:-3101}:3101"   # Health + findings API, loopback by default
     environment:
       SCANNER_WORKER_PORT: "3101"
       # NB: scanner-worker does not call back into agentos-d in v0.1.x —
@@ -175,7 +175,7 @@ services:
       dockerfile: packages/n8n-nodes/Dockerfile
     restart: unless-stopped
     ports:
-      - "127.0.0.1:5678:5678"   # n8n UI
+      - "${N8N_BIND_ADDR:-127.0.0.1}:${N8N_HOST_PORT:-5678}:5678"   # n8n UI, loopback by default
     environment:
       - N8N_HOST=0.0.0.0
       - N8N_PORT=5678
@@ -214,7 +214,7 @@ services:
     image: ${AGENTWORKS_IMAGE_REGISTRY:-ghcr.io/sgridworks/awos}/admin-ui:${AGENTWORKS_VERSION:-0.1.9}
     restart: unless-stopped
     ports:
-      - "127.0.0.1:3000:3000"
+      - "${ADMIN_UI_BIND_ADDR:-127.0.0.1}:${ADMIN_UI_HOST_PORT:-3000}:3000"   # Admin UI, loopback by default
     environment:
       AGENTOS_API_URL: http://agentos-d:7710
       NEXT_PUBLIC_API_URL: ""

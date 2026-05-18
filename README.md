@@ -42,6 +42,8 @@ cd agentworks-os-vps
   && ./apps/installer/scripts/smoke-test.sh
 ```
 
+**Cloning directly onto a VPS without the installer?** See [VPS-QUICKSTART.md](./VPS-QUICKSTART.md) for a clone → `cp .env.example .env` → `docker compose up` path that does not require the installer scripts. The compose file fails loud if `AGENTWORKS_SESSION_SECRET` or `POSTGRES_PASSWORD` are unset.
+
 If both scripts exit 0 — done. The installer prints `Smoke test PASSED` at the end; the standalone smoke run is a second gate that creates a disposable tenant, runs a `policy.check` end‑to‑end, and deletes the disposable tenant.
 
 **Admin dashboard included.** Default install starts the daemon, scanner, n8n, Postgres, and the browser dashboard at `http://localhost:3000`. All host ports are loopback-bound by default; on a VPS, use an SSH tunnel or authenticated TLS reverse proxy instead of opening service ports directly.
