@@ -165,6 +165,33 @@ export interface AiRunExplanation {
 const DEFAULT_TENANT_ID = process.env.AGENTWORKS_DEFAULT_TENANT_ID ?? "default";
 const DEFAULT_COMPANY_ID = process.env.AGENTWORKS_DEFAULT_COMPANY_ID ?? "default";
 
+/**
+ * Step types exposed through the public REST schema. Templates that use
+ * step types outside this set are hidden from list responses unless the
+ * operator sets AWOS_AUTOMATION_EXPERIMENTAL_STEPS=1. The runtime can
+ * still execute any step type defined in NativeAutomationStepType.
+ */
+const PUBLIC_STEP_TYPES: ReadonlySet<NativeAutomationStepType> = new Set([
+  "policy.check",
+  "approval.enqueue",
+  "vault.read",
+  "vault.write",
+  "issue.create",
+  "issue.update",
+  "dispatch",
+  "scanner.finding",
+  "webhook.intake",
+]);
+
+function definitionUsesOnlyPublicSteps(definition: NativeAutomationDefinition): boolean {
+  if (!definition || !Array.isArray(definition.steps)) return true;
+  return definition.steps.every((step) => PUBLIC_STEP_TYPES.has(step.type));
+}
+
+function experimentalStepsEnabled(): boolean {
+  return process.env.AWOS_AUTOMATION_EXPERIMENTAL_STEPS === "1";
+}
+
 const TEMPLATE_DEFINITIONS: Omit<NativeAutomationTemplate, "status">[] = [
   {
     id: "policy-gated-dispatch",
@@ -584,14 +611,17 @@ export function listNativeAutomationTemplates(companyId = DEFAULT_COMPANY_ID): N
       .all(companyId)
       .map((r: any) => r.source_template_id as string),
   );
-  const bundled: NativeAutomationTemplate[] = TEMPLATE_DEFINITIONS.map((template) => {
-    const status: "installed" | "available" = installed.has(template.id) ? "installed" : "available";
-    return {
-      ...template,
-      source: "bundled" as const,
-      status,
-    };
-  });
+  const experimentalOn = experimentalStepsEnabled();
+  const bundled: NativeAutomationTemplate[] = TEMPLATE_DEFINITIONS
+    .filter((template) => experimentalOn || definitionUsesOnlyPublicSteps(template.definition))
+    .map((template) => {
+      const status: "installed" | "available" = installed.has(template.id) ? "installed" : "available";
+      return {
+        ...template,
+        source: "bundled" as const,
+        status,
+      };
+    });
   const custom = getSqlite()
     .prepare("SELECT * FROM native_automation_templates WHERE company_id = ? ORDER BY created_at DESC")
     .all(companyId)
@@ -1375,6 +1405,9 @@ export function installNativeAutomationTemplate(
     TEMPLATE_DEFINITIONS.find((t) => t.id === templateId) ??
     listNativeAutomationTemplates(opts.companyId ?? DEFAULT_COMPANY_ID).find((t) => t.id === templateId);
   if (!template) throw new Error("template_not_found");
+  if (!experimentalStepsEnabled() && !definitionUsesOnlyPublicSteps(template.definition)) {
+    throw new Error("template_uses_experimental_steps");
+  }
 
   const tenantId = opts.tenantId ?? DEFAULT_TENANT_ID;
   const companyId = opts.companyId ?? DEFAULT_COMPANY_ID;

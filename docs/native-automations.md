@@ -183,11 +183,30 @@ from `process.env` or from `~/.agentworks/secrets.env` (override path
 with `AWOS_SECRETS_PATH`). See `packages/agentos-d/src/adapters/awos-secrets.ts`
 for the resolution order.
 
-## Limitations in this release
+## Experimental step types
 
-- The public step type set is intentionally the nine documented above.
-  Additional step types defined in the runtime layer (flow control,
-  AI, HTTP, file I/O) are not exposed through the REST API yet.
+The runtime layer defines additional step types beyond the nine listed
+above (flow control, AI, HTTP, file I/O, email/message send, evidence
+packing). They are not exposed through the public REST schema and are
+filtered out of the templates list response by default.
+
+Set `AWOS_AUTOMATION_EXPERIMENTAL_STEPS=1` in the daemon environment to
+opt in. With the flag on:
+
+- Bundled templates that use experimental step types become visible in
+  the templates list response.
+- `POST /api/admin/automations/templates/:templateId/install` accepts
+  templates that use experimental step types.
+- `POST /api/admin/automations/workflows` and `PATCH .../workflows/:id`
+  still enforce the 9-type Zod schema for operator-authored definitions.
+  Experimental step types are only reachable through bundled templates
+  and direct service calls in this release.
+
+Treat the flag as an opt-in to functionality whose API surface may
+change without a major-version bump.
+
+## Other limitations in this release
+
 - A workflow can declare at most 20 steps.
 - Run history retention is not pruned automatically yet.
 - Templates cannot reference other templates; nesting is a future
