@@ -5,6 +5,63 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.10] — 2026-05-18
+
+Patch release tightening the VPS install path. No new product surface — the
+admin UI, scanner, n8n, and rule packs all behave the same as in 0.1.9.
+
+### Added
+
+- **Clone-first VPS quickstart** ([`VPS-QUICKSTART.md`](./VPS-QUICKSTART.md)).
+  Eight-step path from `git clone` through `cp .env.example .env`,
+  `docker compose up -d --build`, an `ssh -L` tunnel example, and the
+  `codex mcp add` / `claude mcp add` invocations for wiring the daemon's
+  MCP endpoint. Complements (does not replace) the existing
+  [`docs/vps-blank-slate-install.md`](./docs/vps-blank-slate-install.md)
+  sanitized-archive runbook.
+- **`.env.example` at the repo root.** Operator template for the two
+  required secrets and the new per-service bind-address and host-port
+  variables.
+
+### Changed
+
+- **`docker-compose.yml` now fails loud on missing secrets.** Both
+  `AGENTWORKS_SESSION_SECRET` and `POSTGRES_PASSWORD` are declared with
+  `${VAR:?...}` interpolation, so `docker compose up` aborts at config
+  time if either is unset. This removes the prior
+  `POSTGRES_PASSWORD:-agentworks-local` fallback that could have started
+  a Postgres container with a well-known default password on a fresh
+  install.
+- **Per-service host bindings are now configurable.** Each of
+  `agentos-d`, `scanner-worker`, `n8n`, and `admin-ui` reads its host
+  binding as `${X_BIND_ADDR:-127.0.0.1}:${X_HOST_PORT:-...}`. Loopback
+  remains the default for every service. Operators can rebind for a
+  reverse proxy or multi-instance host without editing the compose file.
+
+### Security
+
+- The `${VAR:?...}` enforcement closes the soft-default Postgres
+  password path. Existing 0.1.9 installs that never set
+  `POSTGRES_PASSWORD` will see the next `docker compose up` fail loud
+  with a remediation hint — this is intentional. Rotate the password
+  and add it to `.env`.
+
+### Deployment impact
+
+- **Re-install over 0.1.9 requires `POSTGRES_PASSWORD` set.** If your
+  `.env` does not have `POSTGRES_PASSWORD`, set it before running
+  `docker compose up`. The Postgres container can keep its existing
+  password — copy whatever value the running container is using into
+  `.env`.
+
+### Coming next
+
+- A native automations runtime in `agentos-d` is in progress on a draft
+  PR. It moves automation state into the daemon's own SQLite, treats n8n
+  as an optional bridge, and adds a managed-workflow editor to the admin
+  UI. Tracking issue and progress: see the open draft PR on this
+  repository tagged `automations`.
+
 ## [0.1.9] — 2026-05-13
 
 First public release of AgentWorks OS from the dedicated
