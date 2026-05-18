@@ -32,6 +32,232 @@ export function getHealth() {
   return request<Health>('/api/health');
 }
 
+export interface AutomationTemplate {
+  id: string;
+  name: string;
+  trigger: string;
+  status: string;
+  description: string;
+  definition: AutomationDefinition;
+  source?: string;
+}
+
+export interface AutomationStep {
+  id: string;
+  name: string;
+  type:
+    | 'schedule.cron'
+    | 'schedule.interval'
+    | 'issue.created'
+    | 'issue.updated'
+    | 'approval.decided'
+    | 'agent.completed'
+    | 'dispatch.failed'
+    | 'vault.changed'
+    | 'webhook.response'
+    | 'policy.check'
+    | 'approval.enqueue'
+    | 'vault.read'
+    | 'vault.write'
+    | 'issue.create'
+    | 'issue.update'
+    | 'dispatch'
+    | 'scanner.finding'
+    | 'webhook.intake'
+    | 'condition.if'
+    | 'branch.switch'
+    | 'loop.each'
+    | 'merge.join'
+    | 'delay.wait'
+    | 'error.catch'
+    | 'data.set'
+    | 'data.transform'
+    | 'data.filter'
+    | 'data.dedupe'
+    | 'data.extract'
+    | 'json.parse'
+    | 'http.request'
+    | 'email.send'
+    | 'message.send'
+    | 'adapter.call'
+    | 'rss.read'
+    | 'file.read'
+    | 'file.write'
+    | 'ai.classify'
+    | 'ai.summarize'
+    | 'ai.extract'
+    | 'ai.route'
+    | 'ai.generate'
+    | 'ai.review'
+    | 'operator.brief'
+    | 'friction.detect'
+    | 'evidence.pack'
+    | 'agent.panel'
+    | 'workflow.self_heal';
+  params: Record<string, unknown>;
+}
+
+export interface AutomationDefinition {
+  trigger: 'manual' | 'webhook' | 'event';
+  steps: AutomationStep[];
+}
+
+export interface AutomationStatus {
+  engine: {
+    name: string;
+    state: 'online' | 'offline';
+    checkedAt: string;
+    latencyMs: number | null;
+    error: string | null;
+    privateBackend: boolean;
+  };
+  runtime: {
+    mode: string;
+    localOnly: boolean;
+    dataDir: string;
+    stateEntries: number;
+    customExtensions: string;
+  };
+  bridge?: {
+    state: 'online' | 'offline';
+    baseUrl: string;
+    latencyMs: number | null;
+    error: string | null;
+    warnings: string[];
+  };
+  warnings?: string[];
+  suggestions?: Array<{
+    id: string;
+    title: string;
+    description: string;
+    status: string;
+  }>;
+  templates: AutomationTemplate[];
+  workflows: Array<{
+    id: string;
+    name: string;
+    active: boolean;
+    status?: string;
+    trigger?: string;
+    description?: string | null;
+    definition: AutomationDefinition;
+    updatedAt: string | null;
+    sourceTemplateId?: string | null;
+    externalEngine?: string | null;
+    externalWorkflowId?: string | null;
+    externalSyncStatus?: string | null;
+    externalSyncedAt?: string | null;
+    externalSyncError?: string | null;
+  }>;
+  recentRuns: Array<{
+    id: string;
+    workflowId?: string;
+    workflowName: string;
+    status: string;
+    startedAt: string;
+    finishedAt?: string | null;
+    steps?: Array<{
+      id: string;
+      name: string;
+      type: string;
+      status: string;
+      startedAt: string;
+      finishedAt: string;
+      output: Record<string, unknown>;
+      error: string | null;
+    }>;
+    error?: string | null;
+  }>;
+}
+
+export function getAutomationStatus() {
+  return request<AutomationStatus>('/api/admin/automations');
+}
+
+export function installAutomationTemplate(templateId: string, body: { tenantId?: string; companyId?: string } = {}) {
+  return request(`/api/admin/automations/templates/${templateId}/install`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+}
+
+export function createAutomationTemplate(body: {
+  tenantId?: string;
+  companyId?: string;
+  name: string;
+  trigger: 'manual' | 'webhook' | 'event';
+  description: string;
+  definition: AutomationDefinition;
+}) {
+  return request('/api/admin/automations/templates', {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+}
+
+export function createAutomationWorkflow(body: {
+  tenantId?: string;
+  companyId?: string;
+  name: string;
+  trigger: 'manual' | 'webhook' | 'event';
+  description?: string;
+  status?: 'active' | 'paused';
+  definition: AutomationDefinition;
+}) {
+  return request('/api/admin/automations/workflows', {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+}
+
+export function runAutomationWorkflow(workflowId: string, input: Record<string, unknown> = {}) {
+  return request(`/api/admin/automations/workflows/${workflowId}/run`, {
+    method: 'POST',
+    body: JSON.stringify({ input }),
+  });
+}
+
+export function setAutomationWorkflowStatus(workflowId: string, status: 'active' | 'paused') {
+  return request(`/api/admin/automations/workflows/${workflowId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status }),
+  });
+}
+
+export function updateAutomationWorkflow(workflowId: string, body: {
+  name?: string;
+  description?: string | null;
+  status?: 'active' | 'paused';
+  definition?: AutomationDefinition;
+}) {
+  return request(`/api/admin/automations/workflows/${workflowId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  });
+}
+
+export function draftAutomationTemplate(body: {
+  tenantId?: string;
+  companyId?: string;
+  prompt: string;
+  issueId?: string;
+}) {
+  return request('/api/admin/automations/ai/draft-template', {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+}
+
+export function syncAutomationWorkflowToN8n(workflowId: string) {
+  return request(`/api/admin/automations/workflows/${workflowId}/n8n-sync`, {
+    method: 'POST',
+  });
+}
+
+export function exportAutomationWorkflowToN8n(workflowId: string) {
+  return request<Record<string, unknown>>(`/api/admin/automations/workflows/${workflowId}/n8n-export`);
+}
+
 // ---------------------------------------------------------------------------
 // Execution surface (companies / agents / issues / runs)
 // ---------------------------------------------------------------------------
@@ -244,8 +470,49 @@ export function listCompanyIssues(companyId: string) {
   return request<{ items: ExecutionIssue[] }>(`/api/companies/${companyId}/issues`).then(r => r.items);
 }
 
+export function getIssue(issueId: string) {
+  return request<ExecutionIssue>(`/api/issues/${issueId}`);
+}
+
 export function listCompanyRuns(companyId: string) {
   return request<{ items: ExecutionRun[] }>(`/api/companies/${companyId}/heartbeat-runs`).then(r => r.items);
+}
+
+export type DispatchStatus = 'queued' | 'dispatched' | 'completed' | 'failed' | string;
+
+export interface DispatchQueueRow {
+  id: string;
+  tenantId: string;
+  taskKind: string;
+  targetAgentId: string;
+  input: unknown;
+  status: DispatchStatus;
+  policyDecisionId: string | null;
+  createdAt: string;
+  dispatchedAt: string | null;
+  completedAt: string | null;
+  error: string | null;
+}
+
+export interface ListDispatchQueueParams {
+  tenantId?: string;
+  status?: DispatchStatus;
+  targetAgentId?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export function listDispatchQueue(params: ListDispatchQueueParams = {}) {
+  const search = new URLSearchParams();
+  if (params.tenantId) search.set('tenantId', params.tenantId);
+  if (params.status) search.set('status', params.status);
+  if (params.targetAgentId) search.set('targetAgentId', params.targetAgentId);
+  if (params.limit) search.set('limit', String(params.limit));
+  if (params.offset) search.set('offset', String(params.offset));
+  const suffix = search.toString() ? `?${search.toString()}` : '';
+  return request<{ items: DispatchQueueRow[]; total: number; limit: number; offset: number }>(
+    `/api/dispatch${suffix}`
+  );
 }
 
 export function wakeAgent(agentId: string, payload: Record<string, unknown> = {}) {

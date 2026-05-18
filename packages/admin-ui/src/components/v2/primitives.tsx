@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 export type StatusKind = 'success' | 'warn' | 'error' | 'info' | 'accent' | 'muted';
 
@@ -109,6 +109,7 @@ export function KPICard({
   accent = false,
   spark,
   trend,
+  style,
 }: {
   label: string;
   value: string | number;
@@ -116,6 +117,7 @@ export function KPICard({
   accent?: boolean;
   spark?: number[];
   trend?: 'up' | 'down';
+  style?: CSSProperties;
 }) {
   return (
     <div
@@ -124,6 +126,7 @@ export function KPICard({
         padding: '18px 20px',
         position: 'relative',
         borderTop: accent ? '2px solid var(--accent)' : '1px solid var(--rule)',
+        ...style,
       }}
     >
       <div className="eyebrow" style={{ marginBottom: 8 }}>

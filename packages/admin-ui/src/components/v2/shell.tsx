@@ -35,6 +35,8 @@ type NavKey =
   | 'memory-vault'
   | 'vault-health'
   | 'approvals'
+  | 'automations'
+  | 'active-work'
   | 'triage-queue'
   | 'agents'
   | 'rule-packs'

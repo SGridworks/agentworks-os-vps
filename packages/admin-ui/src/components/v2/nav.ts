@@ -9,6 +9,9 @@ export type NavKey =
   | 'vault-health'
   | 'insights'
   | 'approvals'
+  | 'automations'
+  | 'issues'
+  | 'review-queue'
   | 'triage-queue'
   | 'agents'
   | 'rule-packs'
@@ -18,7 +21,9 @@ export type NavKey =
   | 'evidence'
   | 'autopilot'
   | 'map'
-  | 'settings';
+  | 'settings'
+  | 'trust'
+  | 'active-work';
 
 export const NAV_TO_PATH: Record<NavKey, string> = {
   'mission-control': '/mission-control',
@@ -26,6 +31,9 @@ export const NAV_TO_PATH: Record<NavKey, string> = {
   'vault-health':    '/vault-health',
   'insights':        '/insights',
   'approvals':       '/approvals',
+  'automations':     '/automations',
+  'issues':          '/issues',
+  'review-queue':    '/review-queue',
   'triage-queue':    '/triage-queue',
   'agents':          '/agents',
   'rule-packs':      '/rule-packs',
@@ -36,9 +44,13 @@ export const NAV_TO_PATH: Record<NavKey, string> = {
   'autopilot':       '/autopilot',
   'map':             '/map',
   'settings':        '/settings',
+  'trust':           '/trust',
+  'active-work':     '/active-work',
 };
 
 export function useV2Nav() {
   const router = useRouter();
-  return useCallback((k: NavKey) => router.push(NAV_TO_PATH[k]), [router]);
+  return useCallback((k: NavKey | string) => {
+    router.push(k in NAV_TO_PATH ? NAV_TO_PATH[k as NavKey] : k);
+  }, [router]);
 }
