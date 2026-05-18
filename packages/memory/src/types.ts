@@ -103,6 +103,10 @@ export interface VaultWriteOptions {
   importance?: number;
   /** Agents that read the page since last update. Used for updating lastUsedBy without changing content. */
   lastUsedBy?: Array<{ agentId: string; usedAt: string }>;
+  /** UUID of the actor performing the write. Used for provenance tracking. */
+  lastUpdatedBy?: string;
+  /** ISO-8601 timestamp of when the write occurred. Defaults to now. */
+  lastUpdatedAt?: string;
 }
 
 /**

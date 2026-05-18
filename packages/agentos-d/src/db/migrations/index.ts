@@ -38,6 +38,8 @@ import { migrate as migrateCompanyIssuePrefix } from "./0031_company_issue_prefi
 import { migrate as migrateTaskSessionStatusAlign } from "./0032_task_session_status_align.js";
 import { migrate as migrateAutopilotFields } from "./0033_autopilot_fields.js";
 import { migrate as migrateMissionMap } from "./0034_mission_map.js";
+import { migrate as migrateNativeAutomations } from "./0035_native_automations.js";
+import { migrate as migrateNativeAutomationN8nAi } from "./0036_native_automation_n8n_ai.js";
 
 export function migrate(sqlite: Database): void {
   migrateInit(sqlite);
@@ -74,4 +76,6 @@ export function migrate(sqlite: Database): void {
   migrateTaskSessionStatusAlign(sqlite);
   migrateAutopilotFields(sqlite);
   migrateMissionMap(sqlite);
+  migrateNativeAutomations(sqlite);
+  migrateNativeAutomationN8nAi(sqlite);
 }

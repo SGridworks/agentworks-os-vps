@@ -4,9 +4,9 @@
  *
  * AWOS ships only the SMB Starter pack at onboarding.
  * Industry-specific compliance guardrails (TCPA, Fair Housing, HIPAA, etc.)
- * are handled via n8n workflows post-implementation.
+ * are built-in native rule packs.
  * The vault/wiki structure at wiki/regulatory/ provides a research framework
- * for agents to reference regulations — but the hardcoded enforcement lives in n8n.
+ * for agents to reference regulations — enforcement is now native.
  *
  * When adding a new pack:
  *   1. Add it here with tier and description

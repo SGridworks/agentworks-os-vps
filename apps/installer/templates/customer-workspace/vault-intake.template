@@ -1,0 +1,17 @@
+id: vault-intake
+name: Vault intake
+trigger: Manual
+description: Normalize inbound notes into the local vault with tenant and company context preserved.
+definition:
+  trigger: manual
+  steps:
+    - id: write
+      name: Write intake note
+      type: vault.write
+      params:
+        key: automations/native-intake
+        body: |
+          # Native Automation Intake
+
+          Created by AWOS native automations.
+        mode: append

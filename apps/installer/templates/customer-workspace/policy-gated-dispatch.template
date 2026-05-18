@@ -1,0 +1,32 @@
+id: policy-gated-dispatch
+name: Policy-gated dispatch
+trigger: Webhook
+description: Evaluate an inbound action, route exceptions to approval, and dispatch allowed work to the agent fleet.
+definition:
+  trigger: webhook
+  steps:
+    - id: policy
+      name: Policy check
+      type: policy.check
+      params:
+        actionKind: workflow.dispatch
+        actorId: native-automation
+        actorLabel: Native Automation
+        summary: Policy gate before dispatch
+    - id: dispatch
+      name: Dispatch approved work
+      type: dispatch
+      params:
+        taskKind: workflow.dispatch
+        targetAgentId: d02218d7-7ace-4493-9303-e6e998f9368d
+        input:
+          source: native-automation
+        requiresPolicyDecision: allow
+    - id: review
+      name: Route non-allow decisions
+      type: approval.enqueue
+      params:
+        proposedActionKind: workflow.dispatch
+        proposedActionSummary: Dispatch needs review
+        decisionReason: Policy gate did not return allow
+        requiresPolicyDecisionNot: allow
