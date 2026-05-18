@@ -5,6 +5,96 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] — 2026-05-18
+
+Minor release adding a first-party automation runtime inside `agentos-d`
+and a visual automations editor in the admin UI. n8n stays bundled as
+an optional bridge.
+
+### Added
+
+- **Native automations runtime** in the daemon. Managed workflows and
+  run history live in the daemon's own SQLite. Two new migrations
+  (`0035_native_automations`, `0036_native_automation_n8n_ai`) create
+  `native_automation_templates`, `native_automation_workflows`, and
+  `native_automation_runs`. Eight new endpoints under
+  `/api/admin/automations` cover list, install, create, patch, run,
+  inspect, and n8n export.
+- **Public step type set.** Nine step types are supported through the
+  public REST schema: `policy.check`, `approval.enqueue`, `vault.read`,
+  `vault.write`, `issue.create`, `issue.update`, `dispatch`,
+  `scanner.finding`, `webhook.intake`. The runtime layer defines
+  additional step types (AI, flow control, HTTP, file I/O) that are
+  gated behind `AWOS_AUTOMATION_EXPERIMENTAL_STEPS=1`. See
+  [`docs/native-automations.md`](./docs/native-automations.md).
+- **Bundled workflow templates.** Nine bundled templates ship with the
+  install: vault intake, outbound review demo, policy-gated dispatch,
+  scanner finding triage, issue stuck escalator, failed dispatch
+  recovery, vault health cleanup batcher, provider degradation watch,
+  approval SLA watchdog. They use only public step types and run
+  without any AI provider configured.
+- **Visual automations editor in the admin UI.** New pages at
+  `/automations` (list, status, recent runs), `/automations/editor`
+  (step palette + canvas), `/active-work` (in-flight dispatches), and
+  `/mission-control/[companyId]/issues/[issueId]/activity` (per-issue
+  activity stream). All read from the new admin API endpoints.
+- **Provider secrets adapter** at
+  `packages/agentos-d/src/adapters/awos-secrets.ts`. Loads upstream
+  model API keys from `process.env` and `$AWOS_SECRETS_PATH` (default
+  `~/.agentworks/secrets.env`). Used when experimental AI step types
+  are enabled.
+- **`docs/native-automations.md`** runbook covering data model, step
+  types, admin API, create/run flow, and the experimental flag.
+- **`.dockerignore`** at the repo root so `docker compose build`
+  contexts exclude `.git`, `node_modules`, `data`, `config`, `*.db`,
+  and `.env`.
+
+### Changed
+
+- `VaultWriteOptions` in `@agentworks/memory` accepts optional
+  `lastUpdatedBy` and `lastUpdatedAt` fields for provenance.
+
+### Deployment impact
+
+- No new required environment variables for the documented step set.
+  Existing 0.1.10 installs upgrade to 0.2.0 without configuration
+  changes. The two new migrations are idempotent.
+- Operators who want the experimental step types must opt in by
+  setting `AWOS_AUTOMATION_EXPERIMENTAL_STEPS=1` in the daemon
+  environment. AI-suffixed step types additionally need the
+  corresponding `<PROVIDER>_API_KEY` (and optionally
+  `<PROVIDER>_BASE_URL`) in `process.env` or in
+  `$AWOS_SECRETS_PATH`.
+
+### Validation
+
+End-to-end smoke run against a fresh `docker compose up -d --build`:
+installed the bundled `vault-intake` template, activated, ran the
+workflow, observed the resulting `native_automation_runs` row
+(`status: succeeded`, 1 step, 4 ms) and the vault file at
+`data/vault/<tenantId>/automations/native-intake.md`. Migrations
+`0035` and `0036` ran cleanly on a fresh SQLite. Full daemon test
+suite passes: 68 files, 631 tests. Admin UI builds clean with the
+four new routes.
+
+### Known follow-ups
+
+- Bundled templates that use experimental step types
+  (`autoresearch-workflow-optimizer`) are hidden by default. Operators
+  who turn on `AWOS_AUTOMATION_EXPERIMENTAL_STEPS=1` see them and can
+  install them, but the REST workflow create/update schemas still
+  reject experimental step types in operator-authored definitions.
+- The n8n bridge healthcheck currently reports `state: offline` when
+  the bridge is reachable only through the docker network (the
+  daemon's default `http://127.0.0.1:5678` is unreachable from inside
+  the agentos-d container). Set
+  `AWOS_AUTOMATION_BRIDGE_URL=http://n8n:5678` in `.env` to surface
+  bridge health correctly.
+- Provenance support in `POST /api/memory/{read,write}` (passing an
+  `actorId` through to the vault store as `lastUpdatedBy`) is in
+  scope for a follow-up patch release; the daemon's internal calls
+  from native automations already use the option.
+
 ## [0.1.10] — 2026-05-18
 
 Patch release tightening the VPS install path. No new product surface — the
