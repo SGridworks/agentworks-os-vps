@@ -32,6 +32,25 @@ import { eq, desc, and, gte, sql, inArray } from "drizzle-orm";
 import { getDb } from "../db/index.js";
 import { compatProxyEvents, scopeViolations, approvalQueue, policyDecisions, actionLog, tenants } from "../db/schema.js";
 import { getGraph } from "../services/mission-map.js";
+import {
+  checkN8nBridge,
+  createNativeAutomationTemplate,
+  createNativeAutomationWorkflow,
+  draftAutomationTemplateFromPrompt,
+  explainNativeAutomationRun,
+  exportNativeWorkflowToN8n,
+  getNativeAutomationRun,
+  importN8nWorkflow,
+  installNativeAutomationTemplate,
+  listNativeAutomationRuns,
+  listNativeAutomationTemplates,
+  listNativeAutomationWorkflows,
+  nativeAutomationRuntime,
+  runNativeAutomationWorkflow,
+  setNativeAutomationWorkflowStatus,
+  syncNativeWorkflowToN8n,
+  updateNativeAutomationWorkflow,
+} from "../services/native-automations.js";
 
 const CreateViolationSchema = z.object({
   revertedFromCommit: z.string().min(1),
@@ -41,6 +60,82 @@ const CreateViolationSchema = z.object({
   files: z.array(z.string()).min(1),
   reason: z.string().optional(),
   revertedAt: z.string().optional(), // ISO datetime; defaults to now
+});
+
+const AutomationStatusBody = z.object({
+  status: z.enum(["active", "paused"]),
+});
+
+const AutomationRunBody = z.object({
+  input: z.record(z.unknown()).default({}),
+});
+
+const AutomationInstallBody = z.object({
+  tenantId: z.string().uuid().optional(),
+  companyId: z.string().uuid().optional(),
+});
+
+const AutomationStepBody = z.object({
+  id: z.string().min(1).max(80),
+  name: z.string().min(1).max(160),
+  type: z.enum([
+    "policy.check",
+    "approval.enqueue",
+    "vault.read",
+    "vault.write",
+    "issue.create",
+    "issue.update",
+    "dispatch",
+    "scanner.finding",
+    "webhook.intake",
+  ]),
+  params: z.record(z.unknown()).default({}),
+});
+
+const AutomationDefinitionBody = z.object({
+  trigger: z.enum(["manual", "webhook", "event"]),
+  steps: z.array(AutomationStepBody).min(1).max(20),
+});
+
+const AutomationWorkflowPatchBody = z.object({
+  name: z.string().min(1).max(180).optional(),
+  description: z.string().max(2000).nullable().optional(),
+  definition: AutomationDefinitionBody.optional(),
+  status: z.enum(["active", "paused"]).optional(),
+});
+
+const AutomationTemplateCreateBody = z.object({
+  tenantId: z.string().uuid().optional(),
+  companyId: z.string().uuid().optional(),
+  name: z.string().min(1).max(180),
+  trigger: z.enum(["manual", "webhook", "event", "Manual", "Webhook", "Event"]).default("manual"),
+  description: z.string().min(1).max(2000),
+  definition: AutomationDefinitionBody,
+});
+
+const AutomationWorkflowCreateBody = z.object({
+  tenantId: z.string().uuid().optional(),
+  companyId: z.string().uuid().optional(),
+  name: z.string().min(1).max(180),
+  trigger: z.enum(["manual", "webhook", "event", "Manual", "Webhook", "Event"]).default("manual"),
+  description: z.string().max(2000).optional(),
+  definition: AutomationDefinitionBody,
+  status: z.enum(["active", "paused"]).default("paused"),
+});
+
+const AutomationN8nImportBody = z.object({
+  tenantId: z.string().uuid().optional(),
+  companyId: z.string().uuid().optional(),
+  workflowJson: z.record(z.unknown()),
+  mode: z.enum(["template", "workflow"]).default("template"),
+  status: z.enum(["active", "paused"]).default("paused"),
+});
+
+const AutomationAiDraftBody = z.object({
+  tenantId: z.string().uuid().optional(),
+  companyId: z.string().uuid().optional(),
+  prompt: z.string().min(1).max(4000),
+  issueId: z.string().min(1).max(180).optional(),
 });
 
 /**
@@ -178,7 +273,7 @@ function getContentRisks(decisionReason: string): { score: number; reasons: stri
   return { score, reasons };
 }
 
-export function createAdminRouter(_config: Config): Router {
+export function createAdminRouter(config: Config): Router {
   const router = Router();
 
   router.get("/compat-proxy-events", async (req, res) => {
@@ -994,6 +1089,257 @@ export function createAdminRouter(_config: Config): Router {
       });
     }
   });
+
+  /**
+   * GET /api/admin/automations
+   * Local automation engine status and native AgentWorks templates.
+   */
+  router.get("/automations", async (req, res) => {
+    const companyId =
+      typeof req.query.companyId === "string"
+        ? req.query.companyId
+        : undefined;
+    const checkedAt = new Date().toISOString();
+    const bridge = await checkN8nBridge(config);
+    const workflows = listNativeAutomationWorkflows(companyId);
+    const recentRuns = listNativeAutomationRuns(companyId, 12);
+    const warnings = [
+      ...bridge.warnings,
+      ...(workflows.length === 0 ? ["no-native-workflows-installed"] : []),
+    ];
+
+    res.json({
+      engine: {
+        name: "AWOS Native Automation Engine",
+        state: "online",
+        checkedAt,
+        latencyMs: 0,
+        error: null,
+        privateBackend: true,
+      },
+      runtime: nativeAutomationRuntime(config),
+      bridge,
+      warnings,
+      suggestions: [
+        {
+          id: "ai-draft-from-issue",
+          title: "Draft a workflow from a repeated issue pattern",
+          description:
+            "Use recent AgentWorks issues to propose an automation template, then require operator review before install.",
+          status: "planned",
+        },
+        {
+          id: "ai-run-explainer",
+          title: "Explain a run and suggest the next automation",
+          description:
+            "Summarize step outcomes, friction, and a recommended follow-on workflow after each native run.",
+          status: "planned",
+        },
+      ],
+      templates: listNativeAutomationTemplates(companyId),
+      workflows: workflows.map((workflow) => ({
+        id: workflow.id,
+        name: workflow.name,
+        active: workflow.status === "active",
+        status: workflow.status,
+        trigger: workflow.trigger,
+        description: workflow.description,
+        definition: workflow.definition,
+        updatedAt: workflow.updatedAt,
+        sourceTemplateId: workflow.sourceTemplateId,
+        externalEngine: workflow.externalEngine,
+        externalWorkflowId: workflow.externalWorkflowId,
+        externalSyncStatus: workflow.externalSyncStatus,
+        externalSyncedAt: workflow.externalSyncedAt,
+        externalSyncError: workflow.externalSyncError,
+      })),
+      recentRuns: recentRuns.map((run) => ({
+        id: run.id,
+        workflowId: run.workflowId,
+        workflowName: workflows.find((w) => w.id === run.workflowId)?.name ?? run.workflowId,
+        status: run.status,
+        startedAt: run.startedAt,
+        finishedAt: run.finishedAt,
+        steps: run.steps,
+        error: run.error,
+      })),
+    });
+  });
+
+  router.post("/automations/templates", (req, res) => {
+    const parsed = AutomationTemplateCreateBody.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: "invalid_request", details: parsed.error.flatten() });
+      return;
+    }
+    const opts: Parameters<typeof createNativeAutomationTemplate>[0] = {
+      name: parsed.data.name,
+      trigger: parsed.data.trigger,
+      description: parsed.data.description,
+      definition: parsed.data.definition,
+    };
+    if (parsed.data.tenantId) opts.tenantId = parsed.data.tenantId;
+    if (parsed.data.companyId) opts.companyId = parsed.data.companyId;
+    res.status(201).json(createNativeAutomationTemplate(opts));
+  });
+
+  router.post("/automations/templates/:templateId/install", (req, res) => {
+    const parsed = AutomationInstallBody.safeParse(req.body ?? {});
+    if (!parsed.success) {
+      res.status(400).json({ error: "invalid_request", details: parsed.error.flatten() });
+      return;
+    }
+    try {
+      const installOpts: { tenantId?: string; companyId?: string } = {};
+      if (parsed.data.tenantId) installOpts.tenantId = parsed.data.tenantId;
+      if (parsed.data.companyId) installOpts.companyId = parsed.data.companyId;
+      const workflow = installNativeAutomationTemplate(req.params.templateId, installOpts);
+      res.status(201).json(workflow);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "install failed";
+      res.status(message === "template_not_found" ? 404 : 500).json({ error: message });
+    }
+  });
+
+  router.post("/automations/workflows", (req, res) => {
+    const parsed = AutomationWorkflowCreateBody.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: "invalid_request", details: parsed.error.flatten() });
+      return;
+    }
+    const opts: Parameters<typeof createNativeAutomationWorkflow>[0] = {
+      name: parsed.data.name,
+      trigger: parsed.data.trigger,
+      definition: parsed.data.definition,
+      status: parsed.data.status,
+    };
+    if (parsed.data.description) opts.description = parsed.data.description;
+    if (parsed.data.tenantId) opts.tenantId = parsed.data.tenantId;
+    if (parsed.data.companyId) opts.companyId = parsed.data.companyId;
+    res.status(201).json(createNativeAutomationWorkflow(opts));
+  });
+
+  router.patch("/automations/workflows/:workflowId", (req, res) => {
+    const parsed = AutomationWorkflowPatchBody.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: "invalid_request", details: parsed.error.flatten() });
+      return;
+    }
+    try {
+      if (
+        parsed.data.name === undefined &&
+        parsed.data.description === undefined &&
+        parsed.data.definition === undefined &&
+        parsed.data.status !== undefined
+      ) {
+        res.json(setNativeAutomationWorkflowStatus(req.params.workflowId, parsed.data.status));
+        return;
+      }
+      const update: Parameters<typeof updateNativeAutomationWorkflow>[1] = {};
+      if (parsed.data.name !== undefined) update.name = parsed.data.name;
+      if (parsed.data.description !== undefined) update.description = parsed.data.description;
+      if (parsed.data.status !== undefined) update.status = parsed.data.status;
+      if (parsed.data.definition !== undefined) update.definition = parsed.data.definition;
+      res.json(updateNativeAutomationWorkflow(req.params.workflowId, update));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "workflow update failed";
+      res.status(message === "workflow_not_found" ? 404 : 500).json({ error: message });
+    }
+  });
+
+  router.post("/automations/workflows/:workflowId/run", async (req, res) => {
+    const parsed = AutomationRunBody.safeParse(req.body ?? {});
+    if (!parsed.success) {
+      res.status(400).json({ error: "invalid_request", details: parsed.error.flatten() });
+      return;
+    }
+    try {
+      const run = await runNativeAutomationWorkflow(req.params.workflowId, parsed.data.input, config);
+      res.status(201).json(run);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "workflow run failed";
+      const status = message === "workflow_not_found" ? 404 : message === "workflow_not_active" ? 409 : 500;
+      res.status(status).json({ error: message });
+    }
+  });
+
+  router.get("/automations/runs/:runId", (req, res) => {
+    const run = getNativeAutomationRun(req.params.runId);
+    if (!run) {
+      res.status(404).json({ error: "not_found" });
+      return;
+    }
+    res.json(run);
+  });
+
+  router.get("/automations/workflows/:workflowId/n8n-export", (req, res) => {
+    try {
+      res.json(exportNativeWorkflowToN8n(req.params.workflowId));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "export failed";
+      res.status(message === "workflow_not_found" ? 404 : 500).json({ error: message });
+    }
+  });
+
+  router.post("/automations/workflows/:workflowId/n8n-sync", async (req, res) => {
+    try {
+      res.json(await syncNativeWorkflowToN8n(req.params.workflowId, config));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "n8n sync failed";
+      res.status(message === "workflow_not_found" ? 404 : 500).json({ error: message });
+    }
+  });
+
+  router.post("/automations/n8n-import", (req, res) => {
+    const parsed = AutomationN8nImportBody.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: "invalid_request", details: parsed.error.flatten() });
+      return;
+    }
+    try {
+      const importBody: Parameters<typeof importN8nWorkflow>[0] = {
+        workflowJson: parsed.data.workflowJson,
+        mode: parsed.data.mode,
+        status: parsed.data.status,
+      };
+      if (parsed.data.tenantId) importBody.tenantId = parsed.data.tenantId;
+      if (parsed.data.companyId) importBody.companyId = parsed.data.companyId;
+      res.status(201).json(importN8nWorkflow(importBody));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "n8n import failed";
+      res.status(400).json({ error: message });
+    }
+  });
+
+  router.post("/automations/ai/draft-template", async (req, res) => {
+    const parsed = AutomationAiDraftBody.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: "invalid_request", details: parsed.error.flatten() });
+      return;
+    }
+    try {
+      const draftBody: Parameters<typeof draftAutomationTemplateFromPrompt>[0] = {
+        prompt: parsed.data.prompt,
+      };
+      if (parsed.data.tenantId) draftBody.tenantId = parsed.data.tenantId;
+      if (parsed.data.companyId) draftBody.companyId = parsed.data.companyId;
+      if (parsed.data.issueId) draftBody.issueId = parsed.data.issueId;
+      res.status(201).json(await draftAutomationTemplateFromPrompt(draftBody));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "ai draft failed";
+      res.status(500).json({ error: message });
+    }
+  });
+
+  router.post("/automations/runs/:runId/ai-explain", async (req, res) => {
+    try {
+      res.json(await explainNativeAutomationRun(req.params.runId));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "ai explain failed";
+      res.status(message === "run_not_found" ? 404 : 500).json({ error: message });
+    }
+  });
+
 
   return router;
 }

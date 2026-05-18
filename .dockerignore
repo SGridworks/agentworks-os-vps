@@ -1,0 +1,36 @@
+# Keep Docker build contexts reproducible and free of local/private state.
+.git
+.hg
+.svn
+
+# Dependencies and generated outputs.
+node_modules
+**/node_modules
+dist
+**/dist
+.next
+**/.next
+coverage
+**/coverage
+.pytest_cache
+**/.pytest_cache
+.venv
+**/.venv
+
+# Local runtime data and secrets.
+data
+config
+logs
+vault
+.env
+.env.*
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+secrets.json
+
+# OS/editor noise.
+.DS_Store
+.idea
+.vscode

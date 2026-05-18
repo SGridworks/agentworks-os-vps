@@ -1,0 +1,15 @@
+id: scanner-finding-triage
+name: Scanner finding triage
+trigger: Event
+description: Convert high-signal scanner findings into reviewable issues with evidence attached.
+definition:
+  trigger: event
+  steps:
+    - id: issue
+      name: Create scanner triage issue
+      type: issue.create
+      params:
+        projectId: aac73df5-2b98-4a58-9546-984a4c73cba5
+        title: Native automation scanner triage
+        description: Created from the native scanner-finding triage workflow.
+        priority: high
