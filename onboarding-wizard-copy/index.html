@@ -1,0 +1,1275 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/onboarding-wizard-copy/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Onboarding Wizard — Copy Reference - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#onboarding-wizard-copy-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Onboarding Wizard — Copy Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-welcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Welcome
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 1: Welcome">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#screen-title" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Screen title
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subtitle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subtitle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-it-does-intro-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it does — intro card
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-wizard-will-set-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the wizard will set up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cta-button" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CTA button
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-rule-pack-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Rule Pack Selection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 2: Rule Pack Selection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#screen-title_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Screen title
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subtitle_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subtitle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pack-card-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pack card labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-badge-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier badge labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#empty-state-note-no-packs-selected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Empty-state note (no packs selected)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#back-button" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Back button
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#continue-button" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continue button
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-shadow-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Shadow Mode
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 3: Shadow Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#screen-title_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Screen title
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subtitle_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subtitle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toggle-card-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Toggle card header
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-start-in-shadow-mode-section-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why start in shadow mode? — section header
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommendation-callout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommendation callout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-comparison-section-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode comparison — section header
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#back-button_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Back button
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#continue-button-shadow-enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continue button (shadow enabled)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#continue-button-shadow-disabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continue button (shadow disabled)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-business-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Business Profile
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 4: Business Profile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#screen-title_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Screen title
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subtitle_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subtitle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#industry-dropdown-label" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Industry dropdown label
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jurisdiction-dropdown-label" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Jurisdiction dropdown label
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#info-callout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Info callout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#back-button_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Back button
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-setup-button" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete Setup button
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#completion-confirmation-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Completion / Confirmation Screen
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Completion / Confirmation Screen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-steps-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next steps prompt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#link-to-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Link to docs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-edge-case-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error / Edge-case Strings
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error / Edge-case Strings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-packs-available" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No packs available
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wizard-interrupted-session-expired" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wizard interrupted / session expired
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failed-to-load-packs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failed to load packs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#copy-rules-for-this-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Copy rules for this file
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="onboarding-wizard-copy-reference">Onboarding Wizard — Copy Reference<a class="headerlink" href="#onboarding-wizard-copy-reference" title="Permanent link">&para;</a></h1>
+<p><strong>File to read before implementing OnboardingWizard.tsx</strong>
+<strong>Author:</strong> TechnicalWriter
+<strong>Last updated:</strong> 2026-04-27</p>
+<p>This file contains every string the wizard displays. Copy these into the component. Do not paraphrase or summarize — use these exact strings.</p>
+<hr />
+<h2 id="step-1-welcome">Step 1: Welcome<a class="headerlink" href="#step-1-welcome" title="Permanent link">&para;</a></h2>
+<h3 id="screen-title">Screen title<a class="headerlink" href="#screen-title" title="Permanent link">&para;</a></h3>
+<pre><code>Welcome to AgentWorks OS
+</code></pre>
+<h3 id="subtitle">Subtitle<a class="headerlink" href="#subtitle" title="Permanent link">&para;</a></h3>
+<pre><code>The AI compliance firewall for regulated small businesses.
+</code></pre>
+<h3 id="what-it-does-intro-card">What it does — intro card<a class="headerlink" href="#what-it-does-intro-card" title="Permanent link">&para;</a></h3>
+<pre><code>What AgentWorks OS does
+</code></pre>
+<p>Body:</p>
+<pre><code>Intercepts every AI agent action through a policy engine.
+Checks actions against rule packs you configure.
+Blocks violations or routes them to a human approval queue.
+Maintains an append-only audit log with tamper-evident hashing.
+</code></pre>
+<h3 id="what-the-wizard-will-set-up">What the wizard will set up<a class="headerlink" href="#what-the-wizard-will-set-up" title="Permanent link">&para;</a></h3>
+<pre><code>This wizard will help you:
+</code></pre>
+<p>List items:</p>
+<pre><code>1. Select compliance rule packs for your industry
+2. Understand shadow mode before going live
+3. Configure your business profile for tailored rules
+</code></pre>
+<h3 id="cta-button">CTA button<a class="headerlink" href="#cta-button" title="Permanent link">&para;</a></h3>
+<pre><code>Get Started
+</code></pre>
+<hr />
+<h2 id="step-2-rule-pack-selection">Step 2: Rule Pack Selection<a class="headerlink" href="#step-2-rule-pack-selection" title="Permanent link">&para;</a></h2>
+<h3 id="screen-title_1">Screen title<a class="headerlink" href="#screen-title_1" title="Permanent link">&para;</a></h3>
+<pre><code>Select Rule Packs
+</code></pre>
+<h3 id="subtitle_1">Subtitle<a class="headerlink" href="#subtitle_1" title="Permanent link">&para;</a></h3>
+<pre><code>Choose compliance packs that match your industry and regulatory needs.
+</code></pre>
+<h3 id="pack-card-labels">Pack card labels<a class="headerlink" href="#pack-card-labels" title="Permanent link">&para;</a></h3>
+<p><strong>For the SMB Starter pack (default suggestion):</strong></p>
+<p>Pack name:</p>
+<pre><code>SMB Compliance Starter
+</code></pre>
+<p>Description:</p>
+<pre><code>Baseline compliance guardrails for small businesses running AI agents.
+Covers do-not-contact, consent provenance, content boundaries, and data handling.
+Not a substitute for industry-specific legal advice.
+</code></pre>
+<p><strong>For the TCPA Real Estate pack:</strong></p>
+<p>Pack name:</p>
+<pre><code>TCPA Real Estate
+</code></pre>
+<p>Description:</p>
+<pre><code>Outbound contact rules for real estate lead-gen and marketing.
+Covers TCPA do-not-call, written consent requirements, and SMS disclosure.
+Requires attorney-reviewed status for production use.
+</code></pre>
+<p><strong>For the Fair Housing Real Estate pack:</strong></p>
+<p>Pack name:</p>
+<pre><code>Fair Housing Real Estate
+</code></pre>
+<p>Description:</p>
+<pre><code>Marketing and lead-gen rules that account for Fair Housing Act protected classes.
+Blocks discriminatory targeting criteria and census-tract-level sensitive offers.
+Requires attorney-reviewed status for production use.
+</code></pre>
+<h3 id="tier-badge-labels">Tier badge labels<a class="headerlink" href="#tier-badge-labels" title="Permanent link">&para;</a></h3>
+<pre><code>Free
+Paid
+Attorney Reviewed
+</code></pre>
+<h3 id="empty-state-note-no-packs-selected">Empty-state note (no packs selected)<a class="headerlink" href="#empty-state-note-no-packs-selected" title="Permanent link">&para;</a></h3>
+<pre><code>Note: The SMB Starter pack provides baseline guardrails. We recommend selecting at least one industry-specific pack.
+</code></pre>
+<h3 id="back-button">Back button<a class="headerlink" href="#back-button" title="Permanent link">&para;</a></h3>
+<pre><code>Back
+</code></pre>
+<h3 id="continue-button">Continue button<a class="headerlink" href="#continue-button" title="Permanent link">&para;</a></h3>
+<pre><code>Continue
+</code></pre>
+<hr />
+<h2 id="step-3-shadow-mode">Step 3: Shadow Mode<a class="headerlink" href="#step-3-shadow-mode" title="Permanent link">&para;</a></h2>
+<h3 id="screen-title_2">Screen title<a class="headerlink" href="#screen-title_2" title="Permanent link">&para;</a></h3>
+<pre><code>Shadow Mode
+</code></pre>
+<h3 id="subtitle_2">Subtitle<a class="headerlink" href="#subtitle_2" title="Permanent link">&para;</a></h3>
+<pre><code>Understand how your rule packs behave before enforcement begins.
+</code></pre>
+<h3 id="toggle-card-header">Toggle card header<a class="headerlink" href="#toggle-card-header" title="Permanent link">&para;</a></h3>
+<pre><code>Shadow Mode
+</code></pre>
+<p>Toggle card body:</p>
+<pre><code>When enabled, the policy engine evaluates all actions against your rule packs and logs the decisions — but does NOT block or route any actions. Everything passes through.
+</code></pre>
+<h3 id="why-start-in-shadow-mode-section-header">Why start in shadow mode? — section header<a class="headerlink" href="#why-start-in-shadow-mode-section-header" title="Permanent link">&para;</a></h3>
+<pre><code>Why start in shadow mode?
+</code></pre>
+<p>List items:</p>
+<pre><code>Observe how your rules perform with real agent actions.
+Identify rules that may over-fire or conflict.
+Build confidence before blocking real actions.
+</code></pre>
+<h3 id="recommendation-callout">Recommendation callout<a class="headerlink" href="#recommendation-callout" title="Permanent link">&para;</a></h3>
+<pre><code>Recommendation: Start with shadow mode enabled for at least 24-48 hours. You can switch to enforcement mode at any time from the Policy dashboard.
+</code></pre>
+<h3 id="mode-comparison-section-header">Mode comparison — section header<a class="headerlink" href="#mode-comparison-section-header" title="Permanent link">&para;</a></h3>
+<pre><code>Mode comparison
+</code></pre>
+<p><strong>Shadow Mode card:</strong></p>
+<pre><code>Shadow Mode
+</code></pre>
+<pre><code>Evaluates all rules
+Logs all decisions
+Never blocks actions
+Never routes to review
+</code></pre>
+<p><strong>Enforce Mode card:</strong></p>
+<pre><code>Enforce Mode
+</code></pre>
+<pre><code>Evaluates all rules
+Logs all decisions
+Blocks violations
+Routes to review queue
+</code></pre>
+<h3 id="back-button_1">Back button<a class="headerlink" href="#back-button_1" title="Permanent link">&para;</a></h3>
+<pre><code>Back
+</code></pre>
+<h3 id="continue-button-shadow-enabled">Continue button (shadow enabled)<a class="headerlink" href="#continue-button-shadow-enabled" title="Permanent link">&para;</a></h3>
+<pre><code>Start in Shadow Mode
+</code></pre>
+<h3 id="continue-button-shadow-disabled">Continue button (shadow disabled)<a class="headerlink" href="#continue-button-shadow-disabled" title="Permanent link">&para;</a></h3>
+<pre><code>Complete Setup
+</code></pre>
+<hr />
+<h2 id="step-4-business-profile">Step 4: Business Profile<a class="headerlink" href="#step-4-business-profile" title="Permanent link">&para;</a></h2>
+<h3 id="screen-title_3">Screen title<a class="headerlink" href="#screen-title_3" title="Permanent link">&para;</a></h3>
+<pre><code>Business Profile
+</code></pre>
+<h3 id="subtitle_3">Subtitle<a class="headerlink" href="#subtitle_3" title="Permanent link">&para;</a></h3>
+<pre><code>Help us tailor the compliance rules to your specific context.
+</code></pre>
+<h3 id="industry-dropdown-label">Industry dropdown label<a class="headerlink" href="#industry-dropdown-label" title="Permanent link">&para;</a></h3>
+<pre><code>Industry / Business Type
+</code></pre>
+<p>Industry dropdown options:</p>
+<pre><code>Select your industry...
+Real Estate
+Healthcare / Health Services
+Financial Services
+Insurance
+Legal Services
+Other
+</code></pre>
+<h3 id="jurisdiction-dropdown-label">Jurisdiction dropdown label<a class="headerlink" href="#jurisdiction-dropdown-label" title="Permanent link">&para;</a></h3>
+<pre><code>Primary Jurisdiction
+</code></pre>
+<p>Jurisdiction dropdown options:</p>
+<pre><code>Select jurisdiction...
+United States (Federal)
+United States - California
+United States - Texas
+United States - New York
+United States - Florida
+United States - Other State
+Multiple US States
+Canada
+Other
+</code></pre>
+<h3 id="info-callout">Info callout<a class="headerlink" href="#info-callout" title="Permanent link">&para;</a></h3>
+<pre><code>This information is used to pre-filter which rule packs are recommended and which regulations apply by default. You can change these settings at any time from the Settings dashboard.
+</code></pre>
+<h3 id="back-button_2">Back button<a class="headerlink" href="#back-button_2" title="Permanent link">&para;</a></h3>
+<pre><code>Back
+</code></pre>
+<h3 id="complete-setup-button">Complete Setup button<a class="headerlink" href="#complete-setup-button" title="Permanent link">&para;</a></h3>
+<pre><code>Complete Setup
+</code></pre>
+<hr />
+<h2 id="completion-confirmation-screen">Completion / Confirmation Screen<a class="headerlink" href="#completion-confirmation-screen" title="Permanent link">&para;</a></h2>
+<p>After the wizard finishes, display:</p>
+<pre><code>Setup complete.
+Your policy engine is running in shadow mode.
+Start by connecting your first agent via MCP.
+</code></pre>
+<p>Then show a summary:</p>
+<pre><code>Company: [tenant name from onboarding]
+Industry: [selected industry]
+Jurisdiction: [selected jurisdiction]
+Rule packs active: [list of selected pack names]
+Mode: [Shadow / Enforcing]
+</code></pre>
+<h3 id="next-steps-prompt">Next steps prompt<a class="headerlink" href="#next-steps-prompt" title="Permanent link">&para;</a></h3>
+<pre><code>Next step: Connect Claude Desktop
+</code></pre>
+<p>Body:</p>
+<pre><code>Add the AgentWorks OS MCP server to your Claude Desktop config.
+The installer printed the MCP URL during setup.
+Restart Claude Desktop and try: /memory read
+</code></pre>
+<h3 id="link-to-docs">Link to docs<a class="headerlink" href="#link-to-docs" title="Permanent link">&para;</a></h3>
+<pre><code>See the install runbook for step-by-step agent connection instructions.
+</code></pre>
+<hr />
+<h2 id="error-edge-case-strings">Error / Edge-case Strings<a class="headerlink" href="#error-edge-case-strings" title="Permanent link">&para;</a></h2>
+<h3 id="no-packs-available">No packs available<a class="headerlink" href="#no-packs-available" title="Permanent link">&para;</a></h3>
+<pre><code>No rule packs are available for your industry yet.
+Select SMB Starter to continue with baseline guardrails.
+</code></pre>
+<h3 id="wizard-interrupted-session-expired">Wizard interrupted / session expired<a class="headerlink" href="#wizard-interrupted-session-expired" title="Permanent link">&para;</a></h3>
+<pre><code>Your session timed out. Restart the wizard to continue setup.
+Any progress you made has been saved.
+</code></pre>
+<h3 id="failed-to-load-packs">Failed to load packs<a class="headerlink" href="#failed-to-load-packs" title="Permanent link">&para;</a></h3>
+<pre><code>Couldn't load rule packs from the server. Check that AgentWorks OS is running, then refresh.
+</code></pre>
+<hr />
+<h2 id="copy-rules-for-this-file">Copy rules for this file<a class="headerlink" href="#copy-rules-for-this-file" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Use these exact strings in the UI.</li>
+<li>Do not add marketing language between steps.</li>
+<li>Do not add progress encouragement ("You're doing great!").</li>
+<li>Do not bold text except for section headers.</li>
+<li>Keep callout boxes short — one paragraph max.</li>
+<li>Tier badge labels are single words: Free / Paid / Attorney Reviewed.</li>
+<li>The completion screen is the only place for a brief "setup complete" message.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

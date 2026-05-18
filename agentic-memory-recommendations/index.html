@@ -1,0 +1,1288 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/agentic-memory-recommendations/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Agentic Memory Recommendations for AgentWorks OS - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#agentic-memory-recommendations-for-agentworks-os" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agentic Memory Recommendations for AgentWorks OS
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-i-persistent-memory-sessiondb-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part I — Persistent Memory (SessionDB Layer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part I — Persistent Memory (SessionDB Layer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current State
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-research-says" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Research Says
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommendations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rec-1-episode-chunking-on-session-boundaries-high-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REC 1: Episode Chunking on Session Boundaries (High Priority)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rec-2-atomic-insights-semantic-frame-decomposition-high-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REC 2: Atomic Insights — Semantic Frame Decomposition (High Priority)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rec-3-three-tier-memory-funnel-medium-priority-next-sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REC 3: Three-Tier Memory Funnel (Medium Priority, Next Sprint)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rec-4-knowledge-graph-overlay-on-episodes-lower-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REC 4: Knowledge Graph Overlay on Episodes (Lower Priority)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-ii-rag-layer-vector-full-text-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part II — RAG Layer (Vector + Full-Text Retrieval)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part II — RAG Layer (Vector + Full-Text Retrieval)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-state_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current State
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-research-says_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Research Says
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommendations_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommendations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rec-5-embedding-pipeline-chroma-dev-qdrant-prod-high-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REC 5: Embedding Pipeline + Chroma (Dev) / Qdrant (Prod) (High Priority)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rec-6-hybrid-retrieval-with-rrf-fusion-high-priority-next-sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REC 6: Hybrid Retrieval with RRF Fusion (High Priority, Next Sprint)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rec-7-asymmetric-semantic-chunking-medium-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REC 7: Asymmetric Semantic Chunking (Medium Priority)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-iii-obsidian-vault-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part III — Obsidian / Vault Layer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part III — Obsidian / Vault Layer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-state_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current State
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-research-says_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Research Says
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommendations_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommendations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rec-8-wire-dataview-style-queries-to-agentworks-mcp-high-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REC 8: Wire Dataview-Style Queries to AgentWorks MCP (High Priority)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rec-9-session-end-daily-note-capture-medium-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REC 9: Session-End Daily Note Capture (Medium Priority)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rec-10-action-tracker-as-structured-agent-memory-low-priority-already-partially-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REC 10: Action-Tracker as Structured Agent Memory (Low Priority, Already Partially Done)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-iv-integration-points-for-agentworks-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part IV — Integration Points for AgentWorks Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part IV — Integration Points for AgentWorks Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-these-recommendations-live-in-the-codebase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where These Recommendations Live in the Codebase
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-honcho-note-for-implementors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No Honcho — Note for Implementors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-top-5-changes-by-effort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary: Top 5 Changes by Effort
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="agentic-memory-recommendations-for-agentworks-os">Agentic Memory Recommendations for AgentWorks OS<a class="headerlink" href="#agentic-memory-recommendations-for-agentworks-os" title="Permanent link">&para;</a></h1>
+<p><strong>Date:</strong> 2026-05-02
+<strong>Sources:</strong> arXiv/GitHub research on persistent memory architectures, RAG patterns for agents, and existing vault analysis at <code>~/vault</code></p>
+<hr />
+<h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
+<p>AgentWorks OS has an incipient memory architecture via <code>mcp_agentworks_memory_read</code>/<code>memory_write</code> and a vault at <code>~/vault</code>. The gap: no episode/chunk management, no vector retrieval, no importance weighting, no cross-session consolidation. This doc specifies what to add and where.</p>
+<hr />
+<h2 id="part-i-persistent-memory-sessiondb-layer">Part I — Persistent Memory (SessionDB Layer)<a class="headerlink" href="#part-i-persistent-memory-sessiondb-layer" title="Permanent link">&para;</a></h2>
+<h3 id="current-state">Current State<a class="headerlink" href="#current-state" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>mcp_agentworks_memory_read(key)</code> / <code>memory_write(key)</code> — flat key-value with tenant isolation</li>
+<li><code>mcp_agentworks_memory_hot(tenantId)</code> — rolling hot-cache summary (mirrors <code>vault/wiki/hot.md</code>)</li>
+<li>No episode boundaries, no vector embeddings, no importance scoring</li>
+</ul>
+<h3 id="what-the-research-says">What the Research Says<a class="headerlink" href="#what-the-research-says" title="Permanent link">&para;</a></h3>
+<p>The dominant pattern across production systems: <strong>SQLite + FTS5 + embeddings + episodic chunking + knowledge-graph overlay</strong>. Not a single system — a composite of patterns from agentmemory, memory-access, and Vektori.</p>
+<h3 id="recommendations">Recommendations<a class="headerlink" href="#recommendations" title="Permanent link">&para;</a></h3>
+<h4 id="rec-1-episode-chunking-on-session-boundaries-high-priority">REC 1: Episode Chunking on Session Boundaries (High Priority)<a class="headerlink" href="#rec-1-episode-chunking-on-session-boundaries-high-priority" title="Permanent link">&para;</a></h4>
+<p><strong>What:</strong> Split each agent session into episodes. Store episodes with metadata: <code>session_id</code>, <code>started_at</code>, <code>ended_at</code>, <code>agent_role</code>, <code>task_type</code>, <code>outcome</code> (success/failure/blocked).</p>
+<p><strong>Why:</strong> Agents need to retrieve "how did we handle a similar task last time?" Without episode boundaries, retrieval returns raw conversation logs. With them, it returns task-level summaries.</p>
+<p><strong>Schema sketch:</strong></p>
+<pre><code class="language-sql">CREATE TABLE episodes (
+  id TEXT PRIMARY KEY,           -- UUID
+  tenant_id TEXT NOT NULL,
+  agent_id TEXT,
+  session_id TEXT,               -- groups episodes by conversation thread
+  started_at INTEGER,
+  ended_at INTEGER,
+  role TEXT,                     -- backend, frontend, compliance, etc.
+  task_type TEXT,                -- bugfix, feature, refactor, etc.
+  outcome TEXT,                  -- success, failure, blocked
+  summary TEXT,                  -- LLM-generated 2-3 sentence summary
+  embedding BLOB,                -- of the summary
+  importance REAL DEFAULT 0.5,   -- 0-1, drives retrieval优先级
+  lifecycle TEXT DEFAULT 'active' -- active|archived|invalidated
+);
+
+CREATE VIRTUAL TABLE episodes_fts USING fts5(summary);
+CREATE INDEX idx_episodes_tenant_role ON episodes(tenant_id, role);
+CREATE INDEX idx_episodes_session ON episodes(session_id);
+</code></pre>
+<p><strong>Implementation path:</strong>
+1. On session end: generate summary via LLM, compute embedding, write episode row
+2. On retrieval: semantic search over <code>episodes_fts</code> + filter by <code>tenant_id</code> + <code>role</code>
+3. Importance: initial default 0.5, adjust up if agent marks high-value, down via staleness decay</p>
+<hr />
+<h4 id="rec-2-atomic-insights-semantic-frame-decomposition-high-priority">REC 2: Atomic Insights — Semantic Frame Decomposition (High Priority)<a class="headerlink" href="#rec-2-atomic-insights-semantic-frame-decomposition-high-priority" title="Permanent link">&para;</a></h4>
+<p><strong>What:</strong> Extract structured "insights" from conversations: preferences, facts, plans, constraints. Each insight has a <code>frame_type</code> (from memory-access taxonomy: <code>preference</code>, <code>fact</code>, <code>plan</code>, <code>constraint</code>, <code>feedback</code>, <code>error_pattern</code>).</p>
+<p><strong>Why:</strong> Raw conversation is verbose for retrieval. Atomic insights are ~10x denser and frame-type enables targeted recall ("get me all constraints for this tenant").</p>
+<p><strong>Schema sketch:</strong></p>
+<pre><code class="language-sql">CREATE TABLE insights (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  episode_id TEXT REFERENCES episodes(id),
+  frame_type TEXT,               -- preference|fact|plan|constraint|feedback|error_pattern
+  subject TEXT,                  -- the entity this insight is about
+  content TEXT,                  -- the insight itself (1-3 sentences max)
+  embedding BLOB,
+  importance REAL DEFAULT 0.5,
+  created_at INTEGER,
+  source TEXT,                  -- 'agent_reflection'|'user_correction'|'task_outcome'
+  validated BOOLEAN DEFAULT FALSE
+);
+
+CREATE VIRTUAL TABLE insights_fts USING fts5(content);
+CREATE INDEX idx_insights_subject ON insights(subject);
+CREATE INDEX idx_insights_frame ON insights(frame_type);
+</code></pre>
+<p><strong>Extraction trigger:</strong> After each session, run a lightweight LLM extraction pass over the episode summary. Alternatively, extract inline when agent posts a <code>feedback</code> or <code>correction</code> comment.</p>
+<hr />
+<h4 id="rec-3-three-tier-memory-funnel-medium-priority-next-sprint">REC 3: Three-Tier Memory Funnel (Medium Priority, Next Sprint)<a class="headerlink" href="#rec-3-three-tier-memory-funnel-medium-priority-next-sprint" title="Permanent link">&para;</a></h4>
+<p><strong>What:</strong> Implement hot/warm/cold tier behavior within SessionDB:</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Content</th>
+<th>Retention</th>
+<th>Retrieval</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hot</td>
+<td>Last 10 turns in-memory</td>
+<td>Per-session</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Warm</td>
+<td>Episodes + insights with <code>importance &gt; 0.6</code></td>
+<td>7 days</td>
+<td>&lt;50ms via SessionDB query</td>
+</tr>
+<tr>
+<td>Cold</td>
+<td>All episodes + insights</td>
+<td>Until invalidated</td>
+<td>Full scan, acceptable latency</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why:</strong> Avoids inflating context with low-value memories. Agents fetch hot + warm on startup; cold only on explicit query.</p>
+<p><strong>Implementation:</strong> Add <code>tier</code> column to episodes/insights with TTL-based demotion job. Warm items accessed less than once per 7 days → cold.</p>
+<hr />
+<h4 id="rec-4-knowledge-graph-overlay-on-episodes-lower-priority">REC 4: Knowledge Graph Overlay on Episodes (Lower Priority)<a class="headerlink" href="#rec-4-knowledge-graph-overlay-on-episodes-lower-priority" title="Permanent link">&para;</a></h4>
+<p><strong>What:</strong> Add <code>subject</code>, <code>predicate</code>, <code>object</code> triples extracted from episodes (following Vektori's L0 fact layer pattern). Enables graph traversal queries like "show me all errors related to database migrations for tenant X."</p>
+<p><strong>Schema sketch:</strong></p>
+<pre><code class="language-sql">CREATE TABLE kg_triples (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  episode_id TEXT REFERENCES episodes(id),
+  subject TEXT,
+  predicate TEXT,
+  object TEXT,
+  created_at INTEGER
+);
+
+CREATE INDEX idx_kg_subject ON kg_triples(subject);
+CREATE INDEX idx_kg_tenant ON kg_triples(tenant_id);
+</code></pre>
+<p><strong>Note:</strong> This is a Phase 2 item. Phase 1 (REC 1-3) should ship first.</p>
+<hr />
+<h2 id="part-ii-rag-layer-vector-full-text-retrieval">Part II — RAG Layer (Vector + Full-Text Retrieval)<a class="headerlink" href="#part-ii-rag-layer-vector-full-text-retrieval" title="Permanent link">&para;</a></h2>
+<h3 id="current-state_1">Current State<a class="headerlink" href="#current-state_1" title="Permanent link">&para;</a></h3>
+<p>No vector retrieval. <code>memory_read</code> is key-based lookup only. No semantic search.</p>
+<h3 id="what-the-research-says_1">What the Research Says<a class="headerlink" href="#what-the-research-says_1" title="Permanent link">&para;</a></h3>
+<p>Production agent RAG = <strong>hybrid dense+sparse retrieval</strong> (vector similarity + BM25 keyword) fused via Reciprocal Rank Fusion (RRF). Chunking on action boundaries, not fixed token windows.</p>
+<h3 id="recommendations_1">Recommendations<a class="headerlink" href="#recommendations_1" title="Permanent link">&para;</a></h3>
+<h4 id="rec-5-embedding-pipeline-chroma-dev-qdrant-prod-high-priority">REC 5: Embedding Pipeline + Chroma (Dev) / Qdrant (Prod) (High Priority)<a class="headerlink" href="#rec-5-embedding-pipeline-chroma-dev-qdrant-prod-high-priority" title="Permanent link">&para;</a></h4>
+<p><strong>What:</strong> Add an embedding pipeline. SessionDB stores embeddings (BLOB column already in REC 1-2 schemas). Vector index via:
+- <strong>Dev/local:</strong> Chroma (in-process, zero ops)
+- <strong>Prod:</strong> Qdrant (hybrid filter+vector, real-time, multi-tenant namespaces)</p>
+<p><strong>Embedding model:</strong> <code>BAAI/bge-base-en-v1.5</code> (768-dim, best average on MTEB benchmark). Fallback: <code>thenlper/gte-small</code> (384-dim, 4x faster, lower quality).</p>
+<p><strong>Index strategy:</strong></p>
+<pre><code class="language-python"># Per-tenant collection isolation
+collection_name = f&quot;awos_{tenant_id}&quot;
+
+# Chroma (dev)
+client = chromadb.PersistentClient(path=f&quot;~/.awos/vectorstore/{tenant_id}&quot;)
+collection = client.get_or_create_collection(
+    name=collection_name,
+    metadata={&quot;tenant&quot;: tenant_id}
+)
+
+# Qdrant (prod) — use tenant_id as collection name or namespace
+client = QdrantClient(url=os.environ[&quot;QDRANT_URL&quot;], api_key=os.environ[&quot;QDRANT_API_KEY&quot;])
+</code></pre>
+<hr />
+<h4 id="rec-6-hybrid-retrieval-with-rrf-fusion-high-priority-next-sprint">REC 6: Hybrid Retrieval with RRF Fusion (High Priority, Next Sprint)<a class="headerlink" href="#rec-6-hybrid-retrieval-with-rrf-fusion-high-priority-next-sprint" title="Permanent link">&para;</a></h4>
+<p><strong>What:</strong> Combine vector similarity + BM25 keyword search via Reciprocal Rank Fusion. This prevents the classic failure mode where pure vector search misses exact matches (entity names, IDs, error codes) and pure keyword search misses semantic similarity.</p>
+<p><strong>Fusion formula:</strong> <code>RRF(d) = 1 / (k + rank)</code> where k=60. Sum scores across dense and sparse retrievers.</p>
+<p><strong>Implementation sketch:</strong></p>
+<pre><code class="language-python">def hybrid_retrieve(query: str, tenant_id: str, k: int = 20) -&gt; list[dict]:
+    # Dense: vector similarity top-k
+    query_vec = embed_model.encode(query)
+    dense_results = vector_store.query(
+        vector=query_vec,
+        filter={&quot;tenant&quot;: tenant_id},
+        top_k=k
+    )
+
+    # Sparse: BM25 over episodes_fts
+    sparse_results = sessiondb.execute(
+        &quot;SELECT id, summary FROM episodes_fts WHERE episodes_fts MATCH ?&quot;,
+        [query]
+    ).fetchall()
+
+    # RRF fusion
+    fused = {}
+    for rank, row in enumerate(dense_results):
+        fused[row[&quot;id&quot;]] = fused.get(row[&quot;id&quot;], 0) + 1 / (60 + rank)
+    for rank, (row_id, _) in enumerate(sparse_results):
+        fused[row_id] = fused.get(row_id, 0) + 1 / (60 + rank)
+
+    return sorted(fused, key=fused.get, reverse=True)[:k]
+</code></pre>
+<hr />
+<h4 id="rec-7-asymmetric-semantic-chunking-medium-priority">REC 7: Asymmetric Semantic Chunking (Medium Priority)<a class="headerlink" href="#rec-7-asymmetric-semantic-chunking-medium-priority" title="Permanent link">&para;</a></h4>
+<p><strong>What:</strong> Chunk strategy should split on agent action boundaries, not fixed token windows:
+- Tool call definitions: 128-256 tokens (precise, no truncation)
+- Conversation turns: 256-512 tokens (preserve context)
+- Knowledge base docs: 512-1024 tokens (balance precision vs recall)</p>
+<p><strong>Separator priority:</strong> <code>\n\n&lt;Action&gt;\n\n</code> &gt; <code>\n\n&lt;ToolCall&gt;\n\n</code> &gt; <code>\n\n&lt;Result&gt;\n\n</code> &gt; <code>\n\n&lt;User&gt;\n\n</code> &gt; <code>.</code> (sentence boundary)</p>
+<p><strong>In practice for AgentWorks:</strong> Most agent output is structured (code, YAML, JSON). Use structural separators: <code>`` for code blocks,</code>---<code>for section dividers,</code>\n\n` for paragraphs.</p>
+<hr />
+<h2 id="part-iii-obsidian-vault-layer">Part III — Obsidian / Vault Layer<a class="headerlink" href="#part-iii-obsidian-vault-layer" title="Permanent link">&para;</a></h2>
+<h3 id="current-state_2">Current State<a class="headerlink" href="#current-state_2" title="Permanent link">&para;</a></h3>
+<p><code>~/vault</code> is already well-architected with <code>wiki/hot.md</code> (episodic hot cache), <code>wiki/agents/</code> (agent registry), <code>wiki/projects/</code> (project pages), <code>Action-Tracker.md</code>, and <code>CRITICAL_FACTS.md</code>. The <code>mcp_agentworks_memory_*</code> MCP tools mirror the vault structure.</p>
+<h3 id="what-the-research-says_2">What the Research Says<a class="headerlink" href="#what-the-research-says_2" title="Permanent link">&para;</a></h3>
+<p>The vault is already ahead of most implementations. The gaps: Dataview querying is not exercised, mobile capture is absent, and the <code>memory/</code> directory (Claude Code auto-memory, 64 files) is opaque to AgentWorks.</p>
+<h3 id="recommendations_2">Recommendations<a class="headerlink" href="#recommendations_2" title="Permanent link">&para;</a></h3>
+<h4 id="rec-8-wire-dataview-style-queries-to-agentworks-mcp-high-priority">REC 8: Wire Dataview-Style Queries to AgentWorks MCP (High Priority)<a class="headerlink" href="#rec-8-wire-dataview-style-queries-to-agentworks-mcp-high-priority" title="Permanent link">&para;</a></h4>
+<p><strong>What:</strong> The vault has Dataview queries in YAML frontmatter. Wire these as first-class query patterns in AgentWorks:</p>
+<table>
+<thead>
+<tr>
+<th>Obsidian Pattern</th>
+<th>AgentWorks MCP Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wiki/hot.md</code> rolling summary</td>
+<td><code>mcp_agentworks_memory_hot(tenantId)</code> — already done</td>
+</tr>
+<tr>
+<td>Dataview: pages by tag/date</td>
+<td><code>mcp_agentworks_memory_read(key="query:type=X")</code> with filtering</td>
+</tr>
+<tr>
+<td><code>memory/MEMORY.md</code> index</td>
+<td><code>mcp_agentworks_list_resources</code> → agentic query interface</td>
+</tr>
+<tr>
+<td><code>wiki/[[wikilinks]]</code> backlinks</td>
+<td><code>memory_write</code> records <code>sources: [key]</code> in frontmatter equivalent</td>
+</tr>
+<tr>
+<td>Daily <code>YYYY-MM-DD.md</code></td>
+<td><code>memory_write(key="daily/{{date}}")</code> at session end</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gap to close:</strong> The <code>memory/</code> directory (64 files, Claude Code auto-memory) should be accessible via <code>mcp_agentworks_memory_read</code> with a <code>type=claude-code-memory</code> discriminator, or imported into SessionDB episodes/insights.</p>
+<hr />
+<h4 id="rec-9-session-end-daily-note-capture-medium-priority">REC 9: Session-End Daily Note Capture (Medium Priority)<a class="headerlink" href="#rec-9-session-end-daily-note-capture-medium-priority" title="Permanent link">&para;</a></h4>
+<p><strong>What:</strong> At the end of each agent heartbeat run, write a daily note to <code>memory_write(key="daily/YYYY-MM-DD")</code> capturing:
+- What was worked on (1-3 sentences)
+- Decisions made
+- Blockers encountered
+- Next actions</p>
+<p><strong>Why:</strong> Provides an episodic trace that predates the SessionDB episode. Retroactive import of existing vault daily notes into SessionDB should be a one-time migration job.</p>
+<hr />
+<h4 id="rec-10-action-tracker-as-structured-agent-memory-low-priority-already-partially-done">REC 10: Action-Tracker as Structured Agent Memory (Low Priority, Already Partially Done)<a class="headerlink" href="#rec-10-action-tracker-as-structured-agent-memory-low-priority-already-partially-done" title="Permanent link">&para;</a></h4>
+<p><strong>What:</strong> <code>Action-Tracker.md</code> already exists as a structured markdown table. The AgentWorks equivalent: sync it to <code>memory_write(key="action-tracker")</code> as a structured JSON blob, parsed on session restore.</p>
+<p><strong>Format:</strong></p>
+<pre><code class="language-json">{
+  &quot;actions&quot;: [
+    {&quot;id&quot;: &quot;...&quot;, &quot;content&quot;: &quot;...&quot;, &quot;owner&quot;: &quot;...&quot;, &quot;deadline&quot;: &quot;...&quot;, &quot;status&quot;: &quot;open|done|blocked&quot;, &quot;source&quot;: &quot;issue_url&quot;}
+  ],
+  &quot;last_synced&quot;: 1743552000
+}
+</code></pre>
+<hr />
+<h2 id="part-iv-integration-points-for-agentworks-architecture">Part IV — Integration Points for AgentWorks Architecture<a class="headerlink" href="#part-iv-integration-points-for-agentworks-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="where-these-recommendations-live-in-the-codebase">Where These Recommendations Live in the Codebase<a class="headerlink" href="#where-these-recommendations-live-in-the-codebase" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Recommendation</th>
+<th>File/Area</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Episode schema</td>
+<td><code>packages/shared/db/migrations/</code></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Insight schema + extraction</td>
+<td><code>packages/agentos-d/memory/</code> or <code>packages/shared/</code></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Embedding pipeline</td>
+<td><code>packages/shared/embeddings.py</code> (new)</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Hybrid retrieval</td>
+<td><code>packages/shared/retrieval.py</code> (new)</td>
+<td>High, Next Sprint</td>
+</tr>
+<tr>
+<td>Chroma/Qdrant integration</td>
+<td><code>packages/shared/vectorstore.py</code> (new)</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Three-tier demotion job</td>
+<td><code>packages/shared/consolidation.py</code> (new)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Dataview query interface</td>
+<td>MCP server memory tool definitions</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Daily note capture</td>
+<td>Heartbeat run end hook</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>KG triples extraction</td>
+<td>Phase 2 — depends on REC 1-3</td>
+<td>Lower</td>
+</tr>
+</tbody>
+</table>
+<h3 id="no-honcho-note-for-implementors">No Honcho — Note for Implementors<a class="headerlink" href="#no-honcho-note-for-implementors" title="Permanent link">&para;</a></h3>
+<p>Honcho was evaluated in research (3.2k stars, production memory library). It is <strong>not</strong> being adopted. The architecture above uses:
+- SessionDB (SQLite) as the primary store — no external memory service required
+- Chroma (local dev) / Qdrant (prod) for vector retrieval — separate from SessionDB
+- MCP tools already in place — extend, don't replace</p>
+<hr />
+<h2 id="summary-top-5-changes-by-effort">Summary: Top 5 Changes by Effort<a class="headerlink" href="#summary-top-5-changes-by-effort" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Change</th>
+<th>Effort</th>
+<th>Impact</th>
+<th>Phase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Add <code>episodes</code> table with embedding column + session-end summary generation</td>
+<td>Medium</td>
+<td>High</td>
+<td>Phase 1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Add <code>insights</code> table with <code>frame_type</code> + inline extraction on feedback/corrections</td>
+<td>Low-Medium</td>
+<td>High</td>
+<td>Phase 1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Add embedding pipeline (BAAI/bge-base-en-v1.5) + Chroma dev integration</td>
+<td>Medium</td>
+<td>High</td>
+<td>Phase 1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Implement hybrid retrieval (dense+sparse RRF) on top of episodes_fts</td>
+<td>Medium</td>
+<td>High</td>
+<td>Next Sprint</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Wire vault <code>memory/</code> import + Dataview-style queries to MCP tools</td>
+<td>Low</td>
+<td>Medium</td>
+<td>Next Sprint</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>agentmemory</strong> (rohitg00/agentmemory, 2.1k stars) — episode chunking + confidence scores + SQLite</li>
+<li><strong>memory-access</strong> (emmahyde/memory-access) — atomic insights + semantic frames + MCP</li>
+<li><strong>Vektori</strong> (vektori-ai/vektori) — three-layer fact/episode/sentence graph</li>
+<li><strong>A-MEM</strong> (frabatx/agentic-memory-system) — self-organizing memory with reflection</li>
+<li><strong>vstash</strong> (2026) — local-first hybrid retrieval with adaptive RRF fusion</li>
+<li><strong>BAAI/bge-base-en-v1.5</strong> — recommended embedding model (MTEB benchmark leader)</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

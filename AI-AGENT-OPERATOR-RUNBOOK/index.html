@@ -1,0 +1,1162 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/AI-AGENT-OPERATOR-RUNBOOK/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>AI Agent Operator Runbook - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ai-agent-operator-runbook" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AI Agent Operator Runbook
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-read-this-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to read this guide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0-pre-action-invariants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §0 — Pre-action invariants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="§0 — Pre-action invariants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01-confirm-youre-on-the-right-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.1 Confirm you're on the right host
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02-take-a-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.2 Take a backup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03-find-the-tenant-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.3 Find the tenant ID
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-triage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §1 — Triage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="§1 — Triage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-containers-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Containers up?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-daemon-answering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Daemon answering?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-recent-audit-log-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Recent audit-log activity?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-approval-queue-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Approval queue depth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-disk-and-memory-headroom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Disk and memory headroom
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-triage-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Triage report
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-service-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §2 — Service health
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="§2 — Service health">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-container-restart-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §2.1 Container restart loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-daemon-wont-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §2.2 Daemon won't start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-daemon-stale-responding-but-with-old-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §2.3 Daemon stale (responding but with old code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-sqlite-corruption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §2.4 SQLite corruption
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-audit-log-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §3 — Audit log gap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-approval-queue-triage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §4 — Approval queue triage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-disk-pressure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §5 — Disk pressure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-container-oom-runaway-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §6 — Container OOM / runaway CPU
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-routine-checks-the-daily-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §7 — Routine checks (the "daily" version)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-final-report-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §8 — Final report template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick-reference commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ai-agent-operator-runbook">AI Agent Operator Runbook<a class="headerlink" href="#ai-agent-operator-runbook" title="Permanent link">&para;</a></h1>
+<p><strong>Audience:</strong> an AI coding agent the operator has tasked with day-to-day operation of an already-installed AgentWorks OS deployment.</p>
+<p><strong>Operator hand-off:</strong> <em>"check on AgentWorks OS"</em> or <em>"there's a problem with the substrate, look into it."</em></p>
+<p><strong>When to use which guide:</strong></p>
+<table>
+<thead>
+<tr>
+<th>The operator says</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"Install AgentWorks OS."</td>
+<td><a href="../AI-AGENT-INSTALL-GUIDE/">AI-AGENT-INSTALL-GUIDE.md</a></td>
+</tr>
+<tr>
+<td>"Write a rule pack for X."</td>
+<td><a href="../AI-AGENT-RULE-PACK-GUIDE/">AI-AGENT-RULE-PACK-GUIDE.md</a></td>
+</tr>
+<tr>
+<td>"MCP isn't working."</td>
+<td><a href="../AI-AGENT-MCP-DEBUG/">AI-AGENT-MCP-DEBUG.md</a></td>
+</tr>
+<tr>
+<td>"Clean up the vault."</td>
+<td><a href="../AI-AGENT-VAULT-HYGIENE/">AI-AGENT-VAULT-HYGIENE.md</a></td>
+</tr>
+<tr>
+<td>"Check on the substrate." / "Daily ops." / "Something's broken."</td>
+<td>This guide.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Target version:</strong> v0.1.9.</p>
+<hr />
+<h2 id="how-to-read-this-guide">How to read this guide<a class="headerlink" href="#how-to-read-this-guide" title="Permanent link">&para;</a></h2>
+<p>You are operating someone else's running system. The cost of a wrong action here is much higher than during install — operators rely on the audit log being complete, the vault being intact, and the daemon not getting restarted at random.</p>
+<ol>
+<li><strong>Read before acting.</strong> Triage in §1 first; pick the right §-section based on what you find.</li>
+<li><strong>Backup before destructive action.</strong> §0.2 below — this is the rule.</li>
+<li><strong>Don't restart the daemon casually.</strong> A SQLite-empty-on-restart bug is documented for v0.1.x. Always backup first.</li>
+<li><strong>Don't edit rule packs in production without shadow mode.</strong> See <a href="../AI-AGENT-RULE-PACK-GUIDE/">AI-AGENT-RULE-PACK-GUIDE.md §7</a>.</li>
+<li><strong>Don't bypass the approval queue.</strong> If a queued action is stuck, the right move is "tell the operator to review it," not "approve it on their behalf."</li>
+<li><strong>Stop and ask</strong> before any of: deleting data, force-pushing to a repo, editing the operator's <code>~/.claude/</code>, <code>~/.codex/</code>, or <code>~/.cursor/</code> config without a documented need, restarting services during business hours, modifying live rule packs.</li>
+</ol>
+<hr />
+<h2 id="0-pre-action-invariants">§0 — Pre-action invariants<a class="headerlink" href="#0-pre-action-invariants" title="Permanent link">&para;</a></h2>
+<p>Run these before any action that changes state.</p>
+<h3 id="01-confirm-youre-on-the-right-host">0.1 Confirm you're on the right host<a class="headerlink" href="#01-confirm-youre-on-the-right-host" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">hostname
+agentworks status
+</code></pre>
+<p>If <code>~/.agentworks/source/docker-compose.yml</code> doesn't exist, this host doesn't have AgentWorks installed. Stop and ask the operator which host they meant.</p>
+<h3 id="02-take-a-backup">0.2 Take a backup<a class="headerlink" href="#02-take-a-backup" title="Permanent link">&para;</a></h3>
+<p>For <em>anything</em> that touches data — installing a rule pack, restarting the daemon, modifying the vault, debugging a stuck queue — backup first:</p>
+<pre><code class="language-bash">agentworks backup $HOME/.agentworks/data/backups/preop-$(date +%Y%m%d-%H%M%S).tar.gz
+ls -lh $HOME/.agentworks/data/backups/ | tail -3
+</code></pre>
+<p><strong>Verify:</strong> new tarball exists and is at least a few KB.</p>
+<p>This rule exists because of a documented v0.1.x risk: the daemon's SQLite database has come back empty after SIGKILL+restart cycles, and the cause is not yet root-caused. A pre-op backup is your insurance policy.</p>
+<h3 id="03-find-the-tenant-id">0.3 Find the tenant ID<a class="headerlink" href="#03-find-the-tenant-id" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">TENANT_ID=$(curl -s http://127.0.0.1:7710/api/tenants \
+  | python3 -c 'import sys,json; data=json.load(sys.stdin); items=data.get(&quot;items&quot;, data) if isinstance(data, dict) else data; print(items[0][&quot;id&quot;]) if items else exit(1)')
+echo &quot;TENANT_ID=$TENANT_ID&quot;
+</code></pre>
+<p>If empty, no tenant exists yet. Run the Admin UI onboarding flow or create one
+with <code>POST /api/tenants</code>.</p>
+<hr />
+<h2 id="1-triage">§1 — Triage<a class="headerlink" href="#1-triage" title="Permanent link">&para;</a></h2>
+<p>When the operator says "check on the substrate" or reports a vague problem, run this triage in order. The first failure tells you which section to jump to.</p>
+<h3 id="11-containers-up">1.1 Containers up?<a class="headerlink" href="#11-containers-up" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">agentworks status
+</code></pre>
+<p><strong>Verify:</strong> <code>agentos-d</code>, <code>scanner-worker</code>, <code>n8n</code>, and <code>postgres</code> all show <code>Up</code>.</p>
+<p><strong>Fix:</strong> any service down → §2 "Service health".</p>
+<h3 id="12-daemon-answering">1.2 Daemon answering?<a class="headerlink" href="#12-daemon-answering" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">curl -sS --max-time 5 http://127.0.0.1:7710/api/health | head -c 300
+</code></pre>
+<p><strong>Verify:</strong> JSON with <code>"status":"ok"</code>.</p>
+<p><strong>Fix:</strong> no response → §2.2 "Daemon won't start". Wrong response → §2.3 "Daemon stale".</p>
+<h3 id="13-recent-audit-log-activity">1.3 Recent audit-log activity?<a class="headerlink" href="#13-recent-audit-log-activity" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">curl -sS &quot;http://127.0.0.1:7710/api/action?tenantId=$TENANT_ID&amp;limit=10&quot; | head -c 1000
+</code></pre>
+<p><strong>Verify:</strong> at least one entry, with a recent timestamp if the operator was using agents recently.</p>
+<p><strong>Fix:</strong> empty when it shouldn't be → §3 "Audit log gap".</p>
+<h3 id="14-approval-queue-depth">1.4 Approval queue depth<a class="headerlink" href="#14-approval-queue-depth" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">curl -sS &quot;http://127.0.0.1:7710/api/approvals?tenantId=$TENANT_ID&amp;status=pending&quot; | \
+  head -c 1000
+</code></pre>
+<p><strong>Verify:</strong> the count is what the operator expects. A queue depth growing unboundedly suggests a rule-pack misconfig or a missing reviewer.</p>
+<p><strong>Fix:</strong> unexpected items in the queue → §4 "Approval queue triage".</p>
+<h3 id="15-disk-and-memory-headroom">1.5 Disk and memory headroom<a class="headerlink" href="#15-disk-and-memory-headroom" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">df -h $HOME | tail -1
+docker stats --no-stream --format &quot;table {{.Name}}\t{{.MemUsage}}\t{{.CPUPerc}}&quot; 2&gt;&amp;1 | head -10
+</code></pre>
+<p><strong>Verify:</strong> disk has at least a few GB free; no container pinning CPU at 100% or memory at the cap.</p>
+<p><strong>Fix:</strong> disk &lt; 5 GB → §5 "Disk pressure". Container memory-bound → §6 "Container OOM".</p>
+<h3 id="16-triage-report">1.6 Triage report<a class="headerlink" href="#16-triage-report" title="Permanent link">&para;</a></h3>
+<p>After running 1.1 through 1.5, write a one-paragraph status before doing anything else:</p>
+<blockquote>
+<p><em>"Triage at <time>: containers <state>, daemon <state>, audit log <last entry timestamp>, approval queue depth <N>, disk <N> GB free. <One-line summary of any anomaly.>"</em></p>
+</blockquote>
+<p>This goes in your final report. Don't lose it.</p>
+<hr />
+<h2 id="2-service-health">§2 — Service health<a class="headerlink" href="#2-service-health" title="Permanent link">&para;</a></h2>
+<h3 id="21-container-restart-loop">§2.1 Container restart loop<a class="headerlink" href="#21-container-restart-loop" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">agentworks status
+agentworks logs &lt;service&gt;
+</code></pre>
+<p>Read the last 100 lines. The exit cause is almost always in there:</p>
+<ul>
+<li><code>EADDRINUSE</code> → port conflict; something else is on 7710/3101/5678. Find it (<code>lsof -i :7710</code>). Don't kill processes you didn't start; ask the operator.</li>
+<li><code>Error: ENOENT: no such file or directory ... /app/data/...</code> → the data dir is mounted wrong or the volume is missing. Reconfirm <code>docker-compose.yml</code> paths.</li>
+<li><code>Error: SQLITE_CORRUPT</code> → see §2.4 "SQLite corruption".</li>
+<li><code>migration ... failed</code> → forward-only migrations aborted. Restore from §0.2 backup, surface to operator.</li>
+</ul>
+<h3 id="22-daemon-wont-start">§2.2 Daemon won't start<a class="headerlink" href="#22-daemon-wont-start" title="Permanent link">&para;</a></h3>
+<p>Backup first if you haven't (§0.2). Then:</p>
+<pre><code class="language-bash">agentworks logs agentos-d (last 200 lines)
+</code></pre>
+<p>If logs show a clean start but <code>/api/health</code> doesn't answer:</p>
+<ul>
+<li>Wait 30 seconds — first-start migrations can take a minute on a large DB.</li>
+<li>Check <code>docker compose ps</code> again — the container may be <code>Up (health: starting)</code>.</li>
+</ul>
+<p>If logs end at "Listening on :7710" but health still won't answer, port-mapping is wrong. <code>docker port agentos-d</code> should show <code>7710/tcp -&gt; 127.0.0.1:7710</code>.</p>
+<h3 id="23-daemon-stale-responding-but-with-old-code">§2.3 Daemon stale (responding but with old code)<a class="headerlink" href="#23-daemon-stale-responding-but-with-old-code" title="Permanent link">&para;</a></h3>
+<p>After an update, the daemon may serve stale code if the image wasn't actually pulled.</p>
+<pre><code class="language-bash">agentworks status
+agentworks logs agentos-d
+</code></pre>
+<p>If the image tag or logs indicate stale code, run <code>agentworks restart agentos-d</code>.
+Then re-verify §1.2.</p>
+<h3 id="24-sqlite-corruption">§2.4 SQLite corruption<a class="headerlink" href="#24-sqlite-corruption" title="Permanent link">&para;</a></h3>
+<p>Stop the daemon (do NOT kill -9):</p>
+<pre><code class="language-bash">agentworks restart agentos-d   # stop+start via recreate
+</code></pre>
+<p>Restore from the most recent good backup:</p>
+<pre><code class="language-bash">agentworks restore $HOME/.agentworks/data/backups/&lt;latest-backup&gt;.tar.gz
+</code></pre>
+<p>If restore fails integrity checks or the archive cannot be read, try the next-most-recent known-good backup and preserve the failed archive for diagnosis.</p>
+<p>Restart:</p>
+<pre><code class="language-bash">agentworks restart agentos-d
+</code></pre>
+<p>Re-verify §1.2 and §1.3. Then tell the operator what was lost (anything created after the backup timestamp).</p>
+<hr />
+<h2 id="3-audit-log-gap">§3 — Audit log gap<a class="headerlink" href="#3-audit-log-gap" title="Permanent link">&para;</a></h2>
+<p>If the audit log has no entries when it should:</p>
+<ol>
+<li>Check whether agents are actually calling the substrate. The MCP bridge might be misconfigured — see <a href="../AI-AGENT-MCP-DEBUG/">AI-AGENT-MCP-DEBUG.md</a>.</li>
+<li>Check the tenant ID — agents calling with the wrong tenant ID write to a different subtree.</li>
+<li>The audit log is hash-chained; gaps are detectable. Run:</li>
+</ol>
+<pre><code class="language-bash">curl -sS &quot;http://127.0.0.1:7710/api/compliance/verify-chain?tenantId=$TENANT_ID&quot; | head -c 500
+</code></pre>
+<p><strong>Verify:</strong> <code>ok: true</code>. If <code>false</code>, the chain is broken — surface immediately to the operator. This is a possible compliance incident.</p>
+<hr />
+<h2 id="4-approval-queue-triage">§4 — Approval queue triage<a class="headerlink" href="#4-approval-queue-triage" title="Permanent link">&para;</a></h2>
+<p>When the queue depth is unexpectedly high or growing:</p>
+<pre><code class="language-bash">curl -sS &quot;http://127.0.0.1:7710/api/approvals?tenantId=$TENANT_ID&amp;status=pending&quot; | \
+  python3 -c &quot;import json,sys; d=json.load(sys.stdin); 
+items=d.get('items', d) if isinstance(d, dict) else d;
+print(f'count: {len(items)}')
+print('top rule_ids triggering review:')
+from collections import Counter
+c = Counter()
+for it in items:
+    c[it.get('matchedRuleId','?')] += 1
+for r,n in c.most_common(10): print(f'  {n:4d}  {r}')&quot;
+</code></pre>
+<p>This shows which rule is generating the most queued items. Two cases:</p>
+<p><strong>Case A — one rule dominates the queue (90%+).</strong> The rule is either too broad (firing on legitimate actions) or genuinely catching a real problem. Pull a few example items, read them, decide:</p>
+<pre><code class="language-bash">curl -sS &quot;http://127.0.0.1:7710/api/approvals/&lt;approvalId&gt;&quot; | head -c 2000
+</code></pre>
+<p>If the examples are all legitimate actions getting flagged, the rule is too broad. Surface to operator with concrete examples and propose a narrower <code>when:</code> clause. <strong>Do not edit the live rule pack yourself unless explicitly authorized.</strong></p>
+<p><strong>Case B — diverse rule_ids, all old.</strong> The operator has stopped reviewing the queue. Surface: <em>"Queue depth is N, oldest item is X days old. The queue is for human review — these aren't going to clear themselves. Should I help you batch-process them?"</em></p>
+<p><strong>What you may NOT do:</strong> approve, reject, or send-back items unless the operator explicitly tells you to act on a specific approvalId.</p>
+<hr />
+<h2 id="5-disk-pressure">§5 — Disk pressure<a class="headerlink" href="#5-disk-pressure" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">du -sh $HOME/.agentworks/data/* 2&gt;/dev/null | sort -h | tail
+docker system df
+</code></pre>
+<p>The biggest consumers are usually:</p>
+<ul>
+<li><code>data/agentworks.db</code> — the daemon's main DB. Don't touch.</li>
+<li><code>data/backups/</code> — backup tarballs. Older than 90 days are pruneable IF the operator agrees.</li>
+<li>Docker images — <code>docker image prune</code> after the operator confirms.</li>
+<li><code>logs/</code> — rotate-able. The installer doesn't auto-rotate yet.</li>
+</ul>
+<p><strong>What you may NOT do:</strong> <code>rm</code> anything under <code>data/</code> without explicit operator confirmation. Daemon files and audit logs are not interchangeable with disk savings.</p>
+<hr />
+<h2 id="6-container-oom-runaway-cpu">§6 — Container OOM / runaway CPU<a class="headerlink" href="#6-container-oom-runaway-cpu" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">docker stats --no-stream
+</code></pre>
+<p>If <code>agentos-d</code> is at the memory cap:</p>
+<ul>
+<li>Recent rule-pack with an expensive <code>when:</code> block? Disable the pack with shadow mode.</li>
+<li>Embedding sidecar churning? Set <code>EMBEDDING_MODE=stub</code> in <code>.env</code> and restart.</li>
+<li>Vault graph endpoint getting hammered by an external dashboard? Rate-limit at the network level (operator decision).</li>
+</ul>
+<p>If <code>scanner-worker</code> is hot:</p>
+<ul>
+<li>A scan run is in progress; check <code>/scanner/status</code>. Wait it out.</li>
+<li>Repeated OOMs → it's hitting a pathological agent config. Surface the affected agent path to the operator.</li>
+</ul>
+<hr />
+<h2 id="7-routine-checks-the-daily-version">§7 — Routine checks (the "daily" version)<a class="headerlink" href="#7-routine-checks-the-daily-version" title="Permanent link">&para;</a></h2>
+<p>When the operator says <em>"daily check"</em> or <em>"routine pass"</em>, run these and report:</p>
+<ol>
+<li>§1.1 through §1.5 (triage)</li>
+<li>Rule-pack shadow-mode review:</li>
+</ol>
+<pre><code class="language-bash"># Any pack still in shadow past its window?
+curl -sS http://127.0.0.1:7710/api/policy/packs/stats | head -c 1000
+</code></pre>
+<ol>
+<li>Last successful backup age:</li>
+</ol>
+<pre><code class="language-bash">ls -lt $HOME/.agentworks/data/backups/*.tar.gz 2&gt;/dev/null | head -1
+</code></pre>
+<p>If older than 7 days, take a fresh backup (§0.2).</p>
+<ol>
+<li>Scanner findings count:</li>
+</ol>
+<pre><code class="language-bash">curl -sS &quot;http://127.0.0.1:3101/findings?tenantId=$TENANT_ID&amp;status=open&quot; | head -c 500
+</code></pre>
+<ol>
+<li>n8n workflow status (if the operator uses n8n):</li>
+</ol>
+<pre><code class="language-bash">curl -sS http://127.0.0.1:5678/healthz | head -c 200
+</code></pre>
+<hr />
+<h2 id="8-final-report-template">§8 — Final report template<a class="headerlink" href="#8-final-report-template" title="Permanent link">&para;</a></h2>
+<pre><code>AgentWorks OS daily check — &lt;YYYY-MM-DD HH:MM&gt;
+
+Triage:
+  Containers:        &lt;agentos-d/scanner-worker/n8n status&gt;
+  Daemon health:     &lt;ok/degraded — details&gt;
+  Audit log:         &lt;last entry, chain valid? yes/no&gt;
+  Approval queue:    &lt;pending count&gt;, oldest &lt;age&gt;
+  Disk free:         &lt;N GB&gt;
+  Memory pressure:   &lt;none / &lt;service&gt; at &lt;N&gt;% cap&gt;
+
+Anomalies (if any):
+  - &lt;specific finding with timestamps and counts&gt;
+
+Actions taken:
+  - &lt;&quot;none — read-only check&quot; if you didn't change state&gt;
+  - &lt;or: list each change, why, what backup was taken first&gt;
+
+Recommended for operator:
+  1. &lt;highest-priority thing — be specific&gt;
+  2. &lt;next&gt;
+
+Backups:
+  Last successful: &lt;path, size, age&gt;
+  Pre-op (if you took one this session): &lt;path, size&gt;
+
+Open questions for operator:
+  1. &lt;if any&gt;
+</code></pre>
+<p>If everything was clean, that's fine — your report says so concisely. Don't pad.</p>
+<hr />
+<h2 id="quick-reference-commands">Quick-reference commands<a class="headerlink" href="#quick-reference-commands" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash"># State of everything
+agentworks status
+
+# Tail daemon
+agentworks logs agentos-d
+
+# Backup
+agentworks backup $HOME/.agentworks/data/backups/preop-$(date +%Y%m%d-%H%M%S).tar.gz
+
+# Restart one service (do this only if you've backed up)
+agentworks restart agentos-d
+
+# Reload rule packs without restart
+curl -sS -X POST http://127.0.0.1:7710/api/policy/packs/reload
+
+# Audit log (last 50)
+curl -sS &quot;http://127.0.0.1:7710/api/action?tenantId=$TENANT_ID&amp;limit=50&quot;
+
+# Approval queue (pending)
+curl -sS &quot;http://127.0.0.1:7710/api/approvals?tenantId=$TENANT_ID&amp;status=pending&quot;
+
+# Memory graph
+curl -sS &quot;http://127.0.0.1:7710/api/memory/graph?tenantId=$TENANT_ID&quot;
+</code></pre>
+<hr />
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../users-guide/">docs/users-guide.md</a> — Troubleshooting and routine maintenance</li>
+<li><a href="../best-practices/">docs/best-practices.md</a> — operating norms</li>
+<li><a href="../backup-restore/">docs/backup-restore.md</a> — recovery procedures</li>
+<li><a href="../AI-AGENT-INSTALL-GUIDE/">docs/AI-AGENT-INSTALL-GUIDE.md</a></li>
+<li><a href="../AI-AGENT-MCP-DEBUG/">docs/AI-AGENT-MCP-DEBUG.md</a></li>
+<li><a href="../AI-AGENT-VAULT-HYGIENE/">docs/AI-AGENT-VAULT-HYGIENE.md</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

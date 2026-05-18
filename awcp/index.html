@@ -1,0 +1,1569 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/awcp/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>AgentWorks Compliance Protocol (AWCP) - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#agentworks-compliance-protocol-awcp" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AgentWorks Compliance Protocol (AWCP)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-goals-and-non-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Goals and Non-Goals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Goals and Non-Goals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Non-Goals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-canonical-action-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Canonical Action Schema
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Canonical Action Schema">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wire-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wire Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#field-by-field-semantics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Field-by-Field Semantics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actionkind-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        action.kind Registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payload-structure-by-actionkind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payload Structure by action.kind
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-policy-decision-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Policy Decision Lifecycle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Policy Decision Lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#proposed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        proposed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        evaluated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enforced-vs-shadowed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enforced vs. shadowed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#route_to_review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        route_to_review
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-wire-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Wire Format
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Wire Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Responses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-sms-to-dnc-number-block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: SMS to DNC number — block
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-email-to-opted-in-lead-allow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Email to opted-in lead — allow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-high-risk-channel-without-consent-record-route_to_review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: High-risk channel without consent record — route_to_review
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-awcp-versioning-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. AWCP Versioning Policy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. AWCP Versioning Policy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#version-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v01-draft-posture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.1 Draft Posture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change Classification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-announcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Version Announcement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementer-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementer Registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-disposition-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: Disposition Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-action_kind-format-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: action_kind Format Rule
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="agentworks-compliance-protocol-awcp">AgentWorks Compliance Protocol (AWCP)<a class="headerlink" href="#agentworks-compliance-protocol-awcp" title="Permanent link">&para;</a></h1>
+<p><strong>Spec version:</strong> awcp/v0.1
+<strong>Status:</strong> DRAFT v0.1 — breaking changes allowed until v1.0 stable
+<strong>Last updated:</strong> 2026-04-30
+<strong>Schema source:</strong> <a href="https://github.com/SGridworks/agentworks-os-vps/blob/v0.1.9/packages/shared/src/schema/action.ts"><code>packages/shared/src/schema/action.ts</code></a>
+<strong>Policy engine types:</strong> <a href="https://github.com/SGridworks/agentworks-os-vps/blob/v0.1.9/packages/policy-engine/src/types.ts"><code>packages/policy-engine/src/types.ts</code></a></p>
+<p><strong>Authors:</strong> ComplianceConsultant (prose and legal), TechLead (technical review)</p>
+<p><strong>Sign-off required before v1.0 stable:</strong>
+- TechLead confirms technical correctness
+- ComplianceConsultant confirms legal accuracy</p>
+<hr />
+<p>AWCP is the wire format, API surface, and data model that every agent action must map into before the policy engine evaluates it. The policy engine never sees raw provider API calls. It sees a normalized action record.</p>
+<h2 id="1-goals-and-non-goals">1. Goals and Non-Goals<a class="headerlink" href="#1-goals-and-non-goals" title="Permanent link">&para;</a></h2>
+<h3 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Normalize every action that could have compliance implications into one schema</li>
+<li>Give operators a readable audit trail of every decision</li>
+<li>Let compliance teams author rules once and have them enforced across all channels</li>
+<li>Make the policy decision process explainable: every block or review-routing cites the specific rule and regulatory authority</li>
+</ul>
+<h3 id="non-goals">Non-Goals<a class="headerlink" href="#non-goals" title="Permanent link">&para;</a></h3>
+<ul>
+<li>AWCP does not enforce rules — it provides the data that the policy engine evaluates</li>
+<li>AWCP does not own CRM integrations, telephony providers, or LLM proxies — adapters normalize those into the schema</li>
+<li>AWCP does not provide per-employee cost attribution (deferred to v1.1)</li>
+<li>AWCP does not support per-employee SSO (deferred to v1.2)</li>
+</ul>
+<h2 id="2-canonical-action-schema">2. Canonical Action Schema<a class="headerlink" href="#2-canonical-action-schema" title="Permanent link">&para;</a></h2>
+<p>Every agent action that crosses the substrate — MCP tool call, n8n node execution, REST API submission, custom adapter invocation — must map into this schema before the policy engine evaluates it.</p>
+<h3 id="wire-format">Wire Format<a class="headerlink" href="#wire-format" title="Permanent link">&para;</a></h3>
+<pre><code class="language-json">{
+  &quot;request_id&quot;: &quot;f47ac10b-58cc-4372-a567-0e02b2c3d479&quot;,
+  &quot;proposed_at&quot;: &quot;2026-04-30T14:22:01.000Z&quot;,
+  &quot;tenant_id&quot;: &quot;a1b2c3d4-e5f6-7890-abcd-ef1234567890&quot;,
+  &quot;actor&quot;: {
+    &quot;id&quot;: &quot;agent-001&quot;,
+    &quot;type&quot;: &quot;human&quot;,
+    &quot;label&quot;: &quot;Sarah Chen&quot;,
+    &quot;role&quot;: &quot;sales_rep&quot;,
+    &quot;adapter_key&quot;: &quot;salesforce-crm&quot;
+  },
+  &quot;action_kind&quot;: &quot;outbound.sms&quot;,
+  &quot;payload&quot;: {
+    &quot;message_body&quot;: &quot;Hi, following up on our conversation.&quot;,
+    &quot;sender_id&quot;: &quot;+15551234567&quot;,
+    &quot;contact_phone&quot;: &quot;+15559876543&quot;
+  },
+  &quot;context&quot;: {
+    &quot;vault_refs&quot;: [&quot;vault:doc/abc123&quot;],
+    &quot;conversation_refs&quot;: [&quot;conv/xyz789&quot;],
+    &quot;project_refs&quot;: [&quot;proj/sales-campaign-q2&quot;],
+    &quot;raw&quot;: {},
+    &quot;meta&quot;: {}
+  },
+  &quot;reviewed&quot;: false,
+  &quot;reviewer_id&quot;: null,
+  &quot;reviewed_at&quot;: null
+}
+</code></pre>
+<h3 id="field-by-field-semantics">Field-by-Field Semantics<a class="headerlink" href="#field-by-field-semantics" title="Permanent link">&para;</a></h3>
+<p><strong><code>request_id</code></strong> — UUIDv4. Unique per action submission. Correlates the policy check request with the audit log entry. Must be stable across retries: resubmitting the same action uses the same <code>request_id</code>.</p>
+<p><strong><code>proposed_at</code></strong> — ISO-8601 datetime with timezone. Wall-clock time when the action was submitted for evaluation. Used for time-of-day rule evaluation and audit timestamps.</p>
+<p><strong><code>tenant_id</code></strong> — UUIDv4. Identifies the organization whose policy applies. The policy engine resolves active rule packs against this ID.</p>
+<p><strong><code>actor</code></strong> — Who initiated the action.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>string</code></td>
+<td>Internal identifier for the actor — agent ID, user ID, or system service name</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>human \| agent \| system</code></td>
+<td><code>human</code>: end user. <code>agent</code>: AI agent. <code>system</code>: substrate-internal (scheduler, scanner, etc.)</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td><code>string</code></td>
+<td>Human-readable name for display in audit logs and the admin UI</td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td><code>string \| undefined</code></td>
+<td>Optional role label such as <code>sales_rep</code> or <code>support_agent</code></td>
+</tr>
+<tr>
+<td><code>adapter_key</code></td>
+<td><code>string \| undefined</code></td>
+<td>Which adapter originated this action, if any</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>action_kind</code></strong> — Dot-separated lowercase string matching <code>^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*)+$</code>. Registered values are in the action.kind Registry below. Custom kinds must be registered here before use.</p>
+<p><strong><code>payload</code></strong> — Action-specific data. Structure varies by <code>action_kind</code>. See Payload Structure by action.kind below.</p>
+<p><strong><code>context</code></strong> — References to external state. Data itself lives in those systems; only refs cross the wire.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vault_refs</code></td>
+<td><code>string[]</code></td>
+<td>Vault documents referenced by this action</td>
+</tr>
+<tr>
+<td><code>conversation_refs</code></td>
+<td><code>string[]</code></td>
+<td>Conversation threads this action relates to</td>
+</tr>
+<tr>
+<td><code>project_refs</code></td>
+<td><code>string[]</code></td>
+<td>Projects this action belongs to</td>
+</tr>
+<tr>
+<td><code>raw</code></td>
+<td><code>Record&lt;string, unknown&gt; \| undefined</code></td>
+<td>Raw fields from the adapter that don't map to the schema</td>
+</tr>
+<tr>
+<td><code>meta</code></td>
+<td><code>Record&lt;string, unknown&gt;</code></td>
+<td>Arbitrary metadata attached by the adapter or operator</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>reviewed</code></strong> — <code>false</code> until a human reviewer inspects and signs off on this action. Defaults to <code>false</code>.</p>
+<p><strong><code>reviewer_id</code></strong> — UUID of the human reviewer, if any. <code>null</code> when <code>reviewed</code> is <code>false</code>.</p>
+<p><strong><code>reviewed_at</code></strong> — ISO-8601 datetime when review occurred. <code>null</code> when <code>reviewed</code> is <code>false</code>.</p>
+<h3 id="actionkind-registry">action.kind Registry<a class="headerlink" href="#actionkind-registry" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>outbound.sms</code></td>
+<td>SMS message sent to a contact</td>
+</tr>
+<tr>
+<td><code>outbound.email</code></td>
+<td>Email sent to a contact</td>
+</tr>
+<tr>
+<td><code>outbound.call</code></td>
+<td>Voice call initiated to a contact</td>
+</tr>
+<tr>
+<td><code>outbound.direct_message</code></td>
+<td>Direct message via messaging platform</td>
+</tr>
+<tr>
+<td><code>lead.generation</code></td>
+<td>Lead capture or enrichment operation</td>
+</tr>
+<tr>
+<td><code>lead.enrich</code></td>
+<td>Third-party data appended to a lead record</td>
+</tr>
+<tr>
+<td><code>crm.write</code></td>
+<td>Record written to CRM or contact database</td>
+</tr>
+<tr>
+<td><code>llm.completion</code></td>
+<td>LLM API call with prompt content</td>
+</tr>
+<tr>
+<td><code>data.export</code></td>
+<td>Bulk export of contact or transaction data</td>
+</tr>
+<tr>
+<td><code>data.delete</code></td>
+<td>Deletion request for contact PII</td>
+</tr>
+</tbody>
+</table>
+<p>New <code>action_kind</code> values must be registered in this spec before use. Submit a PR adding the value to this registry.</p>
+<h3 id="payload-structure-by-actionkind">Payload Structure by action.kind<a class="headerlink" href="#payload-structure-by-actionkind" title="Permanent link">&para;</a></h3>
+<p><strong>outbound.sms</strong></p>
+<pre><code class="language-json">{
+  &quot;message_body&quot;: &quot;string&quot;,
+  &quot;sender_id&quot;: &quot;string&quot;,
+  &quot;contact_phone&quot;: &quot;string&quot;
+}
+</code></pre>
+<p><strong>outbound.email</strong></p>
+<pre><code class="language-json">{
+  &quot;subject&quot;: &quot;string&quot;,
+  &quot;body_html&quot;: &quot;string | null&quot;,
+  &quot;body_text&quot;: &quot;string&quot;,
+  &quot;sender_address&quot;: &quot;string&quot;,
+  &quot;recipient_addresses&quot;: [&quot;string&quot;],
+  &quot;unsubscribe_url&quot;: &quot;string&quot;
+}
+</code></pre>
+<p><strong>lead.generation</strong></p>
+<pre><code class="language-json">{
+  &quot;source&quot;: &quot;string&quot;,
+  &quot;contact_fields&quot;: {},
+  &quot;consent_provenance&quot;: &quot;string | null&quot;
+}
+</code></pre>
+<p><strong>llm.completion</strong></p>
+<pre><code class="language-json">{
+  &quot;prompt_content&quot;: &quot;string&quot;,
+  &quot;system_prompt&quot;: &quot;string | null&quot;,
+  &quot;model&quot;: &quot;string&quot;
+}
+</code></pre>
+<h2 id="3-policy-decision-lifecycle">3. Policy Decision Lifecycle<a class="headerlink" href="#3-policy-decision-lifecycle" title="Permanent link">&para;</a></h2>
+<p>Every action submitted to the policy engine moves through the same lifecycle:</p>
+<pre><code>proposed → evaluated → enforced or shadowed
+                        ↓
+               route_to_review → human decision → override recorded
+</code></pre>
+<h3 id="proposed">proposed<a class="headerlink" href="#proposed" title="Permanent link">&para;</a></h3>
+<p>The adapter normalizes the raw provider call into an <code>ActionEnvelope</code> and submits it to <code>POST /api/policy/check</code>. The envelope is at rest in the <code>proposed</code> state until the policy engine evaluates it.</p>
+<h3 id="evaluated">evaluated<a class="headerlink" href="#evaluated" title="Permanent link">&para;</a></h3>
+<p>The policy engine loads the active rule packs for the <code>tenant_id</code>, evaluates each rule in priority order, and returns a <code>PolicyCheckResponse</code>.</p>
+<h3 id="enforced-vs-shadowed">enforced vs. shadowed<a class="headerlink" href="#enforced-vs-shadowed" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>enforce mode</strong>: The API response disposition (<code>allow</code>, <code>block</code>, <code>route_to_review</code>) is authoritative. <code>block</code> stops the action. <code>route_to_review</code> holds it for human sign-off.</li>
+<li><strong>shadow mode</strong>: The policy engine logs the decision but does not enforce it. Use shadow mode to test new rule packs without disrupting live traffic.</li>
+</ul>
+<h3 id="route_to_review">route_to_review<a class="headerlink" href="#route_to_review" title="Permanent link">&para;</a></h3>
+<p>When the disposition is <code>route_to_review</code>, the action enters the approval queue. A reviewer can:</p>
+<ul>
+<li><strong>Approve</strong>: set <code>decision: allow</code> with written justification — this writes the <code>override</code> field into the audit log</li>
+<li><strong>Reject</strong>: set <code>decision: block</code> with written justification — same</li>
+<li><strong>Send back</strong>: leave <code>reviewed: false</code> and return the action to the originating agent for revision and resubmission</li>
+</ul>
+<p>Override decisions are logged with reviewer identity, timestamp, and justification. The original rule-pack decision is preserved in the audit log alongside the override record.</p>
+<h2 id="4-wire-format">4. Wire Format<a class="headerlink" href="#4-wire-format" title="Permanent link">&para;</a></h2>
+<h3 id="transport">Transport<a class="headerlink" href="#transport" title="Permanent link">&para;</a></h3>
+<p>JSON over HTTP. The policy check endpoint accepts <code>Content-Type: application/json</code>.</p>
+<pre><code>POST /api/policy/check
+</code></pre>
+<h3 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h3>
+<pre><code class="language-json">{
+  &quot;action&quot;: { /* ActionEnvelope — Section 2 */ },
+  &quot;rule_pack_ids&quot;: [&quot;tcpa-starter-pack&quot;],
+  &quot;mode&quot;: &quot;enforce&quot;,
+  &quot;tenant_id&quot;: &quot;a1b2c3d4-e5f6-7890-abcd-ef1234567890&quot;
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>action</code></td>
+<td><code>ActionEnvelope</code></td>
+<td>The action to evaluate</td>
+</tr>
+<tr>
+<td><code>rule_pack_ids</code></td>
+<td><code>string[] \| undefined</code></td>
+<td>Specific packs to evaluate. Omit to evaluate all active packs for the tenant</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td><code>enforce \| shadow</code></td>
+<td><code>enforce</code>: apply decisions. <code>shadow</code>: log only. Default: <code>enforce</code></td>
+</tr>
+<tr>
+<td><code>tenant_id</code></td>
+<td><code>string (UUID)</code></td>
+<td>Tenant whose active rule packs apply</td>
+</tr>
+</tbody>
+</table>
+<h3 id="response">Response<a class="headerlink" href="#response" title="Permanent link">&para;</a></h3>
+<pre><code class="language-json">{
+  &quot;request_id&quot;: &quot;f47ac10b-58cc-4372-a567-0e02b2c3d479&quot;,
+  &quot;decision&quot;: &quot;allow&quot;,
+  &quot;evaluated_at&quot;: &quot;2026-04-30T14:22:02.000Z&quot;,
+  &quot;decisions&quot;: [
+    {
+      &quot;rule_pack_id&quot;: &quot;tcpa-starter-pack&quot;,
+      &quot;rule_pack_version&quot;: &quot;1.0.0&quot;,
+      &quot;rule_id&quot;: &quot;tcpa-express-written-consent&quot;,
+      &quot;decision&quot;: &quot;allow&quot;,
+      &quot;reason&quot;: &quot;Express written consent on file for this contact&quot;,
+      &quot;citation&quot;: &quot;47 C.F.R. § 64.1200(a)(2)&quot;,
+      &quot;data_missing&quot;: []
+    }
+  ],
+  &quot;missing_data&quot;: [],
+  &quot;override&quot;: null
+}
+</code></pre>
+<p><strong><code>decision</code></strong> — The overall disposition:
+- <code>allow</code> if no rule returned <code>block</code> or <code>route_to_review</code>
+- <code>block</code> if any rule returned <code>block</code>
+- <code>route_to_review</code> if no rule returned <code>block</code> but one or more returned <code>route_to_review</code></p>
+<p><strong><code>decisions</code></strong> — One entry per rule evaluated, in evaluation order. Rules are evaluated in <code>priority</code> ascending order within a pack; packs are evaluated in the order declared in <code>rule_pack_ids</code>.</p>
+<p><strong><code>missing_data</code></strong> — Union of all <code>data_missing</code> arrays across evaluated rules. If non-empty and no rule returned <code>block</code>, the overall decision is <code>route_to_review</code> by default.</p>
+<p><strong><code>override</code></strong> — Present only when a human reviewer has overridden an earlier decision.</p>
+<h3 id="error-responses">Error Responses<a class="headerlink" href="#error-responses" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>HTTP Status</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>200 OK</code></td>
+<td>Evaluation completed (decision may be block or route_to_review)</td>
+</tr>
+<tr>
+<td><code>400 Bad Request</code></td>
+<td>Malformed action envelope or invalid <code>rule_pack_ids</code></td>
+</tr>
+<tr>
+<td><code>404 Not Found</code></td>
+<td>Tenant not found</td>
+</tr>
+<tr>
+<td><code>422 Unprocessable Entity</code></td>
+<td>Action schema version not supported</td>
+</tr>
+<tr>
+<td><code>500 Internal Server Error</code></td>
+<td>Policy engine internal failure</td>
+</tr>
+</tbody>
+</table>
+<p>On any non-200 response, the substrate must not allow the action to proceed. Treat 4xx as <code>route_to_review</code>; treat 5xx as <code>route_to_review</code> with a note. System failure is not a pass.</p>
+<h2 id="5-examples">5. Examples<a class="headerlink" href="#5-examples" title="Permanent link">&para;</a></h2>
+<h3 id="example-sms-to-dnc-number-block">Example: SMS to DNC number — block<a class="headerlink" href="#example-sms-to-dnc-number-block" title="Permanent link">&para;</a></h3>
+<pre><code>Agent proposes: outbound.sms to a number on the national DNC registry
+Rule: TCPA DNC block — no established business relationship
+Disposition: block
+</code></pre>
+<pre><code class="language-json">{
+  &quot;request_id&quot;: &quot;b9a3c2d1-1111-2222-3333-444455556666&quot;,
+  &quot;proposed_at&quot;: &quot;2026-04-30T09:15:00.000Z&quot;,
+  &quot;tenant_id&quot;: &quot;a1b2c3d4-e5f6-7890-abcd-ef1234567890&quot;,
+  &quot;actor&quot;: {
+    &quot;id&quot;: &quot;agent-outbound-01&quot;,
+    &quot;type&quot;: &quot;agent&quot;,
+    &quot;label&quot;: &quot;Outbound Agent&quot;,
+    &quot;role&quot;: &quot;outbound_scheduler&quot;,
+    &quot;adapter_key&quot;: &quot;twilio&quot;
+  },
+  &quot;action_kind&quot;: &quot;outbound.sms&quot;,
+  &quot;payload&quot;: {
+    &quot;message_body&quot;: &quot;Hi, just following up on your inquiry.&quot;,
+    &quot;sender_id&quot;: &quot;+15551234567&quot;,
+    &quot;contact_phone&quot;: &quot;+15550001111&quot;
+  },
+  &quot;context&quot;: {
+    &quot;vault_refs&quot;: [],
+    &quot;conversation_refs&quot;: [&quot;conv/lead-12345&quot;],
+    &quot;project_refs&quot;: [&quot;proj/outbound-q2&quot;],
+    &quot;raw&quot;: {},
+    &quot;meta&quot;: {}
+  },
+  &quot;reviewed&quot;: false,
+  &quot;reviewer_id&quot;: null,
+  &quot;reviewed_at&quot;: null
+}
+</code></pre>
+<p>Policy engine response:</p>
+<pre><code class="language-json">{
+  &quot;request_id&quot;: &quot;b9a3c2d1-1111-2222-3333-444455556666&quot;,
+  &quot;decision&quot;: &quot;block&quot;,
+  &quot;evaluated_at&quot;: &quot;2026-04-30T09:15:01.000Z&quot;,
+  &quot;decisions&quot;: [
+    {
+      &quot;rule_pack_id&quot;: &quot;tcpa-starter-pack&quot;,
+      &quot;rule_pack_version&quot;: &quot;1.0.0&quot;,
+      &quot;rule_id&quot;: &quot;tcpa-dnc-block&quot;,
+      &quot;decision&quot;: &quot;block&quot;,
+      &quot;reason&quot;: &quot;Contact phone number is registered on the national DNC registry. No established business relationship exemption applies.&quot;,
+      &quot;citation&quot;: &quot;47 C.F.R. § 64.1200(c)&quot;,
+      &quot;data_missing&quot;: []
+    }
+  ],
+  &quot;missing_data&quot;: [],
+  &quot;override&quot;: null
+}
+</code></pre>
+<h3 id="example-email-to-opted-in-lead-allow">Example: Email to opted-in lead — allow<a class="headerlink" href="#example-email-to-opted-in-lead-allow" title="Permanent link">&para;</a></h3>
+<pre><code>Agent proposes: outbound.email to a contact with verified written consent on file
+Rule: TCPA express written consent — contact has signed consent record
+Disposition: allow
+</code></pre>
+<pre><code class="language-json">{
+  &quot;request_id&quot;: &quot;c8b4d3e2-aaaa-bbbb-cccc-555566667777&quot;,
+  &quot;proposed_at&quot;: &quot;2026-04-30T10:00:00.000Z&quot;,
+  &quot;tenant_id&quot;: &quot;a1b2c3d4-e5f6-7890-abcd-ef1234567890&quot;,
+  &quot;actor&quot;: {
+    &quot;id&quot;: &quot;user-002&quot;,
+    &quot;type&quot;: &quot;human&quot;,
+    &quot;label&quot;: &quot;Marcus Johnson&quot;,
+    &quot;role&quot;: &quot;account_executive&quot;,
+    &quot;adapter_key&quot;: &quot;hubspot-crm&quot;
+  },
+  &quot;action_kind&quot;: &quot;outbound.email&quot;,
+  &quot;payload&quot;: {
+    &quot;subject&quot;: &quot;Your demo follow-up&quot;,
+    &quot;body_html&quot;: &quot;&lt;p&gt;Thanks for attending...&lt;/p&gt;&quot;,
+    &quot;body_text&quot;: &quot;Thanks for attending...&quot;,
+    &quot;sender_address&quot;: &quot;marcus@acme.com&quot;,
+    &quot;recipient_addresses&quot;: [&quot;prospect@company.com&quot;],
+    &quot;unsubscribe_url&quot;: &quot;https://acme.com/unsubscribe/xyz&quot;
+  },
+  &quot;context&quot;: {
+    &quot;vault_refs&quot;: [&quot;vault:doc/demo-notes-456&quot;],
+    &quot;conversation_refs&quot;: [&quot;conv/demo-2026-04-28&quot;],
+    &quot;project_refs&quot;: [&quot;proj/acme-pilot&quot;],
+    &quot;raw&quot;: {},
+    &quot;meta&quot;: {}
+  },
+  &quot;reviewed&quot;: false,
+  &quot;reviewer_id&quot;: null,
+  &quot;reviewed_at&quot;: null
+}
+</code></pre>
+<p>Policy engine response:</p>
+<pre><code class="language-json">{
+  &quot;request_id&quot;: &quot;c8b4d3e2-aaaa-bbbb-cccc-555566667777&quot;,
+  &quot;decision&quot;: &quot;allow&quot;,
+  &quot;evaluated_at&quot;: &quot;2026-04-30T10:00:01.000Z&quot;,
+  &quot;decisions&quot;: [
+    {
+      &quot;rule_pack_id&quot;: &quot;tcpa-starter-pack&quot;,
+      &quot;rule_pack_version&quot;: &quot;1.0.0&quot;,
+      &quot;rule_id&quot;: &quot;tcpa-express-written-consent&quot;,
+      &quot;decision&quot;: &quot;allow&quot;,
+      &quot;reason&quot;: &quot;Express written consent verified for this contact and action kind&quot;,
+      &quot;citation&quot;: &quot;47 C.F.R. § 64.1200(a)(2)&quot;,
+      &quot;data_missing&quot;: []
+    }
+  ],
+  &quot;missing_data&quot;: [],
+  &quot;override&quot;: null
+}
+</code></pre>
+<h3 id="example-high-risk-channel-without-consent-record-route_to_review">Example: High-risk channel without consent record — route_to_review<a class="headerlink" href="#example-high-risk-channel-without-consent-record-route_to_review" title="Permanent link">&para;</a></h3>
+<pre><code>Agent proposes: outbound.call to a new contact via a high-risk channel
+Rule: TCPA consent required — no consent record on file
+Disposition: route_to_review
+</code></pre>
+<pre><code class="language-json">{
+  &quot;request_id&quot;: &quot;d7e5f4a3-8888-9999-aaaa-666677778888&quot;,
+  &quot;proposed_at&quot;: &quot;2026-04-30T11:30:00.000Z&quot;,
+  &quot;tenant_id&quot;: &quot;a1b2c3d4-e5f6-7890-abcd-ef1234567890&quot;,
+  &quot;actor&quot;: {
+    &quot;id&quot;: &quot;agent-outbound-02&quot;,
+    &quot;type&quot;: &quot;agent&quot;,
+    &quot;label&quot;: &quot;Outbound Dialer&quot;,
+    &quot;role&quot;: &quot;telemarketing_agent&quot;,
+    &quot;adapter_key&quot;: &quot;twilio&quot;
+  },
+  &quot;action_kind&quot;: &quot;outbound.call&quot;,
+  &quot;payload&quot;: {
+    &quot;caller_id&quot;: &quot;+15551234567&quot;,
+    &quot;contact_phone&quot;: &quot;+15552223333&quot;,
+    &quot;dialer_type&quot;: &quot;predictive&quot;
+  },
+  &quot;context&quot;: {
+    &quot;vault_refs&quot;: [],
+    &quot;conversation_refs&quot;: [],
+    &quot;project_refs&quot;: [&quot;proj/cold-outreach-may&quot;],
+    &quot;raw&quot;: {},
+    &quot;meta&quot;: {}
+  },
+  &quot;reviewed&quot;: false,
+  &quot;reviewer_id&quot;: null,
+  &quot;reviewed_at&quot;: null
+}
+</code></pre>
+<p>Policy engine response:</p>
+<pre><code class="language-json">{
+  &quot;request_id&quot;: &quot;d7e5f4a3-8888-9999-aaaa-666677778888&quot;,
+  &quot;decision&quot;: &quot;route_to_review&quot;,
+  &quot;evaluated_at&quot;: &quot;2026-04-30T11:30:01.000Z&quot;,
+  &quot;decisions&quot;: [
+    {
+      &quot;rule_pack_id&quot;: &quot;tcpa-starter-pack&quot;,
+      &quot;rule_pack_version&quot;: &quot;1.0.0&quot;,
+      &quot;rule_id&quot;: &quot;tcpa-consent-required&quot;,
+      &quot;decision&quot;: &quot;route_to_review&quot;,
+      &quot;reason&quot;: &quot;No consent record found for this contact and action kind. Predictive dialer is a high-risk channel under TCPA.&quot;,
+      &quot;citation&quot;: &quot;47 C.F.R. § 64.1200(a)(1)&quot;,
+      &quot;data_missing&quot;: [&quot;consent.status&quot;, &quot;consent.record_ref&quot;]
+    }
+  ],
+  &quot;missing_data&quot;: [&quot;consent.status&quot;, &quot;consent.record_ref&quot;],
+  &quot;override&quot;: null
+}
+</code></pre>
+<h2 id="6-awcp-versioning-policy">6. AWCP Versioning Policy<a class="headerlink" href="#6-awcp-versioning-policy" title="Permanent link">&para;</a></h2>
+<h3 id="version-lifecycle">Version Lifecycle<a class="headerlink" href="#version-lifecycle" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Version pattern</th>
+<th>Breaking changes</th>
+<th>Stability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Draft</td>
+<td><code>v0.N</code></td>
+<td>Allowed without notice</td>
+<td>Internal — do not implement against</td>
+</tr>
+<tr>
+<td>Stable</td>
+<td><code>v1.N</code></td>
+<td>Prohibited within major version</td>
+<td>Public — implementers may adopt</td>
+</tr>
+<tr>
+<td>Deprecated</td>
+<td><code>v1.N</code> (marked deprecated)</td>
+<td>Prohibited</td>
+<td>Sunset in 6 months</td>
+</tr>
+<tr>
+<td>Retired</td>
+<td>Removed</td>
+<td>N/A</td>
+<td>Do not use</td>
+</tr>
+</tbody>
+</table>
+<h3 id="v01-draft-posture">v0.1 Draft Posture<a class="headerlink" href="#v01-draft-posture" title="Permanent link">&para;</a></h3>
+<p>AWCP v0.1 is a draft. It reflects the design decisions locked in PLAN.md as of 2026-04-27. It is:</p>
+<ul>
+<li>Intended for internal review and early implementer feedback</li>
+<li>Subject to breaking changes without a deprecation notice</li>
+<li>Not stable enough for external implementers to build against</li>
+</ul>
+<p>The protocol advances to v1.0 stable when one of the following is true:</p>
+<ul>
+<li>External implementer #1 commits to adoption (signs the AWCP implementer agreement)</li>
+<li>Six months of customer learning from v1 production use (2026-10-25)</li>
+</ul>
+<h3 id="change-classification">Change Classification<a class="headerlink" href="#change-classification" title="Permanent link">&para;</a></h3>
+<p><strong>Breaking changes</strong> (require major version bump):
+- Removal of any field from the <code>ActionEnvelope</code>
+- Changes to field types in the <code>ActionEnvelope</code>
+- New required fields in the <code>ActionEnvelope</code>
+- Changes to the decision values (<code>allow</code>/<code>block</code>/<code>route_to_review</code>)
+- Changes to the hash algorithm or hash chain structure
+- Removal of any API endpoint</p>
+<p><strong>Non-breaking additions</strong> (minor version bump):
+- New optional fields in the <code>ActionEnvelope</code>
+- New <code>action_kind</code> values
+- New optional fields in request/response
+- New fields in rule pack manifest
+- New test fixture types</p>
+<p><strong>Clarifications</strong> (patch version bump):
+- Documentation improvements that do not change behavior
+- Corrections to examples that did not match spec
+- Typo fixes in field names or enum values</p>
+<h3 id="version-announcement">Version Announcement<a class="headerlink" href="#version-announcement" title="Permanent link">&para;</a></h3>
+<p>Version changes are announced via:
+1. GitHub release on the agentworks-os repository
+2. Entry in <code>CHANGELOG-AWCP.md</code>
+3. Notification to all registered implementers</p>
+<h3 id="implementer-registration">Implementer Registration<a class="headerlink" href="#implementer-registration" title="Permanent link">&para;</a></h3>
+<p>External implementers who build against AWCP should register with SGridworks. Registration is non-binding but ensures notification of version changes. To register, open a GitHub issue titled <code>[AWCP Implementer] &lt;your organization name&gt;</code>.</p>
+<p>SGridworks will not ship a "Powered by AWCP" badge until at least one external implementer signs on.</p>
+<hr />
+<h2 id="appendix-disposition-reference">Appendix: Disposition Reference<a class="headerlink" href="#appendix-disposition-reference" title="Permanent link">&para;</a></h2>
+<p>The policy engine returns one of three dispositions:</p>
+<table>
+<thead>
+<tr>
+<th>Disposition</th>
+<th>Meaning</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allow</code></td>
+<td>All rules passed or no rules targeted this action kind</td>
+<td>Action proceeds</td>
+</tr>
+<tr>
+<td><code>block</code></td>
+<td>At least one rule returned <code>block</code></td>
+<td>Action is stopped; audit log entry created with <code>decision: block</code></td>
+</tr>
+<tr>
+<td><code>route_to_review</code></td>
+<td>No <code>block</code> returned but at least one rule requires human review, or required data is missing</td>
+<td>Action is held; assigned reviewer must approve, reject, or send back</td>
+</tr>
+</tbody>
+</table>
+<h2 id="appendix-action_kind-format-rule">Appendix: action_kind Format Rule<a class="headerlink" href="#appendix-action_kind-format-rule" title="Permanent link">&para;</a></h2>
+<p>Every <code>action_kind</code> value must match this regular expression:</p>
+<pre><code>^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*)+$
+</code></pre>
+<p>This means:
+- At least one dot (e.g., <code>outbound.sms</code>)
+- No uppercase, no underscores, no leading digits
+- Each segment starts with a lowercase letter and may be followed by digits</p>
+<p>Valid: <code>outbound.sms</code>, <code>crm.write</code>, <code>lead.enrich_v2</code> (segments can contain digits after the first char)
+Invalid: <code>OutboundSMS</code>, <code>outbound-sms</code>, <code>sms</code>, <code>lead..enrich</code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

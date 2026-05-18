@@ -1,0 +1,1090 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/migration-guide/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Migration Guide - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#migration-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Migration Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before You Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migrating-vault-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrating Vault Memory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migrating Vault Memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exporting-from-your-existing-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exporting from Your Existing System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exporting from Your Existing System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-a-markdown-vault-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From a markdown-vault system
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-a-structured-record-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From a structured-record system
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-claude-desktop-memory-or-similar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From Claude Desktop memory or similar
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seeding-conventions-and-agent-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seeding Conventions and Agent Instructions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying-the-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying the Migration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migrating-agent-configuration-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrating Agent Configuration Files
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migrating Agent Configuration Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#claudemd-and-cursorrules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLAUDE.md and .cursorrules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agentsmd-and-custom-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AGENTS.md and Custom Instructions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migrating-rule-logic-from-existing-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrating Rule Logic from Existing Systems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migrating Rule Logic from Existing Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-rule-packs-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Rule Packs Do
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#translating-prompt-based-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Translating Prompt-Based Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#translating-external-script-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Translating External Script Checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migrating-historical-audit-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrating Historical Audit Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-migration-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Post-Migration Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-problems-after-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Problems After Migration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Problems After Migration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agents-mcp-session-has-stale-vault-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent's MCP session has stale vault content
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migrated-files-not-appearing-in-the-admin-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migrated files not appearing in the admin UI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scanner-not-picking-up-agent-configs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scanner not picking up agent configs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting Help
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="migration-guide">Migration Guide<a class="headerlink" href="#migration-guide" title="Permanent link">&para;</a></h1>
+<p><strong>Audience:</strong> Users with an existing agent setup (Claude Desktop, Cursor, Codex, or custom agents) who are moving to AgentWorks OS and want to bring their existing memory, context, and conventions with them.</p>
+<p>This guide covers migrating:
+1. Vault memory from a previous memory system
+2. Agent configuration files (<code>CLAUDE.md</code>, <code>.cursorrules</code>, <code>AGENTS.md</code>)
+3. Rule pack knowledge from any existing policy logic
+4. Historical audit or activity data (optional)</p>
+<p>If you are doing a greenfield install, go to the <a href="../install-runbook/">Install Runbook</a> instead.</p>
+<hr />
+<h2 id="before-you-start">Before You Start<a class="headerlink" href="#before-you-start" title="Permanent link">&para;</a></h2>
+<p>Run the installer on your target machine before beginning migration:</p>
+<pre><code class="language-bash">curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash
+</code></pre>
+<p>Make sure all services show <code>Up</code> before proceeding. The default stack starts the Admin UI at <code>http://localhost:3000</code>; REST/MCP checks below remain the canonical automation path.</p>
+<hr />
+<h2 id="migrating-vault-memory">Migrating Vault Memory<a class="headerlink" href="#migrating-vault-memory" title="Permanent link">&para;</a></h2>
+<p>The AgentWorks OS vault is a tenant-scoped directory of markdown files on disk. It lives at:</p>
+<pre><code>~/.agentworks/data/vault/{tenant_id}/
+</code></pre>
+<p>Each file is a vault page. The filename (without <code>.md</code>) is the page key.</p>
+<h3 id="exporting-from-your-existing-system">Exporting from Your Existing System<a class="headerlink" href="#exporting-from-your-existing-system" title="Permanent link">&para;</a></h3>
+<h4 id="from-a-markdown-vault-system">From a markdown-vault system<a class="headerlink" href="#from-a-markdown-vault-system" title="Permanent link">&para;</a></h4>
+<p>If your current setup is a directory of markdown files (Obsidian-style or similar), the simplest path is to copy the vault directory into the AgentWorks vault structure.</p>
+<ol>
+<li>Find your existing vault directory</li>
+<li>Copy all <code>.md</code> files into your tenant's vault directory:</li>
+</ol>
+<pre><code class="language-bash"># Create the tenant vault directory if it doesn't exist
+mkdir -p ~/.agentworks/data/vault/{YOUR_TENANT_ID}
+
+# Copy markdown files from an existing vault only when intentionally migrating data.
+# Blank-slate installs should skip this step.
+cp /path/to/existing/vault/wiki/**/*.md ~/.agentworks/data/vault/{YOUR_TENANT_ID}/
+</code></pre>
+<ol>
+<li>The admin UI will pick up the new files on next page refresh. Or trigger a re-index:</li>
+</ol>
+<pre><code class="language-bash">curl -X POST http://localhost:7710/api/memory/reindex \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{ &quot;tenantId&quot;: &quot;YOUR_TENANT_ID&quot; }'
+</code></pre>
+<h4 id="from-a-structured-record-system">From a structured-record system<a class="headerlink" href="#from-a-structured-record-system" title="Permanent link">&para;</a></h4>
+<p>If your existing system stores memory as structured records (JSON, SQLite, etc.), write a one-shot migration script:</p>
+<pre><code class="language-python">import json, os
+from pathlib import Path
+
+VAULT_ROOT = Path(&quot;/home/ubuntu/.agentworks/data/vault/YOUR_TENANT_ID&quot;)
+VAULT_ROOT.mkdir(parents=True, exist_ok=True)
+
+# Example: structured memory records
+records = [
+    {&quot;key&quot;: &quot;company/overview&quot;, &quot;body&quot;: &quot;# Acme Corp\n\nWe sell widgets...&quot;},
+    {&quot;key&quot;: &quot;context/contacts/jane-doe&quot;, &quot;body&quot;: &quot;# Jane Doe\n\nVP of Sales...&quot;},
+    {&quot;key&quot;: &quot;projects/q1-launch&quot;, &quot;body&quot;: &quot;# Q1 Product Launch\n\n...&quot;},
+]
+
+for rec in records:
+    key = rec[&quot;key&quot;].replace(&quot;/&quot;, os.sep)  # nested folders
+    file_path = VAULT_ROOT / f&quot;{key}.md&quot;
+    file_path.parent.mkdir(parents=True, exist_ok=True)
+    file_path.write_text(rec[&quot;body&quot;])
+    print(f&quot;Wrote: {key}&quot;)
+</code></pre>
+<p>Adjust the <code>records</code> structure to match however your source system stores memory.</p>
+<h4 id="from-claude-desktop-memory-or-similar">From Claude Desktop memory or similar<a class="headerlink" href="#from-claude-desktop-memory-or-similar" title="Permanent link">&para;</a></h4>
+<p>If you have context files or memory prompts you paste into Claude, collect them into a directory first, then copy them as vault pages. Name pages after their subject matter.</p>
+<h3 id="seeding-conventions-and-agent-instructions">Seeding Conventions and Agent Instructions<a class="headerlink" href="#seeding-conventions-and-agent-instructions" title="Permanent link">&para;</a></h3>
+<p>The most valuable things to migrate into the vault are:</p>
+<table>
+<thead>
+<tr>
+<th>Page key</th>
+<th>What to put there</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>company/overview.md</code></td>
+<td>Company name, industry, size, jurisdictions, products</td>
+</tr>
+<tr>
+<td><code>company/brand-voice.md</code></td>
+<td>How outbound messages should sound, what to avoid</td>
+</tr>
+<tr>
+<td><code>context/contacts/*.md</code></td>
+<td>Key people — customers, vendors, compliance contacts</td>
+</tr>
+<tr>
+<td><code>context/conventions.md</code></td>
+<td>How you want things done, approval thresholds, who decides</td>
+</tr>
+<tr>
+<td><code>context/compliance.md</code></td>
+<td>Regulatory requirements, attorney contacts, DNC list location</td>
+</tr>
+<tr>
+<td><code>projects/*.md</code></td>
+<td>Active workstreams with current status</td>
+</tr>
+</tbody>
+</table>
+<h3 id="verifying-the-migration">Verifying the Migration<a class="headerlink" href="#verifying-the-migration" title="Permanent link">&para;</a></h3>
+<p>In Claude Desktop (connected to AgentWorks OS):</p>
+<pre><code>/memory read key=company/overview
+</code></pre>
+<p>You should see the content you wrote. If the vault was seeded from onboarding answers, you may see existing pages — merge by overwriting with your migrated content.</p>
+<hr />
+<h2 id="migrating-agent-configuration-files">Migrating Agent Configuration Files<a class="headerlink" href="#migrating-agent-configuration-files" title="Permanent link">&para;</a></h2>
+<p>Your existing agent configuration files (<code>CLAUDE.md</code>, <code>.cursorrules</code>, <code>AGENTS.md</code>) encode institutional knowledge and behavioral instructions. These need to be preserved and connected to the scanner.</p>
+<h3 id="claudemd-and-cursorrules">CLAUDE.md and .cursorrules<a class="headerlink" href="#claudemd-and-cursorrules" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Find your existing files:</li>
+</ol>
+<pre><code class="language-bash">find ~ -name &quot;CLAUDE.md&quot; -not -path &quot;*/node_modules/*&quot; -not -path &quot;*/.git/*&quot; 2&gt;/dev/null
+find ~ -name &quot;.cursorrules&quot; -not -path &quot;*/node_modules/*&quot; -not -path &quot;*/.git/*&quot; 2&gt;/dev/null
+</code></pre>
+<ol>
+<li>Copy them to the AgentWorks config directory:</li>
+</ol>
+<pre><code class="language-bash">mkdir -p ~/.agentworks/config/claude
+mkdir -p ~/.agentworks/config/cursor
+
+cp ~/path/to/your/CLAUDE.md ~/.agentworks/config/claude/
+cp ~/path/to/your/.cursorrules ~/.agentworks/config/cursor/
+</code></pre>
+<ol>
+<li>Register them with the scanner. Scheduled watch scans are disabled by
+   default; add explicit container-visible watch paths to
+   <code>~/.agentworks/config/.env</code>. The host config directory is mounted into the
+   scanner container at <code>/config</code>, so use <code>/config/...</code> paths here, not
+   <code>$HOME/.agentworks/config/...</code> host paths:</li>
+</ol>
+<pre><code class="language-bash">printf '\nSCANNER_WATCH_DIRS=%s\n' &quot;/config/claude:/config/cursor&quot; \
+  &gt;&gt; ~/.agentworks/config/.env
+agentworks restart scanner-worker
+</code></pre>
+<p>To confirm scanner submission works:</p>
+<pre><code class="language-bash"># Trigger a manual scan to see the watched paths
+curl -X POST http://localhost:7710/api/scanner/submit \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;tenantId&quot;: &quot;YOUR_TENANT_ID&quot;,
+    &quot;pasteContent&quot;: &quot;# Contents of your CLAUDE.md file&quot;,
+    &quot;policyMode&quot;: &quot;shadow&quot;
+  }'
+</code></pre>
+<ol>
+<li>The scanner will surface any security concerns (exposed secrets, excessive permissions, prompt injection risks) in the Admin UI under <strong>Security → Scanner Findings</strong>.</li>
+</ol>
+<h3 id="agentsmd-and-custom-instructions">AGENTS.md and Custom Instructions<a class="headerlink" href="#agentsmd-and-custom-instructions" title="Permanent link">&para;</a></h3>
+<p>If you have per-agent <code>AGENTS.md</code> files that encode your conventions and operational patterns:</p>
+<ol>
+<li>Extract the conventions into <code>context/conventions.md</code> in the vault (see above)</li>
+<li>Extract company facts into <code>company/overview.md</code></li>
+<li>Keep agent-specific behavioral instructions in the agent's own <code>AGENTS.md</code> — the scanner audits these automatically</li>
+</ol>
+<hr />
+<h2 id="migrating-rule-logic-from-existing-systems">Migrating Rule Logic from Existing Systems<a class="headerlink" href="#migrating-rule-logic-from-existing-systems" title="Permanent link">&para;</a></h2>
+<p>If your current agent setup has policy logic encoded as prompts, conditional checks, or external scripts, translate that logic into an AgentWorks OS rule pack.</p>
+<h3 id="what-rule-packs-do">What Rule Packs Do<a class="headerlink" href="#what-rule-packs-do" title="Permanent link">&para;</a></h3>
+<p>A rule pack evaluates every action against your compliance rules and returns <code>allow</code>, <code>block</code>, or <code>route_to_review</code>. Any logic that currently lives in a prompt ("don't send SMS before 8pm", "always verify consent before outreach") is a candidate for a rule pack.</p>
+<h3 id="translating-prompt-based-rules">Translating Prompt-Based Rules<a class="headerlink" href="#translating-prompt-based-rules" title="Permanent link">&para;</a></h3>
+<p>Example: your current CLAUDE.md says "Do not cold-call before 9am or after 6pm."</p>
+<p>In a rule pack, this becomes:</p>
+<pre><code class="language-yaml">- rule_id: MY-001
+  name: &quot;Restrict calling hours&quot;
+  required_data:
+    - call_scheduled_at
+  disposition_when_missing: route_to_review
+  conditions:
+    - when:
+        call_scheduled_at: &quot;&lt; 09:00&quot;
+      then:
+        decision: block
+        reason: &quot;Cold calls before 9am are prohibited by company policy&quot;
+    - when:
+        call_scheduled_at: &quot;&gt; 18:00&quot;
+      then:
+        decision: block
+        reason: &quot;Cold calls after 6pm are prohibited by company policy&quot;
+</code></pre>
+<h3 id="translating-external-script-checks">Translating External Script Checks<a class="headerlink" href="#translating-external-script-checks" title="Permanent link">&para;</a></h3>
+<p>If you have a script that checks DNC lists, consent records, or other data before allowing an action, wire it into the rule pack's <code>required_data</code>:</p>
+<ol>
+<li>Ensure your data source exposes a field the rule pack can reference</li>
+<li>Declare that field in <code>required_data</code></li>
+<li>Write the condition that checks the value</li>
+</ol>
+<p>For integration help, see <a href="../rule-pack-authoring/">Rule Pack Authoring</a>.</p>
+<hr />
+<h2 id="migrating-historical-audit-data">Migrating Historical Audit Data<a class="headerlink" href="#migrating-historical-audit-data" title="Permanent link">&para;</a></h2>
+<p>AgentWorks OS stores activity records in an append-only, hash-chained log. If you have existing logs from a prior system, you can import them as reference material but they cannot be merged into the native audit chain (the hash chain is per-deployment).</p>
+<p><strong>What to do with historical logs:</strong>
+- Keep them in their original system or export to a PDF/archive
+- Reference them in the vault under <code>context/audit-history.md</code>
+- Generate new AgentWorks OS activity from this point forward</p>
+<p>To export existing logs for reference:</p>
+<pre><code class="language-bash"># Your existing audit data (format will vary by system)
+# Convert to a vault page
+cat /path/to/your/audit.log \
+  | jq -r '.[] | {key: (&quot;audit/&quot; + .date), body: (. | tojson)}' \
+  &gt; /tmp/audit_import.json
+</code></pre>
+<p>Then write those entries to the vault as reference material.</p>
+<hr />
+<h2 id="post-migration-checklist">Post-Migration Checklist<a class="headerlink" href="#post-migration-checklist" title="Permanent link">&para;</a></h2>
+<p>After migration, verify each piece is working:</p>
+<ul>
+<li>[ ] Daemon health returns HTTP 200 at <code>http://localhost:7710/api/health</code></li>
+<li>[ ] Claude Desktop connected — <code>/memory read</code> returns vault content</li>
+<li>[ ] Vault pages visible — key pages (company/overview, context/conventions) readable</li>
+<li>[ ] Scanner findings — no critical findings on migrated agent configs</li>
+<li>[ ] Test policy decision — submit a test action and confirm a decision is returned</li>
+<li>[ ] n8n connected — workflows visible at <code>http://localhost:5678</code></li>
+<li>[ ] Vault conventions correct — agents referencing the right pages for operational guidance</li>
+</ul>
+<hr />
+<h2 id="common-problems-after-migration">Common Problems After Migration<a class="headerlink" href="#common-problems-after-migration" title="Permanent link">&para;</a></h2>
+<h3 id="agents-mcp-session-has-stale-vault-content">Agent's MCP session has stale vault content<a class="headerlink" href="#agents-mcp-session-has-stale-vault-content" title="Permanent link">&para;</a></h3>
+<p>The MCP client may have cached the old empty vault. Have the agent run:</p>
+<pre><code>/memory refresh
+</code></pre>
+<p>Or restart the agent application.</p>
+<h3 id="migrated-files-not-appearing-in-the-admin-ui">Migrated files not appearing in the admin UI<a class="headerlink" href="#migrated-files-not-appearing-in-the-admin-ui" title="Permanent link">&para;</a></h3>
+<p>The vault is read from disk on each request. If you copied files directly:</p>
+<pre><code class="language-bash">curl -X POST http://localhost:7710/api/memory/reindex \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{ &quot;tenantId&quot;: &quot;YOUR_TENANT_ID&quot; }'
+</code></pre>
+<h3 id="scanner-not-picking-up-agent-configs">Scanner not picking up agent configs<a class="headerlink" href="#scanner-not-picking-up-agent-configs" title="Permanent link">&para;</a></h3>
+<p>Confirm watch paths are configured:</p>
+<pre><code class="language-bash">grep '^SCANNER_WATCH_DIRS=' ~/.agentworks/config/.env
+agentworks logs scanner-worker
+</code></pre>
+<p>The scanner does not watch <code>/config/claude/</code> or <code>/config/cursor/</code> by default
+in v0.1.9. Copy configs into your chosen host paths under
+<code>~/.agentworks/config</code>, set <code>SCANNER_WATCH_DIRS</code> to the matching container
+paths under <code>/config</code>, restart <code>scanner-worker</code>, then trigger a manual scan.</p>
+<hr />
+<h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h2>
+<p>If your migration hits a case not covered here:</p>
+<ol>
+<li>Collect a support bundle: see <a href="../support-bundle/">Support Bundle</a></li>
+<li>Include your tenant ID and a description of what you migrated</li>
+<li>Run the support bundle command and attach the output</li>
+</ol>
+<p>The combination of your tenant ID and the support bundle is the fastest path to useful support.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

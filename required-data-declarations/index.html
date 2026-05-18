@@ -1,0 +1,1437 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/required-data-declarations/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Required-Data Declarations — SMB Starter Pack - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#required-data-declarations-smb-starter-pack" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Required-Data Declarations — SMB Starter Pack
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rule-smb-001-do-not-contact-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule: SMB-001 — Do-Not-Contact Check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-smb-002-outbound-sms-disclosure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule: SMB-002 — Outbound SMS Disclosure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-smb-003-email-unsubscribe-compliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule: SMB-003 — Email Unsubscribe Compliance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-smb-004-no-pii-in-agent-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule: SMB-004 — No PII in Agent Prompts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-smb-005-no-protected-class-discrimination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule: SMB-005 — No Protected-Class Discrimination
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-smb-006-outbound-content-review-for-sensitive-offers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule: SMB-006 — Outbound Content Review for Sensitive Offers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-smb-007-consent-provenance-for-lead-gen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule: SMB-007 — Consent Provenance for Lead-Gen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-smb-008-no-action-on-minor-contact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule: SMB-008 — No Action on Minor Contact
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-smb-009-data-retention-notice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule: SMB-009 — Data Retention Notice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-smb-010-jurisdiction-declaration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule: SMB-010 — Jurisdiction Declaration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customer-integration-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Customer Integration Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="required-data-declarations-smb-starter-pack">Required-Data Declarations — SMB Starter Pack<a class="headerlink" href="#required-data-declarations-smb-starter-pack" title="Permanent link">&para;</a></h1>
+<p>This document records, for each rule in the SMB Starter Pack, what data the policy engine must have to evaluate it, where that data comes from, and what happens when it is absent.</p>
+<p><strong>Data provider types:</strong>
+- <code>substrate</code> — the substrate provides this automatically (e.g., <code>action_kind</code>, <code>actor.type</code>)
+- <code>customer_integration</code> — customer must configure their own data source via the adapter pattern
+- <code>external_api</code> — Twilio, RealPhoneValidation, etc. must be integrated</p>
+<hr />
+<h2 id="rule-smb-001-do-not-contact-check">Rule: SMB-001 — Do-Not-Contact Check<a class="headerlink" href="#rule-smb-001-do-not-contact-check" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contact_id</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>Internal contact record ID. Substrate provides this from the contact being targeted.</td>
+</tr>
+<tr>
+<td><code>dnc_status</code></td>
+<td>Yes</td>
+<td>Customer integration</td>
+<td>Internal do-not-contact list. Customer must maintain and integrate this. NOT the National DNC or RNDB.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<p><strong>Integration guidance:</strong> The customer must maintain an internal DNC list and expose it via the substrate's contact adapter. This is NOT a substitute for checking the National Do-Not-Call Registry or the Reassigned Numbers Database.</p>
+<hr />
+<h2 id="rule-smb-002-outbound-sms-disclosure">Rule: SMB-002 — Outbound SMS Disclosure<a class="headerlink" href="#rule-smb-002-outbound-sms-disclosure" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>action_kind</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>Must be <code>outbound.sms</code>. Substrate provides from the action envelope.</td>
+</tr>
+<tr>
+<td><code>message_body</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>Content of the SMS. Substrate provides from action payload.</td>
+</tr>
+<tr>
+<td><code>sender_id</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>Sender ID (phone number or alpha sender ID).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disposition when missing:</strong> <code>block</code></p>
+<p><strong>Note:</strong> This rule checks for required sender disclosure in the message body. The substrate provides the message body; the rule evaluates whether required disclosures are present.</p>
+<hr />
+<h2 id="rule-smb-003-email-unsubscribe-compliance">Rule: SMB-003 — Email Unsubscribe Compliance<a class="headerlink" href="#rule-smb-003-email-unsubscribe-compliance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contact_id</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>Internal contact record.</td>
+</tr>
+<tr>
+<td><code>email_address</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>The contact's email address.</td>
+</tr>
+<tr>
+<td><code>subscription_status</code></td>
+<td>Yes</td>
+<td>Customer integration</td>
+<td><code>subscribed</code>, <code>unsubscribed</code>, or <code>none</code>. Customer must track this in their contact record or CRM integration.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<p><strong>Integration guidance:</strong> Customer's CRM or email platform (Mailchimp, HubSpot, etc.) should push subscription status to the substrate contact record. When <code>subscription_status</code> is <code>none</code>, the rule routes to review — the system cannot determine whether consent exists.</p>
+<hr />
+<h2 id="rule-smb-004-no-pii-in-agent-prompts">Rule: SMB-004 — No PII in Agent Prompts<a class="headerlink" href="#rule-smb-004-no-pii-in-agent-prompts" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>payload_content</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>The content being submitted to the LLM. Substrate provides from action payload.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<p><strong>What the rule checks:</strong> Whether the payload contains SSN, driver's license number, or financial account number. Detection is pattern-based (regex on payload content). This is a guard, not a guarantee of PII detection.</p>
+<p><strong>Integration guidance:</strong> For production use, customers should integrate a PII detection library or service. The substrate's <code>llm.completion</code> adapter can be configured to scan payload content before forwarding.</p>
+<hr />
+<h2 id="rule-smb-005-no-protected-class-discrimination">Rule: SMB-005 — No Protected-Class Discrimination<a class="headerlink" href="#rule-smb-005-no-protected-class-discrimination" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>targeting_criteria</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>Structured object describing who the action targets. Substrate provides from action payload.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<p><strong>What the rule checks:</strong> Whether <code>targeting_criteria</code> uses protected-class membership (race, color, national origin, religion, sex, familial status, handicap, disability, age 40+) as a filtering or exclusion criterion.</p>
+<p><strong>Note:</strong> The rule cannot detect all forms of discriminatory intent. It flags clear protected-class indicators. Human review is required for nuanced cases.</p>
+<hr />
+<h2 id="rule-smb-006-outbound-content-review-for-sensitive-offers">Rule: SMB-006 — Outbound Content Review for Sensitive Offers<a class="headerlink" href="#rule-smb-006-outbound-content-review-for-sensitive-offers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>action_kind</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td></td>
+</tr>
+<tr>
+<td><code>offer_type</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td><code>financial</code>, <code>insurance</code>, <code>health</code>, <code>legal</code></td>
+</tr>
+<tr>
+<td><code>geographic_scope</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td><code>census_tract</code>, <code>zip_code</code>, <code>city</code>, <code>county</code>, <code>state</code></td>
+</tr>
+<tr>
+<td><code>target_demographic</code></td>
+<td>No</td>
+<td>Substrate</td>
+<td>Demographic targeting criteria, if any</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disposition when missing:</strong> <code>allow</code></p>
+<p><strong>Note:</strong> Default is <code>allow</code> because these fields may not always be present. When <code>offer_type</code> and <code>geographic_scope: census_tract</code> both apply, route to review for disparate impact review.</p>
+<hr />
+<h2 id="rule-smb-007-consent-provenance-for-lead-gen">Rule: SMB-007 — Consent Provenance for Lead-Gen<a class="headerlink" href="#rule-smb-007-consent-provenance-for-lead-gen" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>action_kind</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>Must be <code>lead.generation</code></td>
+</tr>
+<tr>
+<td><code>contact_id</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td></td>
+</tr>
+<tr>
+<td><code>consent.source</code></td>
+<td>Yes</td>
+<td>Customer integration</td>
+<td>Where consent originated: <code>written</code>, <code>verbal</code>, <code>inferred</code>, <code>none</code></td>
+</tr>
+<tr>
+<td><code>consent.captured_at</code></td>
+<td>Yes</td>
+<td>Customer integration</td>
+<td>ISO-8601 date consent was captured</td>
+</tr>
+<tr>
+<td><code>consent.verified</code></td>
+<td>Yes</td>
+<td>Customer integration</td>
+<td>Boolean — has consent been verified, not just self-asserted</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<p><strong>Integration guidance:</strong> Consent records must come from a documented source (web form, signed document, etc.). Self-asserted consent (e.g., a checkbox with no verification) should be recorded as <code>verified: false</code>.</p>
+<hr />
+<h2 id="rule-smb-008-no-action-on-minor-contact">Rule: SMB-008 — No Action on Minor Contact<a class="headerlink" href="#rule-smb-008-no-action-on-minor-contact" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contact_age</code></td>
+<td>Yes</td>
+<td>Customer integration</td>
+<td>Integer age if known</td>
+</tr>
+<tr>
+<td><code>contact_age_known</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>Boolean — does the system know the contact's age?</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disposition when missing:</strong> <code>allow</code></p>
+<p><strong>Note:</strong> Default <code>allow</code> when age is unknown — the rule cannot block what it cannot see. Customer should integrate age data for contacts where outbound action is planned.</p>
+<hr />
+<h2 id="rule-smb-009-data-retention-notice">Rule: SMB-009 — Data Retention Notice<a class="headerlink" href="#rule-smb-009-data-retention-notice" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>action_kind</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td></td>
+</tr>
+<tr>
+<td><code>storage_destination</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td><code>internal</code> or <code>external</code></td>
+</tr>
+<tr>
+<td><code>data_retention_disclosure</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>Boolean — was retention disclosure provided?</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disposition when missing:</strong> <code>allow</code></p>
+<p><strong>Note:</strong> Default <code>allow</code> when fields are missing. When <code>storage_destination: external</code> and <code>data_retention_disclosure: false</code>, the rule routes to review.</p>
+<hr />
+<h2 id="rule-smb-010-jurisdiction-declaration">Rule: SMB-010 — Jurisdiction Declaration<a class="headerlink" href="#rule-smb-010-jurisdiction-declaration" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>action_kind</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>Must be an outbound action kind</td>
+</tr>
+<tr>
+<td><code>target_jurisdiction</code></td>
+<td>Yes</td>
+<td>Substrate</td>
+<td>US state code or <code>federal</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<p><strong>Integration guidance:</strong> For outbound actions, the substrate should default to the customer's business state as <code>target_jurisdiction</code> if not explicitly set. The customer should configure their primary jurisdiction during onboarding.</p>
+<hr />
+<h2 id="summary-table">Summary Table<a class="headerlink" href="#summary-table" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Field</th>
+<th>Provider</th>
+<th>Missing Disposition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SMB-001</td>
+<td><code>contact_id</code></td>
+<td>substrate</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-001</td>
+<td><code>dnc_status</code></td>
+<td>customer_integration</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-002</td>
+<td><code>action_kind</code></td>
+<td>substrate</td>
+<td>block</td>
+</tr>
+<tr>
+<td>SMB-002</td>
+<td><code>message_body</code></td>
+<td>substrate</td>
+<td>block</td>
+</tr>
+<tr>
+<td>SMB-002</td>
+<td><code>sender_id</code></td>
+<td>substrate</td>
+<td>block</td>
+</tr>
+<tr>
+<td>SMB-003</td>
+<td><code>contact_id</code></td>
+<td>substrate</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-003</td>
+<td><code>email_address</code></td>
+<td>substrate</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-003</td>
+<td><code>subscription_status</code></td>
+<td>customer_integration</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-004</td>
+<td><code>payload_content</code></td>
+<td>substrate</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-005</td>
+<td><code>targeting_criteria</code></td>
+<td>substrate</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-006</td>
+<td><code>offer_type</code></td>
+<td>substrate</td>
+<td>allow</td>
+</tr>
+<tr>
+<td>SMB-006</td>
+<td><code>geographic_scope</code></td>
+<td>substrate</td>
+<td>allow</td>
+</tr>
+<tr>
+<td>SMB-006</td>
+<td><code>action_kind</code></td>
+<td>substrate</td>
+<td>allow</td>
+</tr>
+<tr>
+<td>SMB-007</td>
+<td><code>action_kind</code></td>
+<td>substrate</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-007</td>
+<td><code>contact_id</code></td>
+<td>substrate</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-007</td>
+<td><code>consent.source</code></td>
+<td>customer_integration</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-007</td>
+<td><code>consent.captured_at</code></td>
+<td>customer_integration</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-007</td>
+<td><code>consent.verified</code></td>
+<td>customer_integration</td>
+<td>route_to_review</td>
+</tr>
+<tr>
+<td>SMB-008</td>
+<td><code>contact_age_known</code></td>
+<td>substrate</td>
+<td>allow</td>
+</tr>
+<tr>
+<td>SMB-008</td>
+<td><code>contact_age</code></td>
+<td>customer_integration</td>
+<td>allow</td>
+</tr>
+<tr>
+<td>SMB-009</td>
+<td><code>storage_destination</code></td>
+<td>substrate</td>
+<td>allow</td>
+</tr>
+<tr>
+<td>SMB-009</td>
+<td><code>data_retention_disclosure</code></td>
+<td>substrate</td>
+<td>allow</td>
+</tr>
+<tr>
+<td>SMB-010</td>
+<td><code>target_jurisdiction</code></td>
+<td>substrate</td>
+<td>route_to_review</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="customer-integration-checklist">Customer Integration Checklist<a class="headerlink" href="#customer-integration-checklist" title="Permanent link">&para;</a></h2>
+<p>For the SMB Starter Pack to evaluate correctly, customers must integrate:</p>
+<ol>
+<li><strong>Internal DNC list</strong> — expose <code>dnc_status</code> per contact</li>
+<li><strong>Subscription status tracking</strong> — <code>subscribed</code> / <code>unsubscribed</code> / <code>none</code> per contact</li>
+<li><strong>Consent records</strong> — <code>consent.source</code>, <code>consent.captured_at</code>, <code>consent.verified</code> for lead-gen contacts</li>
+<li><strong>Contact age data</strong> — <code>contact_age</code>, <code>contact_age_known</code> for contacts where minor check is relevant</li>
+<li><strong>Target jurisdiction</strong> — configured at onboarding, overridden per action</li>
+</ol>
+<p>The substrate's adapter pattern is the integration mechanism. Customers configure data providers (CRMs, consent platforms, DNC services) via the adapter config. The policy engine reads from the adapter, not directly from external systems.</p>
+<hr />
+<h1 id="required-data-declarations-tcpa-fair-housing-real-estate-pack">Required-Data Declarations — TCPA + Fair Housing Real Estate Pack<a class="headerlink" href="#required-data-declarations-tcpa-fair-housing-real-estate-pack" title="Permanent link">&para;</a></h1>
+<p>This document records, for each rule in the TCPA + Fair Housing Real Estate pack, what data the policy engine must have to evaluate it, where that data comes from, and what happens when it is absent.</p>
+<hr />
+<h2 id="rule-tcpa-re-001-block-sms-to-internal-dnc-list">Rule: TCPA-RE-001 — Block SMS to internal DNC list<a class="headerlink" href="#rule-tcpa-re-001-block-sms-to-internal-dnc-list" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>dnc_status</code> | Yes | Customer integration | Internal do-not-call list. Customer must maintain and integrate this. NOT the National DNC or RNDB. |
+| <code>action_kind</code> | Yes | Substrate | Must be <code>outbound.sms</code>. |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-tcpa-re-002-block-sms-to-reassigned-numbers-without-fresh-consent">Rule: TCPA-RE-002 — Block SMS to reassigned numbers without fresh consent<a class="headerlink" href="#rule-tcpa-re-002-block-sms-to-reassigned-numbers-without-fresh-consent" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>phone_type</code> | Yes | External API | <code>mobile</code>, <code>landline</code>, or <code>unknown</code> |
+| <code>reassigned_number</code> | Yes | External API | Boolean — has number been reassigned since consent capture? |
+| <code>consent.captured_at</code> | Yes | Customer integration | ISO-8601 date consent was captured |
+| <code>action_kind</code> | Yes | Substrate | Must be <code>outbound.sms</code> |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<p><strong>Integration guidance:</strong> RNDB lookup via an external API (TeliStream, REscorpion, or similar). Consent date must be from customer's CRM or consent platform.</p>
+<hr />
+<h2 id="rule-tcpa-re-003-block-sms-to-landline-without-human-intervention">Rule: TCPA-RE-003 — Block SMS to landline without human intervention<a class="headerlink" href="#rule-tcpa-re-003-block-sms-to-landline-without-human-intervention" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>phone_type</code> | Yes | External API | Must be <code>landline</code> to trigger |
+| <code>action_kind</code> | Yes | Substrate | Must be <code>outbound.sms</code> |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-tcpa-re-004-block-outbound-without-written-consent-for-mobile">Rule: TCPA-RE-004 — Block outbound without written consent for mobile<a class="headerlink" href="#rule-tcpa-re-004-block-outbound-without-written-consent-for-mobile" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>phone_type</code> | Yes | External API | Must be <code>mobile</code> to trigger |
+| <code>consent.source</code> | Yes | Customer integration | <code>written</code> required; <code>verbal</code>, <code>inferred</code>, <code>none</code> trigger block |
+| <code>action_kind</code> | Yes | Substrate | Must be <code>outbound.sms</code> or <code>outbound.call</code> |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-tcpa-re-005-block-outreach-without-declared-jurisdiction">Rule: TCPA-RE-005 — Block outreach without declared jurisdiction<a class="headerlink" href="#rule-tcpa-re-005-block-outreach-without-declared-jurisdiction" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>target_jurisdiction</code> | Yes | Substrate | US state code or <code>federal</code> |
+| <code>action_kind</code> | Yes | Substrate | Outbound action kinds |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-tcpa-re-006-route-to-review-for-ebr-exemption-on-sms">Rule: TCPA-RE-006 — Route to review for EBR exemption on SMS<a class="headerlink" href="#rule-tcpa-re-006-route-to-review-for-ebr-exemption-on-sms" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>relationship_to_contact</code> | Yes | Customer integration | <code>existing_customer</code>, <code>former_customer</code>, <code>prospect</code>, <code>unknown</code> |
+| <code>phone_type</code> | Yes | External API | Must be <code>mobile</code> to trigger |
+| <code>consent.source</code> | Yes | Customer integration | <code>none</code>, <code>unknown</code>, <code>verbal</code> trigger route_to_review even with EBR |
+| <code>action_kind</code> | Yes | Substrate | Outbound SMS/call |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-tcpa-re-007-block-outreach-outside-permitted-hours">Rule: TCPA-RE-007 — Block outreach outside permitted hours<a class="headerlink" href="#rule-tcpa-re-007-block-outreach-outside-permitted-hours" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>local_time_of_contact</code> | Yes | Substrate | HH:MM in 24-hour format, caller's local time |
+| <code>action_kind</code> | Yes | Substrate | <code>outbound.sms</code> or <code>outbound.call</code> |</p>
+<p><strong>Disposition when missing:</strong> <code>allow</code> (time-of-day check cannot fire without time data)</p>
+<hr />
+<h2 id="rule-tcpa-re-008-block-lead-gen-without-verified-written-consent">Rule: TCPA-RE-008 — Block lead-gen without verified written consent<a class="headerlink" href="#rule-tcpa-re-008-block-lead-gen-without-verified-written-consent" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>consent.verified</code> | Yes | Customer integration | Boolean — has consent been independently verified? |
+| <code>consent.source</code> | Yes | Customer integration | Must be <code>written</code> for verified consent |
+| <code>consent.captured_at</code> | Yes | Customer integration | ISO-8601 date |
+| <code>action_kind</code> | Yes | Substrate | Must be <code>lead.generation</code> |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-tcpa-re-009-block-lead-enrichment-without-consent-record">Rule: TCPA-RE-009 — Block lead enrichment without consent record<a class="headerlink" href="#rule-tcpa-re-009-block-lead-enrichment-without-consent-record" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>consent.status</code> | Yes | Customer integration | <code>verified</code>, <code>unverified</code>, <code>none</code> |
+| <code>action_kind</code> | Yes | Substrate | Must be <code>lead.enrich</code> |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-re-001-fh-001-block-housing-action-that-excludes-by-protected-class">Rule: FH-RE-001 / FH-001 — Block housing action that excludes by protected class<a class="headerlink" href="#rule-fh-re-001-fh-001-block-housing-action-that-excludes-by-protected-class" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | Boolean — does the action relate to housing? |
+| <code>protected_class_indicator_present</code> | Yes | Customer integration | Boolean — does targeting use a protected class criterion? |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-re-002-fh-002-block-housing-action-with-discriminatory-intent">Rule: FH-RE-002 / FH-002 — Block housing action with discriminatory intent<a class="headerlink" href="#rule-fh-re-002-fh-002-block-housing-action-with-discriminatory-intent" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>targeting_criteria</code> | Yes | Substrate | Structured targeting object |
+| <code>message_body</code> | Yes | Substrate | Content of outbound message |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-re-003-fh-003-block-housing-action-with-discriminatory-disparate-impact">Rule: FH-RE-003 / FH-003 — Block housing action with discriminatory disparate impact<a class="headerlink" href="#rule-fh-re-003-fh-003-block-housing-action-with-discriminatory-disparate-impact" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>targeting_criteria</code> | Yes | Substrate | |
+| <code>geographic_scope</code> | Yes | Substrate | |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-004-block-housing-advertisement-with-discriminatory-content">Rule: FH-004 — Block housing advertisement with discriminatory content<a class="headerlink" href="#rule-fh-004-block-housing-advertisement-with-discriminatory-content" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>message_body</code> | Yes | Substrate | |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-005-block-housing-advertisement-that-steers-by-neighborhood">Rule: FH-005 — Block housing advertisement that steers by neighborhood<a class="headerlink" href="#rule-fh-005-block-housing-advertisement-that-steers-by-neighborhood" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>message_body</code> | Yes | Substrate | |
+| <code>geographic_scope</code> | Yes | Substrate | |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-007-route-to-review-for-housing-offers-at-fine-geographic-granularity">Rule: FH-007 — Route to review for housing offers at fine geographic granularity<a class="headerlink" href="#rule-fh-007-route-to-review-for-housing-offers-at-fine-geographic-granularity" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>offer_type</code> | Yes | Customer integration | <code>listing</code>, <code>buyer_agent</code>, <code>mortgage</code>, <code>insurance</code>, <code>rental</code> |
+| <code>geographic_scope</code> | Yes | Substrate | Must be <code>census_tract</code> to trigger |</p>
+<p><strong>Disposition when missing:</strong> <code>allow</code></p>
+<hr />
+<h2 id="rule-oh-fh-001-block-housing-discrimination-under-ohio-fair-housing-act">Rule: OH-FH-001 — Block housing discrimination under Ohio Fair Housing Act<a class="headerlink" href="#rule-oh-fh-001-block-housing-discrimination-under-ohio-fair-housing-act" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>target_jurisdiction</code> | Yes | Substrate | Must be <code>US-OH</code> to trigger |
+| <code>protected_class_indicator_present</code> | Yes | Customer integration | |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-data-001-block-crm-write-without-contact-consent">Rule: DATA-001 — Block CRM write without contact consent<a class="headerlink" href="#rule-data-001-block-crm-write-without-contact-consent" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>consent.status</code> | Yes | Customer integration | <code>verified</code>, <code>unverified</code>, <code>none</code> |
+| <code>relationship_to_contact</code> | Yes | Customer integration | <code>existing_customer</code>, <code>former_customer</code>, <code>prospect</code>, <code>unknown</code> |
+| <code>action_kind</code> | Yes | Substrate | Must be <code>crm.write</code> |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="tcpa-fair-housing-integration-checklist">TCPA + Fair Housing Integration Checklist<a class="headerlink" href="#tcpa-fair-housing-integration-checklist" title="Permanent link">&para;</a></h2>
+<p>For the TCPA + Fair Housing Real Estate pack to evaluate correctly, customers must integrate:</p>
+<ol>
+<li><strong>Phone type detection</strong> — external API (Twilio, RealPhoneValidation, etc.) providing <code>mobile | landline | unknown</code></li>
+<li><strong>Reassigned Numbers Database</strong> — FCC RNDB lookup for numbers where consent was captured</li>
+<li><strong>Internal DNC list</strong> — <code>dnc_status: true/false</code> per contact</li>
+<li><strong>Consent records</strong> — <code>consent.source</code>, <code>consent.captured_at</code>, <code>consent.verified</code> per contact</li>
+<li><strong>Relationship to contact</strong> — <code>existing_customer | former_customer | prospect | unknown</code></li>
+<li><strong>Local time of contact</strong> — computed from contact's timezone for time-of-day rules</li>
+<li><strong>Protected class indicator</strong> — structured data about whether targeting criteria uses protected class membership</li>
+<li><strong>Target jurisdiction</strong> — US state code per contact, configured at onboarding</li>
+</ol>
+<hr />
+<h1 id="required-data-declarations-fair-housing-pack">Required-Data Declarations — Fair Housing Pack<a class="headerlink" href="#required-data-declarations-fair-housing-pack" title="Permanent link">&para;</a></h1>
+<p>This document records, for each rule in the Fair Housing pack, what data the policy engine must have to evaluate it, where that data comes from, and what happens when it is absent.</p>
+<hr />
+<h2 id="rule-fh-001-block-housing-action-that-excludes-by-protected-class">Rule: FH-001 — Block housing action that excludes by protected class<a class="headerlink" href="#rule-fh-001-block-housing-action-that-excludes-by-protected-class" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | Boolean |
+| <code>protected_class_indicator_present</code> | Yes | Customer integration | Boolean |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-002-block-housing-action-with-discriminatory-intent">Rule: FH-002 — Block housing action with discriminatory intent<a class="headerlink" href="#rule-fh-002-block-housing-action-with-discriminatory-intent" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>targeting_criteria</code> | Yes | Substrate | Structured object |
+| <code>message_body</code> | Yes | Substrate | |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-003-block-housing-action-with-discriminatory-disparate-impact">Rule: FH-003 — Block housing action with discriminatory disparate impact<a class="headerlink" href="#rule-fh-003-block-housing-action-with-discriminatory-disparate-impact" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>targeting_criteria</code> | Yes | Substrate | |
+| <code>geographic_scope</code> | Yes | Substrate | |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-004-block-housing-advertisement-with-discriminatory-content_1">Rule: FH-004 — Block housing advertisement with discriminatory content<a class="headerlink" href="#rule-fh-004-block-housing-advertisement-with-discriminatory-content_1" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>message_body</code> | Yes | Substrate | |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-005-block-housing-advertisement-that-steers-by-neighborhood_1">Rule: FH-005 — Block housing advertisement that steers by neighborhood<a class="headerlink" href="#rule-fh-005-block-housing-advertisement-that-steers-by-neighborhood_1" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>message_body</code> | Yes | Substrate | |
+| <code>geographic_scope</code> | Yes | Substrate | |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-006-block-advertisement-missing-equal-housing-opportunity-notice">Rule: FH-006 — Block advertisement missing equal housing opportunity notice<a class="headerlink" href="#rule-fh-006-block-advertisement-missing-equal-housing-opportunity-notice" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>message_body</code> | Yes | Substrate | |
+| <code>advertising_platform</code> | Yes | Substrate | <code>print</code>, <code>display</code>, <code>direct_mail</code>, <code>digital</code> |</p>
+<p><strong>Disposition when missing:</strong> <code>allow</code></p>
+<hr />
+<h2 id="rule-fh-007-route-to-review-for-housing-offers-at-fine-geographic-granularity_1">Rule: FH-007 — Route to review for housing offers at fine geographic granularity<a class="headerlink" href="#rule-fh-007-route-to-review-for-housing-offers-at-fine-geographic-granularity_1" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>offer_type</code> | Yes | Customer integration | |
+| <code>geographic_scope</code> | Yes | Substrate | Must be <code>census_tract</code> |</p>
+<p><strong>Disposition when missing:</strong> <code>allow</code></p>
+<hr />
+<h2 id="rule-oh-fh-001-block-housing-discrimination-under-ohio-fair-housing-act_1">Rule: OH-FH-001 — Block housing discrimination under Ohio Fair Housing Act<a class="headerlink" href="#rule-oh-fh-001-block-housing-discrimination-under-ohio-fair-housing-act_1" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>target_jurisdiction</code> | Yes | Substrate | Must be <code>US-OH</code> |
+| <code>protected_class_indicator_present</code> | Yes | Customer integration | |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-008-block-agent-action-that-facilitates-discriminatory-housing">Rule: FH-008 — Block agent action that facilitates discriminatory housing<a class="headerlink" href="#rule-fh-008-block-agent-action-that-facilitates-discriminatory-housing" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>targeting_criteria_uses_protected_class</code> | Yes | Substrate | |
+| <code>actor_type</code> | Yes | Substrate | <code>agent</code>, <code>human</code>, <code>system</code> |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-009-block-lead-gen-that-collects-protected-class-data-discriminatorily">Rule: FH-009 — Block lead-gen that collects protected-class data discriminatorily<a class="headerlink" href="#rule-fh-009-block-lead-gen-that-collects-protected-class-data-discriminatorily" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>lead_gen_collects_protected_class_data</code> | Yes | Customer integration | Boolean |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="rule-fh-010-block-crm-write-that-tags-contact-with-protected-class-discriminatorily">Rule: FH-010 — Block CRM write that tags contact with protected class discriminatorily<a class="headerlink" href="#rule-fh-010-block-crm-write-that-tags-contact-with-protected-class-discriminatorily" title="Permanent link">&para;</a></h2>
+<p>|| Field | Required | Provided By | Notes |
+|---|---|---|---|
+| <code>housing_related</code> | Yes | Substrate | |
+| <code>action_kind</code> | Yes | Substrate | Must be <code>crm.write</code> |
+| <code>crm_tags_include_protected_class</code> | Yes | Customer integration | Boolean |</p>
+<p><strong>Disposition when missing:</strong> <code>route_to_review</code></p>
+<hr />
+<h2 id="fair-housing-pack-integration-checklist">Fair Housing Pack Integration Checklist<a class="headerlink" href="#fair-housing-pack-integration-checklist" title="Permanent link">&para;</a></h2>
+<p>For the Fair Housing pack to evaluate correctly, customers must integrate:</p>
+<ol>
+<li><strong><code>housing_related</code> flag</strong> — set per action by the adapter based on offer_type or action context</li>
+<li><strong><code>protected_class_indicator_present</code></strong> — structured determination of whether targeting criteria uses protected class membership (requires customer business logic to assess targeting parameters)</li>
+<li><strong><code>targeting_criteria_uses_protected_class</code></strong> — evaluated from the targeting_criteria object; substrate provides the structure, customer integration provides the assessment</li>
+<li><strong><code>lead_gen_collects_protected_class_data</code></strong> — boolean from customer's data collection assessment</li>
+<li><strong><code>crm_tags_include_protected_class</code></strong> — boolean from customer's CRM tag assessment</li>
+<li><strong><code>advertising_platform</code></strong> — set per action by the substrate based on which channel the action uses</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

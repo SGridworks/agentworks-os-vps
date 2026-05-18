@@ -1,0 +1,2854 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/users-guide/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>AgentWorks OS User Guide - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#agentworks-os-user-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AgentWorks OS User Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-agentworks-os-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What AgentWorks OS Does
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-mental-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Mental Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-is-included" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. What Is Included
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. What Is Included">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Vault
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rule-packs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule Packs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#approval-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approval Queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triage-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Triage Queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Process Health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scanner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scanner
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activity-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activity Log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidence-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidence Reports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workflow-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow Automation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-setup-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Setup Guide
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Setup Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin-ui-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Admin UI Status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tenant-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tenant Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connect-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect Agents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connect Agents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#claude-desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Claude Desktop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cursor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cursor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#codex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Codex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-rest-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom REST Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-admin-ui-package-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Admin UI Package Guide
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Admin UI Package Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mission-control_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-vault-viewer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Vault Viewer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#approvals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approvals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triage-queue_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Triage Queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rule-packs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule Packs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scanner_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scanner
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process-health_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Process Health
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activity-log_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activity Log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evidence-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidence Report
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-vault-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Vault Guide
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Vault Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-the-vault-is-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Vault Is For
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommended-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-hot-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Hot Page
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#naming-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Naming Conventions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writing-vault-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing Vault Pages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#append-vs-replace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Append vs Replace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vault-hygiene-routine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vault Hygiene Routine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vault-quality-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vault Quality Checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-rule-pack-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Rule Pack Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Rule Pack Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load-a-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load a Pack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#understand-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understand Decisions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shadow-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shadow Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rule-pack-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule Pack Maintenance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-approval-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Approval Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Approval Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-requires-human-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Requires Human Review
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#review-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review Procedure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queue-hygiene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue Hygiene
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-agent-orchestration-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Agent Orchestration Guide
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Agent Orchestration Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-configuration-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Configuration Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Issue Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-good-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating Good Issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auto-Assignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triage-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Triage Assignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#waking-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Waking Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handoffs-between-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handoffs Between Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manager-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manager Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parallel-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallel Work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#review-cycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review Cycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process-health-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Process Health Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#orchestration-hygiene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Orchestration Hygiene
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-mcp-and-api-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. MCP and API Tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-workflow-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Workflow Automation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-routine-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Routine Maintenance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Routine Maintenance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#daily" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Daily
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weekly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weekly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monthly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monthly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quarterly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quarterly
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-backup-and-restore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Backup and Restore
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Updates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-storage-and-retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Storage and Retention
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-security-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Security Practices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. Security Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-exposure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Exposure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scanner-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scanner Findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-operating-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Operating Principles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-where-to-go-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Where to Go Next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="agentworks-os-user-guide">AgentWorks OS User Guide<a class="headerlink" href="#agentworks-os-user-guide" title="Permanent link">&para;</a></h1>
+<p>This guide is for the person who operates AgentWorks OS for a company. You install it, connect agents, approve sensitive actions, keep the vault useful, and produce evidence when someone asks what the agents did.</p>
+<p>Use this guide after, or alongside, the <a href="../install-runbook/">Install Runbook</a>. The runbook gets the system running. This guide explains how to use it well.</p>
+<hr />
+<h2 id="1-what-agentworks-os-does">1. What AgentWorks OS Does<a class="headerlink" href="#1-what-agentworks-os-does" title="Permanent link">&para;</a></h2>
+<p>AgentWorks OS gives AI agents a controlled operating environment.</p>
+<p>Agents can still write, research, update records, hand off tasks, and run workflows. The difference is that AgentWorks OS provides:</p>
+<ul>
+<li>A policy layer that checks proposed actions before they cross a boundary.</li>
+<li>A human approval queue for actions that should not be automatic.</li>
+<li>A vault that gives agents durable company memory.</li>
+<li>An orchestration surface for companies, agents, issues, runs, and handoffs.</li>
+<li>A scanner that audits agent configuration and unsafe permissions.</li>
+<li>A hash-chained system of record for policy decisions, approvals, vault writes, and operational events.</li>
+<li>Evidence reports for compliance and management review.</li>
+</ul>
+<p>AgentWorks OS is not a replacement for legal counsel, compliance staff, or operator judgment. It gives you controls, records, and repeatable workflows so your agents are not operating as an unobserved black box.</p>
+<hr />
+<h2 id="2-mental-model">2. Mental Model<a class="headerlink" href="#2-mental-model" title="Permanent link">&para;</a></h2>
+<p>Think of AgentWorks OS as five connected systems.</p>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>What it controls</th>
+<th>Where you use it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vault</td>
+<td>Shared memory and working knowledge</td>
+<td>Memory Vault Viewer, MCP tools</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td>Rule packs, shadow mode, enforcement, decisions</td>
+<td>Rule Packs, Approvals, Activity Log</td>
+</tr>
+<tr>
+<td>Orchestration</td>
+<td>Companies, agents, issues, wakeups, runs, handoffs</td>
+<td>Mission Control, Triage Queue, Process Health</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>Agent config scanning and findings</td>
+<td>Scanner, Settings</td>
+</tr>
+<tr>
+<td>Evidence</td>
+<td>Reports, exports, hash checks, retention</td>
+<td>Evidence Report, Activity Log, backups</td>
+</tr>
+</tbody>
+</table>
+<p>The normal action path is:</p>
+<ol>
+<li>An agent proposes an action, such as an outbound message, CRM write, data export, or workflow step.</li>
+<li>AgentWorks OS normalizes that proposal into a standard action record.</li>
+<li>Active rule packs evaluate the action.</li>
+<li>The action is allowed, blocked, or routed to human review.</li>
+<li>The decision is logged with evidence.</li>
+<li>If approved, the action continues. If rejected or returned, the agent receives the outcome and revises or stops.</li>
+</ol>
+<p>The normal work path is:</p>
+<ol>
+<li>A task or issue is created.</li>
+<li>AgentWorks OS assigns it to the right agent when the lane is clear.</li>
+<li>Ambiguous work goes to the Triage Queue.</li>
+<li>The assigned agent works, posts status, and records outputs once a real dispatch adapter is configured. The default v0.1.9 install uses a stub adapter that verifies queue plumbing but does not run autonomous LLM work.</li>
+<li>Process Health watches for stale work, off-lane work, failed runs, and premature completion.</li>
+<li>Important outcomes are written back to the vault.</li>
+</ol>
+<hr />
+<h2 id="3-what-is-included">3. What Is Included<a class="headerlink" href="#3-what-is-included" title="Permanent link">&para;</a></h2>
+<h3 id="memory-vault">Memory Vault<a class="headerlink" href="#memory-vault" title="Permanent link">&para;</a></h3>
+<p>The vault is a markdown-backed memory store. Agents use it to remember company facts, projects, contacts, policies, decisions, and current context across sessions.</p>
+<p>Core capabilities:</p>
+<ul>
+<li>Read a vault page by key.</li>
+<li>Write or append to a vault page.</li>
+<li>Read the current hot context page.</li>
+<li>Search and visualize vault links in the Memory Vault Viewer.</li>
+<li>Preserve vault contents in backups.</li>
+</ul>
+<h3 id="rule-packs">Rule Packs<a class="headerlink" href="#rule-packs" title="Permanent link">&para;</a></h3>
+<p>Rule packs are YAML policy files. They declare what actions are allowed, blocked, or routed to review.</p>
+<p>AgentWorks OS ships with starter packs, including:</p>
+<ul>
+<li><code>smb-starter</code></li>
+<li><code>tcpa-real-estate</code></li>
+<li><code>fair-housing</code></li>
+<li><code>real-estate-tcpa-fair-housing</code></li>
+<li><code>hipaa-placeholder</code></li>
+</ul>
+<p>New rule packs should start in shadow mode. Shadow mode logs what would have happened without blocking or routing live work.</p>
+<h3 id="approval-queue">Approval Queue<a class="headerlink" href="#approval-queue" title="Permanent link">&para;</a></h3>
+<p>Approvals are for actions that need a human decision.</p>
+<p>Approvers can:</p>
+<ul>
+<li>Approve the action.</li>
+<li>Reject the action.</li>
+<li>Return it to the author with a note.</li>
+<li>Review the rule, evidence snapshot, actor, tenant, and proposed action summary.</li>
+</ul>
+<h3 id="mission-control">Mission Control<a class="headerlink" href="#mission-control" title="Permanent link">&para;</a></h3>
+<p>Mission Control is the orchestration dashboard. It shows companies, agents, open issues, live runs, and operational status.</p>
+<p>Use it to:</p>
+<ul>
+<li>See every company under a tenant.</li>
+<li>Open a company workspace.</li>
+<li>Inspect agents and their current state.</li>
+<li>Wake an agent on demand.</li>
+<li>View issue lanes.</li>
+<li>Watch recent runs.</li>
+<li>Edit agent metadata such as status, model, instructions path, capabilities, reporting line, and budget fields.</li>
+</ul>
+<h3 id="triage-queue">Triage Queue<a class="headerlink" href="#triage-queue" title="Permanent link">&para;</a></h3>
+<p>The Triage Queue holds unassigned or ambiguous issues. AgentWorks OS uses path and role matching when it can, but ambiguous work needs a human assignment.</p>
+<p>Use it to:</p>
+<ul>
+<li>Review newly created work that could not be safely auto-assigned.</li>
+<li>See suggested roles and triage reason.</li>
+<li>Assign the issue to the correct agent.</li>
+<li>Keep work from drifting to whoever happens to be online.</li>
+</ul>
+<h3 id="process-health">Process Health<a class="headerlink" href="#process-health" title="Permanent link">&para;</a></h3>
+<p>Process Health watches whether agents are following the operating rules.</p>
+<p>The seven checks are:</p>
+<ol>
+<li>Stale in-progress work.</li>
+<li>Premature done.</li>
+<li>Off-lane commits or edits.</li>
+<li>Auto-commit close mismatch.</li>
+<li>Queue depth.</li>
+<li>Failed run not retried.</li>
+<li>Blocked ticket stuck.</li>
+</ol>
+<p>Use Process Health as the weekly quality-control surface for agent operations.</p>
+<h3 id="scanner">Scanner<a class="headerlink" href="#scanner" title="Permanent link">&para;</a></h3>
+<p>The scanner audits agent configuration and pasted content for unsafe patterns.</p>
+<p>It can surface:</p>
+<ul>
+<li>Excessive permissions.</li>
+<li>Exposed secrets.</li>
+<li>Prompt injection risks.</li>
+<li>Unsafe tool execution patterns.</li>
+<li>Data exfiltration risks.</li>
+<li>MCP configuration problems.</li>
+<li>SSRF and auth configuration concerns.</li>
+</ul>
+<h3 id="activity-log">Activity Log<a class="headerlink" href="#activity-log" title="Permanent link">&para;</a></h3>
+<p>The Activity Log is the operational record. It includes policy decisions, action records, approval outcomes, scanner events, and other auditable activity.</p>
+<p>Use it when you need to answer:</p>
+<ul>
+<li>What did an agent try to do?</li>
+<li>What rule fired?</li>
+<li>Who approved or rejected it?</li>
+<li>What evidence was used?</li>
+<li>When did it happen?</li>
+</ul>
+<h3 id="evidence-reports">Evidence Reports<a class="headerlink" href="#evidence-reports" title="Permanent link">&para;</a></h3>
+<p>Evidence reports summarize policy and approval activity for a date range. Reports are persisted with hashes so later verification can detect mismatch.</p>
+<p>Use them monthly or before a review with counsel, management, or a customer.</p>
+<h3 id="workflow-automation">Workflow Automation<a class="headerlink" href="#workflow-automation" title="Permanent link">&para;</a></h3>
+<p>AgentWorks OS includes workflow automation with AgentWorks-aware nodes:</p>
+<ul>
+<li>Policy Check</li>
+<li>Memory Read</li>
+<li>Memory Write</li>
+<li>Dispatch</li>
+</ul>
+<p>Use workflows for repeatable operations such as lead intake, outbound review, compliance checks, enrichment, and agent handoffs.</p>
+<hr />
+<h2 id="4-setup-guide">4. Setup Guide<a class="headerlink" href="#4-setup-guide" title="Permanent link">&para;</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<p>You need:</p>
+<ul>
+<li>A Mac or Linux machine you control.</li>
+<li>Docker Desktop or Docker Engine.</li>
+<li>20 GB free disk, 4 GB RAM minimum, 8 GB recommended.</li>
+<li>Network access from the machines running your agents.</li>
+<li>At least one agent client to connect, such as Claude Desktop, Cursor, Codex, or a custom REST client.</li>
+</ul>
+<p>Confirm Docker is running:</p>
+<pre><code class="language-bash">docker --version
+docker ps
+</code></pre>
+<p>If <code>docker ps</code> cannot connect, start Docker before installing.</p>
+<h3 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h3>
+<p>Run the installer on the machine that will host AgentWorks OS:</p>
+<pre><code class="language-bash">curl -fsSL https://github.com/SGridworks/agentworks-os-vps/releases/download/v0.1.9/install.sh | bash -s -- --unattended
+</code></pre>
+<p>The installer creates <code>~/.agentworks/</code>, generates secrets, starts services, and
+verifies tenant creation with a disposable smoke-test tenant. It deletes that
+smoke tenant before exit. Create the real first tenant through the onboarding
+flow or <code>POST /api/tenants</code>.</p>
+<h3 id="verify-services">Verify Services<a class="headerlink" href="#verify-services" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">agentworks status
+</code></pre>
+<p>Expected services:</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Purpose</th>
+<th>Default port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agentos-d</code></td>
+<td>Main daemon, REST API, MCP</td>
+<td>7710</td>
+</tr>
+<tr>
+<td><code>scanner-worker</code></td>
+<td>Security scanner</td>
+<td>3101</td>
+</tr>
+<tr>
+<td><code>n8n</code></td>
+<td>Workflow automation</td>
+<td>5678</td>
+</tr>
+<tr>
+<td><code>admin-ui</code></td>
+<td>Browser operator dashboard</td>
+<td>3000</td>
+</tr>
+<tr>
+<td><code>postgres</code></td>
+<td>Reserved for future execution-workflow support (not yet used by the daemon in v0.1.x)</td>
+<td>internal only</td>
+</tr>
+</tbody>
+</table>
+<p>Check daemon health:</p>
+<pre><code class="language-bash">curl http://localhost:7710/api/health
+</code></pre>
+<h3 id="admin-ui-status">Admin UI Status<a class="headerlink" href="#admin-ui-status" title="Permanent link">&para;</a></h3>
+<p>v0.1.9 starts the Admin UI from the default Docker Compose stack at
+<code>http://localhost:3000</code>. On a VPS, keep it loopback-only and access it through
+an SSH tunnel or authenticated TLS reverse proxy.</p>
+<h3 id="tenant-setup">Tenant Setup<a class="headerlink" href="#tenant-setup" title="Permanent link">&para;</a></h3>
+<p>The Admin UI includes an onboarding wizard. REST and MCP setup remain available
+for headless installs and automation.</p>
+<p>Set up:</p>
+<ul>
+<li>Company or tenant name.</li>
+<li>Optional description.</li>
+<li>Starting rule pack mode: blank, minimal, or standard.</li>
+<li>Which local editors or agent clients should receive an AgentWorks MCP entry.</li>
+</ul>
+<p>The installer creates the first tenant and vault directory. You can create
+additional tenants with <code>POST /api/tenants</code>.</p>
+<h3 id="connect-agents">Connect Agents<a class="headerlink" href="#connect-agents" title="Permanent link">&para;</a></h3>
+<p>AgentWorks OS exposes MCP tools and REST endpoints. Use MCP for interactive agent clients and REST for custom integrations.</p>
+<h4 id="claude-desktop">Claude Desktop<a class="headerlink" href="#claude-desktop" title="Permanent link">&para;</a></h4>
+<p>Add an <code>agentworks</code> MCP server entry to the Claude Desktop config and restart Claude Desktop. See <a href="../mcp-integration/">MCP Integration</a> for the current config shape.</p>
+<h4 id="cursor">Cursor<a class="headerlink" href="#cursor" title="Permanent link">&para;</a></h4>
+<p>Add the AgentWorks MCP server from Cursor's MCP settings, then restart Cursor.</p>
+<h4 id="codex">Codex<a class="headerlink" href="#codex" title="Permanent link">&para;</a></h4>
+<p>Add an MCP server entry to the Codex configuration. If your local Codex supports an MCP add command, use the URL or stdio bridge shown by your install.</p>
+<h4 id="custom-rest-agents">Custom REST Agents<a class="headerlink" href="#custom-rest-agents" title="Permanent link">&para;</a></h4>
+<p>Submit policy checks to:</p>
+<pre><code class="language-text">POST http://localhost:7710/api/policy/check
+</code></pre>
+<p>Submit action records to:</p>
+<pre><code class="language-text">POST http://localhost:7710/api/action
+</code></pre>
+<p>See <a href="../awcp/">AWCP</a> for the action schema and <a href="../rule-pack-authoring/">Rule Pack Authoring</a> for field names used by policy rules.</p>
+<h3 id="first-verification">First Verification<a class="headerlink" href="#first-verification" title="Permanent link">&para;</a></h3>
+<p>After install, verify four things:</p>
+<ol>
+<li>The daemon health endpoint responds.</li>
+<li>The admin UI loads.</li>
+<li>At least one rule pack appears under Rule Packs.</li>
+<li>A connected agent can read or write a test vault page.</li>
+</ol>
+<p>Example policy check:</p>
+<pre><code class="language-bash">curl -X POST http://localhost:7710/api/policy/check \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;tenantId&quot;: &quot;YOUR_TENANT_ID&quot;,
+    &quot;actionKind&quot;: &quot;outbound.sms&quot;,
+    &quot;payload&quot;: { &quot;to&quot;: &quot;5550001234&quot;, &quot;body&quot;: &quot;test message&quot; },
+    &quot;actorId&quot;: &quot;quickstart-test&quot;,
+    &quot;actorLabel&quot;: &quot;quickstart test&quot;,
+    &quot;actorType&quot;: &quot;system&quot;,
+    &quot;summary&quot;: &quot;users-guide policy check&quot;
+  }'
+</code></pre>
+<p>Expected result: a JSON response with a policy decision.</p>
+<hr />
+<h2 id="5-admin-ui-package-guide">5. Admin UI Package Guide<a class="headerlink" href="#5-admin-ui-package-guide" title="Permanent link">&para;</a></h2>
+<p>This section applies to the default <code>admin-ui</code> service at
+<code>http://localhost:3000</code>.</p>
+<h3 id="mission-control_1">Mission Control<a class="headerlink" href="#mission-control_1" title="Permanent link">&para;</a></h3>
+<p>Mission Control is the main operating view.</p>
+<p>The top-level page shows:</p>
+<ul>
+<li>Companies.</li>
+<li>Active agents versus total agents.</li>
+<li>Open issues.</li>
+<li>Last poll time.</li>
+<li>Per-company tiles.</li>
+</ul>
+<p>Open a company to see:</p>
+<ul>
+<li>Agent roster.</li>
+<li>Issue board.</li>
+<li>Live run feed.</li>
+<li>Agent detail panel.</li>
+</ul>
+<p>For each agent, review:</p>
+<ul>
+<li>Name and role.</li>
+<li>Status: active, paused, retired, or error-like states if reported.</li>
+<li>Adapter type.</li>
+<li>Model.</li>
+<li>Instructions path.</li>
+<li>Capabilities.</li>
+<li>Heartbeat interval.</li>
+<li>Wake-on-demand setting.</li>
+<li>Reporting line.</li>
+<li>Monthly budget fields.</li>
+<li>Runtime state, wakeups, revisions, and task sessions.</li>
+</ul>
+<p>Use <strong>Wake</strong> when an agent is idle but has work to pick up. Use pause or retired states when an agent should not receive work.</p>
+<h3 id="memory-vault-viewer">Memory Vault Viewer<a class="headerlink" href="#memory-vault-viewer" title="Permanent link">&para;</a></h3>
+<p>The Memory Vault Viewer shows vault structure and relationships.</p>
+<p>It has two useful modes:</p>
+<ul>
+<li>Orchestration view: companies, agents, and issues.</li>
+<li>Vault view: markdown pages and links.</li>
+</ul>
+<p>Use search and local focus to inspect a specific company, agent, project, or note cluster.</p>
+<h3 id="approvals">Approvals<a class="headerlink" href="#approvals" title="Permanent link">&para;</a></h3>
+<p>Approvals is the review queue for policy decisions that returned <code>route_to_review</code>.</p>
+<p>Use the filters:</p>
+<ul>
+<li>Pending.</li>
+<li>Reviewed.</li>
+<li>All.</li>
+</ul>
+<p>When reviewing an item, check:</p>
+<ul>
+<li>Actor label.</li>
+<li>Proposed action kind.</li>
+<li>Proposed action summary.</li>
+<li>Decision reason.</li>
+<li>Evidence snapshot.</li>
+<li>Age of the item.</li>
+<li>Tenant.</li>
+</ul>
+<p>Then choose:</p>
+<ul>
+<li>Approve if the action is acceptable.</li>
+<li>Reject if the action should not happen.</li>
+<li>Return to author if the agent should revise and resubmit.</li>
+</ul>
+<p>Write a useful note. Short notes such as "ok" do not help future review.</p>
+<h3 id="triage-queue_1">Triage Queue<a class="headerlink" href="#triage-queue_1" title="Permanent link">&para;</a></h3>
+<p>Use the Triage Queue for unassigned work.</p>
+<p>Each row shows:</p>
+<ul>
+<li>Ticket title.</li>
+<li>Identifier.</li>
+<li>Priority.</li>
+<li>Created age.</li>
+<li>Triage reason.</li>
+<li>Suggested roles.</li>
+<li>Agent assignment dropdown.</li>
+</ul>
+<p>Assign ambiguous tickets daily. A large triage queue usually means tickets are missing file paths, role hints, or enough detail for auto-assignment.</p>
+<h3 id="rule-packs_1">Rule Packs<a class="headerlink" href="#rule-packs_1" title="Permanent link">&para;</a></h3>
+<p>Rule Packs shows installed policy packs.</p>
+<p>For each pack, review:</p>
+<ul>
+<li>Name and version.</li>
+<li>Tier.</li>
+<li>Shadow or enforcing mode.</li>
+<li>Edit link.</li>
+<li>Upload action.</li>
+</ul>
+<p>Operational rules:</p>
+<ul>
+<li>New packs start in shadow.</li>
+<li>Keep packs in shadow for at least one day under realistic traffic.</li>
+<li>Promote to enforcement only after reviewing shadow decisions.</li>
+<li>If a pack over-fires, return it to shadow and adjust rules.</li>
+<li>Keep rule pack YAML in source control outside AgentWorks OS.</li>
+</ul>
+<h3 id="scanner_1">Scanner<a class="headerlink" href="#scanner_1" title="Permanent link">&para;</a></h3>
+<p>The scanner page lists findings from agent configuration audits.</p>
+<p>For each finding, decide:</p>
+<ul>
+<li>Fix it.</li>
+<li>Suppress it with a reason if it is intentional.</li>
+<li>Leave it open only if it is low risk and scheduled for later.</li>
+</ul>
+<p>High and critical findings should be handled within seven days. Do not suppress a finding without a written reason.</p>
+<h3 id="process-health_1">Process Health<a class="headerlink" href="#process-health_1" title="Permanent link">&para;</a></h3>
+<p>Process Health is where you look for agent discipline problems.</p>
+<p>Review it weekly, and during active delivery daily.</p>
+<p>Watch for:</p>
+<ul>
+<li>Agents with repeated stale in-progress work.</li>
+<li>Agents closing work without evidence.</li>
+<li>Repeated off-lane edits.</li>
+<li>Too many open issues assigned to one agent.</li>
+<li>Failed runs that were never retried.</li>
+<li>Blocked work without escalation.</li>
+</ul>
+<p>Use Process Health findings to tune lanes, split overloaded agents, improve instructions, or change the issue design.</p>
+<h3 id="activity-log_1">Activity Log<a class="headerlink" href="#activity-log_1" title="Permanent link">&para;</a></h3>
+<p>Use Activity Log for investigations.</p>
+<p>Filter by:</p>
+<ul>
+<li>Tenant.</li>
+<li>Agent or actor.</li>
+<li>Action kind.</li>
+<li>Decision.</li>
+<li>Date range.</li>
+</ul>
+<p>Export the log when you need an external review artifact. Do not manually edit underlying activity records.</p>
+<h3 id="evidence-report">Evidence Report<a class="headerlink" href="#evidence-report" title="Permanent link">&para;</a></h3>
+<p>Use Evidence Report to generate and verify reports for a period.</p>
+<p>Normal monthly procedure:</p>
+<ol>
+<li>Enter tenant ID.</li>
+<li>Generate a report for the month.</li>
+<li>Verify the report hash.</li>
+<li>Save the report with other company compliance artifacts.</li>
+<li>Review unusual blocks, overrides, and suppressions.</li>
+</ol>
+<p>Evidence reports prove system state and decision history. They do not prove legal compliance by themselves.</p>
+<h3 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link">&para;</a></h3>
+<p>Use Settings for installation-level details and basic preferences.</p>
+<p>Depending on your version, Settings may show:</p>
+<ul>
+<li>Theme.</li>
+<li>Cost controls status.</li>
+<li>Daemon name and port.</li>
+<li>Vault path.</li>
+<li>Tenant information.</li>
+<li>Integrations.</li>
+<li>Scanner watched paths.</li>
+<li>Backup and retention configuration.</li>
+</ul>
+<p>If Settings shows a different daemon port than this guide, use the port shown in your live install.</p>
+<hr />
+<h2 id="6-vault-guide">6. Vault Guide<a class="headerlink" href="#6-vault-guide" title="Permanent link">&para;</a></h2>
+<h3 id="what-the-vault-is-for">What the Vault Is For<a class="headerlink" href="#what-the-vault-is-for" title="Permanent link">&para;</a></h3>
+<p>The vault is working memory for agents. It should contain facts and current context that an agent needs to act correctly.</p>
+<p>Good vault content:</p>
+<ul>
+<li>Company overview.</li>
+<li>Brand voice.</li>
+<li>Jurisdictions and markets.</li>
+<li>Compliance policies.</li>
+<li>Approval rules.</li>
+<li>Current projects.</li>
+<li>Contacts and responsibilities.</li>
+<li>Active campaigns.</li>
+<li>Decisions and rationale.</li>
+<li>Session handoffs.</li>
+</ul>
+<p>Bad vault content:</p>
+<ul>
+<li>API keys or passwords.</li>
+<li>Large unprocessed dumps.</li>
+<li>Old campaign data that is no longer valid.</li>
+<li>Contradictory duplicate pages.</li>
+<li>Private data that every connected agent should not see.</li>
+</ul>
+<h3 id="recommended-structure">Recommended Structure<a class="headerlink" href="#recommended-structure" title="Permanent link">&para;</a></h3>
+<p>Start simple:</p>
+<pre><code class="language-text">company/
+  overview.md
+  brand-voice.md
+  jurisdictions.md
+context/
+  conventions.md
+  compliance.md
+  approvals.md
+contacts/
+  compliance-counsel.md
+  key-vendors.md
+projects/
+  active/
+    q2-outreach.md
+  archived/
+decisions/
+  2026-05.md
+agents/
+  operating-rules.md
+hot.md
+</code></pre>
+<h3 id="the-hot-page">The Hot Page<a class="headerlink" href="#the-hot-page" title="Permanent link">&para;</a></h3>
+<p><code>hot.md</code> is the short context page agents should read first. Keep it concise.</p>
+<p>Include:</p>
+<ul>
+<li>Current priorities.</li>
+<li>Active constraints.</li>
+<li>Recently changed decisions.</li>
+<li>Links to active project pages.</li>
+<li>Anything that would prevent a repeated mistake.</li>
+</ul>
+<p>Do not put the entire vault in <code>hot.md</code>. It is a map, not the archive.</p>
+<h3 id="naming-conventions">Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permanent link">&para;</a></h3>
+<p>Use lowercase kebab-case:</p>
+<pre><code class="language-text">projects/active/customer-onboarding.md
+context/approval-policy.md
+contacts/outside-counsel.md
+</code></pre>
+<p>Avoid:</p>
+<ul>
+<li>Spaces.</li>
+<li>Date-only filenames unless the page is a log.</li>
+<li>Vague names such as <code>notes.md</code>, <code>misc.md</code>, or <code>important.md</code>.</li>
+</ul>
+<h3 id="writing-vault-pages">Writing Vault Pages<a class="headerlink" href="#writing-vault-pages" title="Permanent link">&para;</a></h3>
+<p>Write for a new agent with no background.</p>
+<p>Use:</p>
+<ul>
+<li>Direct statements.</li>
+<li>Current tense where possible.</li>
+<li>Clear owners and dates.</li>
+<li>Links to related pages.</li>
+<li>Short sections.</li>
+</ul>
+<p>Avoid:</p>
+<ul>
+<li>"As discussed."</li>
+<li>Unexplained acronyms.</li>
+<li>Long pasted transcripts without summary.</li>
+<li>Multiple unrelated topics on one page.</li>
+</ul>
+<h3 id="append-vs-replace">Append vs Replace<a class="headerlink" href="#append-vs-replace" title="Permanent link">&para;</a></h3>
+<p>Use append mode for logs, session notes, and chronological updates.</p>
+<p>Use replace mode for canonical facts, such as:</p>
+<ul>
+<li>Company overview.</li>
+<li>Approval policy.</li>
+<li>Brand voice.</li>
+<li>Current project status.</li>
+</ul>
+<p>If replacing a page, preserve important history by moving old material to an archive or decision log first.</p>
+<h3 id="vault-hygiene-routine">Vault Hygiene Routine<a class="headerlink" href="#vault-hygiene-routine" title="Permanent link">&para;</a></h3>
+<p>Daily:</p>
+<ul>
+<li>Add a short session handoff after meaningful work.</li>
+<li>Update active project pages when status changes.</li>
+<li>Remove or correct facts an agent got wrong.</li>
+</ul>
+<p>Weekly:</p>
+<ul>
+<li>Review <code>hot.md</code>.</li>
+<li>Close stale project pages.</li>
+<li>Check that major decisions have a decision page or dated note.</li>
+<li>Check that open issues link to the right project pages.</li>
+</ul>
+<p>Monthly:</p>
+<ul>
+<li>Archive completed project pages.</li>
+<li>Remove obsolete campaign instructions.</li>
+<li>Review contacts and approvers.</li>
+<li>Search for "TODO", "old", "maybe", and "TBD".</li>
+<li>Confirm no secrets were written into the vault.</li>
+</ul>
+<p>Quarterly:</p>
+<ul>
+<li>Test backup restore.</li>
+<li>Review vault size and page count.</li>
+<li>Merge duplicate pages.</li>
+<li>Refresh compliance and approval pages with counsel or the responsible operator.</li>
+</ul>
+<h3 id="vault-quality-checklist">Vault Quality Checklist<a class="headerlink" href="#vault-quality-checklist" title="Permanent link">&para;</a></h3>
+<p>A healthy vault:</p>
+<ul>
+<li>Has fewer than a few hundred active pages for a typical small business.</li>
+<li>Has one clear page per important concept.</li>
+<li>Has a maintained <code>hot.md</code>.</li>
+<li>Links related pages.</li>
+<li>Does not contain secrets.</li>
+<li>Distinguishes current policy from historical notes.</li>
+<li>Is included in backup and restore tests.</li>
+</ul>
+<hr />
+<h2 id="7-rule-pack-operations">7. Rule Pack Operations<a class="headerlink" href="#7-rule-pack-operations" title="Permanent link">&para;</a></h2>
+<h3 id="load-a-pack">Load a Pack<a class="headerlink" href="#load-a-pack" title="Permanent link">&para;</a></h3>
+<p>In the admin UI:</p>
+<ol>
+<li>Open Rule Packs.</li>
+<li>Click Upload pack.</li>
+<li>Select a <code>.yaml</code> or <code>.yml</code> file.</li>
+<li>Confirm it appears in the list.</li>
+<li>Keep it in shadow until reviewed.</li>
+</ol>
+<p>Validate the pack with the policy-engine validator (offline):</p>
+<pre><code class="language-bash">pnpm --filter @agentworks/policy-engine validate:pack -- /path/to/pack.yaml
+</code></pre>
+<p>Or dry-run against the live daemon:</p>
+<pre><code class="language-bash">curl -s -X POST http://localhost:7710/api/policy/check \
+  -H 'content-type: application/json' \
+  -d @/path/to/test-fixture.json
+</code></pre>
+<h3 id="understand-decisions">Understand Decisions<a class="headerlink" href="#understand-decisions" title="Permanent link">&para;</a></h3>
+<p>Policy outcomes:</p>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Meaning</th>
+<th>Operator action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allow</code></td>
+<td>No active rule blocked or routed the action</td>
+<td>No action needed</td>
+</tr>
+<tr>
+<td><code>block</code></td>
+<td>A rule stopped the action</td>
+<td>Review if surprising</td>
+</tr>
+<tr>
+<td><code>route_to_review</code></td>
+<td>A human must decide</td>
+<td>Review in Approvals</td>
+</tr>
+</tbody>
+</table>
+<p>When packs disagree, blocking is safest. Design rule packs so the reason and citation are clear enough for an approver to understand quickly.</p>
+<h3 id="shadow-mode">Shadow Mode<a class="headerlink" href="#shadow-mode" title="Permanent link">&para;</a></h3>
+<p>Shadow mode evaluates and logs rules without enforcement.</p>
+<p>Use shadow mode for:</p>
+<ul>
+<li>New packs.</li>
+<li>Packs changed after false positives.</li>
+<li>Packs added for a new business line.</li>
+<li>Advisory policy tests.</li>
+</ul>
+<p>Review shadow decisions before enforcing. If the pack would have blocked normal work, tune it before flipping.</p>
+<h3 id="rule-pack-maintenance">Rule Pack Maintenance<a class="headerlink" href="#rule-pack-maintenance" title="Permanent link">&para;</a></h3>
+<p>For each production pack, maintain:</p>
+<ul>
+<li>Pack file in source control.</li>
+<li>Version number.</li>
+<li>Test fixtures.</li>
+<li>Citation fields for regulatory rules.</li>
+<li>Owner.</li>
+<li>Last review date.</li>
+<li>Mode history.</li>
+</ul>
+<p>Never edit a production rule pack without leaving a trace in source control or a decision note.</p>
+<hr />
+<h2 id="8-approval-operations">8. Approval Operations<a class="headerlink" href="#8-approval-operations" title="Permanent link">&para;</a></h2>
+<h3 id="what-requires-human-review">What Requires Human Review<a class="headerlink" href="#what-requires-human-review" title="Permanent link">&para;</a></h3>
+<p>Human review is appropriate for:</p>
+<ul>
+<li>Legal or compliance uncertainty.</li>
+<li>Missing required data.</li>
+<li>First contact with a customer or lead.</li>
+<li>Sensitive wording.</li>
+<li>Bulk outbound.</li>
+<li>Data export.</li>
+<li>Unusual agent behavior.</li>
+<li>Any action a rule pack is intentionally routing.</li>
+</ul>
+<h3 id="review-procedure">Review Procedure<a class="headerlink" href="#review-procedure" title="Permanent link">&para;</a></h3>
+<p>For each approval:</p>
+<ol>
+<li>Read the proposed action summary.</li>
+<li>Inspect the evidence snapshot.</li>
+<li>Confirm the actor and tenant.</li>
+<li>Read the rule reason.</li>
+<li>Decide approve, reject, or return.</li>
+<li>Leave a note that explains the decision.</li>
+</ol>
+<p>Good approval note:</p>
+<pre><code class="language-text">Approved because written consent is present in CRM record 4821 and the message uses the approved Q2 template.
+</code></pre>
+<p>Bad approval note:</p>
+<pre><code class="language-text">ok
+</code></pre>
+<h3 id="queue-hygiene">Queue Hygiene<a class="headerlink" href="#queue-hygiene" title="Permanent link">&para;</a></h3>
+<p>Daily:</p>
+<ul>
+<li>Clear new approvals.</li>
+<li>Return unclear items instead of leaving them pending.</li>
+<li>Reject stale or unsafe actions.</li>
+</ul>
+<p>Weekly:</p>
+<ul>
+<li>Look for repeated review reasons.</li>
+<li>Tune over-firing rules.</li>
+<li>Add missing data sources.</li>
+<li>Confirm fallback approvers are still correct.</li>
+</ul>
+<p>Keep the pending queue small. A large queue turns approvals into rubber-stamping.</p>
+<hr />
+<h2 id="9-agent-orchestration-guide">9. Agent Orchestration Guide<a class="headerlink" href="#9-agent-orchestration-guide" title="Permanent link">&para;</a></h2>
+<p>Agent orchestration is the discipline of assigning work to the right agent, keeping that agent in its lane, preserving context, and checking the output before the work is treated as done.</p>
+<h3 id="core-objects">Core Objects<a class="headerlink" href="#core-objects" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tenant</td>
+<td>The customer or organization whose rules and vault apply</td>
+</tr>
+<tr>
+<td>Company</td>
+<td>A company workspace under the tenant</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td>A configured worker with role, model, adapter, instructions, and status</td>
+</tr>
+<tr>
+<td>Issue</td>
+<td>A unit of work</td>
+</tr>
+<tr>
+<td>Run</td>
+<td>A concrete execution attempt by an agent</td>
+</tr>
+<tr>
+<td>Wakeup</td>
+<td>A request to nudge an agent to work</td>
+</tr>
+<tr>
+<td>Task session</td>
+<td>A tracked working session for an agent and task</td>
+</tr>
+<tr>
+<td>Comment</td>
+<td>A work note, blocker, handoff, or completion record</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-configuration-fields">Agent Configuration Fields<a class="headerlink" href="#agent-configuration-fields" title="Permanent link">&para;</a></h3>
+<p>Review these fields for every agent:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>How to use it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Human-readable label</td>
+</tr>
+<tr>
+<td>Role</td>
+<td>Routing and responsibility hint</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Active agents receive work; paused and retired agents should not</td>
+</tr>
+<tr>
+<td>Adapter type</td>
+<td>How AgentWorks OS reaches the agent</td>
+</tr>
+<tr>
+<td>Model</td>
+<td>The model or model profile the agent uses</td>
+</tr>
+<tr>
+<td>Instructions path</td>
+<td>The agent's operating instructions</td>
+</tr>
+<tr>
+<td>Capabilities</td>
+<td>Plain-language scope of what the agent can do</td>
+</tr>
+<tr>
+<td>Heartbeat interval</td>
+<td>How often the agent should check in</td>
+</tr>
+<tr>
+<td>Wake on demand</td>
+<td>Whether the operator can wake it manually</td>
+</tr>
+<tr>
+<td>Reports to</td>
+<td>Manager or parent agent for escalation</td>
+</tr>
+<tr>
+<td>Budget fields</td>
+<td>Monthly spend limits and tracking when enabled</td>
+</tr>
+</tbody>
+</table>
+<h3 id="issue-lifecycle">Issue Lifecycle<a class="headerlink" href="#issue-lifecycle" title="Permanent link">&para;</a></h3>
+<p>Use this lifecycle consistently:</p>
+<ol>
+<li><code>triage</code>: needs assignment or clarification.</li>
+<li><code>inbox</code>: assigned but not started.</li>
+<li><code>in_progress</code>: actively being worked.</li>
+<li><code>blocked</code>: waiting on external input or dependency.</li>
+<li><code>done</code>: agent believes work is complete.</li>
+<li><code>closed</code>: operator or reviewer accepted completion.</li>
+</ol>
+<p>Do not let agents skip evidence. A done issue should include what changed, where it changed, how it was verified, and what remains.</p>
+<h3 id="creating-good-issues">Creating Good Issues<a class="headerlink" href="#creating-good-issues" title="Permanent link">&para;</a></h3>
+<p>A good issue includes:</p>
+<ul>
+<li>Goal.</li>
+<li>Context.</li>
+<li>Expected output.</li>
+<li>Relevant files, systems, or vault pages.</li>
+<li>Acceptance criteria.</li>
+<li>Verification command or manual check.</li>
+<li>Constraints.</li>
+<li>Owner or suggested role if known.</li>
+</ul>
+<p>Weak issue:</p>
+<pre><code class="language-text">Fix docs.
+</code></pre>
+<p>Good issue:</p>
+<pre><code class="language-text">Expand docs/users-guide.md to cover setup, daily operation, vault hygiene, and agent orchestration. Keep customer-facing vocabulary. Verify no internal substrate names appear. Acceptance: guide includes setup, UI tour, vault routine, rule pack workflow, approvals, orchestration, maintenance, and troubleshooting.
+</code></pre>
+<h3 id="auto-assignment">Auto-Assignment<a class="headerlink" href="#auto-assignment" title="Permanent link">&para;</a></h3>
+<p>AgentWorks OS can assign issues automatically when the issue description clearly points to one role or lane.</p>
+<p>Auto-assignment works best when the issue includes:</p>
+<ul>
+<li>File paths.</li>
+<li>Feature names.</li>
+<li>Explicit role hints.</li>
+<li>Clear acceptance criteria.</li>
+</ul>
+<p>If multiple roles match equally, or no role matches, the issue goes to Triage Queue.</p>
+<h3 id="triage-assignment">Triage Assignment<a class="headerlink" href="#triage-assignment" title="Permanent link">&para;</a></h3>
+<p>When assigning from Triage Queue:</p>
+<ol>
+<li>Read the triage reason.</li>
+<li>Check suggested roles.</li>
+<li>Open the issue if the title is ambiguous.</li>
+<li>Pick the agent whose capability matches the work.</li>
+<li>If no agent fits, revise the issue or create a new agent before assignment.</li>
+</ol>
+<p>Do not assign ambiguous work just to empty the queue. Bad assignment creates rework.</p>
+<h3 id="waking-agents">Waking Agents<a class="headerlink" href="#waking-agents" title="Permanent link">&para;</a></h3>
+<p>Wake an agent when:</p>
+<ul>
+<li>It has assigned work but no recent run.</li>
+<li>You changed its instructions or model and want a new pass.</li>
+<li>You returned an approval item and need revision.</li>
+<li>You unblocked a blocked issue.</li>
+</ul>
+<p>Avoid repeated wakeups without changing context. If an agent does not respond, inspect runtime state and logs instead of waking it repeatedly.</p>
+<h3 id="handoffs-between-agents">Handoffs Between Agents<a class="headerlink" href="#handoffs-between-agents" title="Permanent link">&para;</a></h3>
+<p>Good handoffs include:</p>
+<ul>
+<li>Summary of completed work.</li>
+<li>Links to changed files or vault pages.</li>
+<li>Remaining task.</li>
+<li>Known risks.</li>
+<li>Verification already performed.</li>
+<li>Exact next question for the receiving agent.</li>
+</ul>
+<p>Use the Dispatch workflow node or the execution API when a workflow should hand off to a specific agent. Use issue comments and vault pages for durable context.</p>
+<h3 id="manager-pattern">Manager Pattern<a class="headerlink" href="#manager-pattern" title="Permanent link">&para;</a></h3>
+<p>For complex work, use a manager pattern:</p>
+<ol>
+<li>One coordinating agent or operator owns decomposition.</li>
+<li>Specialist agents own bounded tasks.</li>
+<li>Each specialist writes results to the issue and relevant vault page.</li>
+<li>The coordinator reviews, integrates, and closes.</li>
+</ol>
+<p>Good manager behavior:</p>
+<ul>
+<li>Splits tasks by ownership boundary.</li>
+<li>Avoids duplicate assignments.</li>
+<li>Waits for necessary blockers only.</li>
+<li>Keeps a status digest.</li>
+<li>Escalates unclear or risky decisions.</li>
+</ul>
+<p>Bad manager behavior:</p>
+<ul>
+<li>Assigns the same work to multiple agents without a review purpose.</li>
+<li>Lets agents edit outside their lane.</li>
+<li>Marks work done without verification.</li>
+<li>Lets blocked issues sit without next action.</li>
+</ul>
+<h3 id="parallel-work">Parallel Work<a class="headerlink" href="#parallel-work" title="Permanent link">&para;</a></h3>
+<p>Parallelize only when tasks are independent.</p>
+<p>Good parallel splits:</p>
+<ul>
+<li>Backend API implementation and frontend UI implementation with clear contract.</li>
+<li>Documentation expansion and screenshot capture.</li>
+<li>Rule pack authoring and fixture writing.</li>
+<li>Scanner test additions and UI copy review.</li>
+</ul>
+<p>Avoid parallel work when:</p>
+<ul>
+<li>Multiple agents need to edit the same file.</li>
+<li>The interface is not agreed.</li>
+<li>One task depends on the other's output.</li>
+<li>The task is exploratory and needs a single coherent decision.</li>
+</ul>
+<h3 id="review-cycle">Review Cycle<a class="headerlink" href="#review-cycle" title="Permanent link">&para;</a></h3>
+<p>For high-risk work, use a review cycle:</p>
+<ol>
+<li>Implementer completes task with evidence.</li>
+<li>Reviewer checks against acceptance criteria.</li>
+<li>Implementer fixes findings.</li>
+<li>Operator or coordinator closes the issue.</li>
+</ol>
+<p>For compliance and outbound automation, keep human review in the loop until the rule pack has proven itself in shadow and enforcement.</p>
+<h3 id="process-health-response">Process Health Response<a class="headerlink" href="#process-health-response" title="Permanent link">&para;</a></h3>
+<p>When Process Health flags an agent:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Operator response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stale in-progress</td>
+<td>Wake once, then reassign or pause if no response</td>
+</tr>
+<tr>
+<td>Premature done</td>
+<td>Reopen and require evidence</td>
+</tr>
+<tr>
+<td>Off-lane work</td>
+<td>Stop the agent, correct instructions, review changes</td>
+</tr>
+<tr>
+<td>Queue depth</td>
+<td>Move lower-priority work or add capacity</td>
+</tr>
+<tr>
+<td>Failed run not retried</td>
+<td>Retry with clearer context or inspect logs</td>
+</tr>
+<tr>
+<td>Blocked stuck</td>
+<td>Ask for the blocker owner and next action</td>
+</tr>
+</tbody>
+</table>
+<h3 id="orchestration-hygiene">Orchestration Hygiene<a class="headerlink" href="#orchestration-hygiene" title="Permanent link">&para;</a></h3>
+<p>Daily:</p>
+<ul>
+<li>Clear Triage Queue.</li>
+<li>Check blocked and stale issues.</li>
+<li>Review approvals.</li>
+<li>Wake agents only when context changed.</li>
+</ul>
+<p>Weekly:</p>
+<ul>
+<li>Review Process Health.</li>
+<li>Check overloaded agents.</li>
+<li>Update lane rules.</li>
+<li>Archive closed work.</li>
+<li>Review vault handoffs.</li>
+</ul>
+<p>Monthly:</p>
+<ul>
+<li>Review agent roster.</li>
+<li>Retire unused agents.</li>
+<li>Confirm instructions paths still exist.</li>
+<li>Review model assignments and budget fields.</li>
+<li>Generate evidence report.</li>
+</ul>
+<hr />
+<h2 id="10-mcp-and-api-tools">10. MCP and API Tools<a class="headerlink" href="#10-mcp-and-api-tools" title="Permanent link">&para;</a></h2>
+<p>Connected MCP clients can use these tools:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>memory.read</code></td>
+<td>Read a vault page</td>
+</tr>
+<tr>
+<td><code>memory.write</code></td>
+<td>Replace or append a vault page</td>
+</tr>
+<tr>
+<td><code>memory.hot</code></td>
+<td>Read the curated hot context page</td>
+</tr>
+<tr>
+<td><code>policy.check</code></td>
+<td>Evaluate a proposed action</td>
+</tr>
+<tr>
+<td><code>activity.log</code></td>
+<td>Add an audit log entry</td>
+</tr>
+</tbody>
+</table>
+<p>Typical agent startup pattern:</p>
+<ol>
+<li>Call <code>memory.hot</code>.</li>
+<li>Read any referenced project or policy pages.</li>
+<li>Work on the assigned task.</li>
+<li>Submit risky actions through <code>policy.check</code>.</li>
+<li>Write durable conclusions back with <code>memory.write</code>.</li>
+<li>Log important external actions with <code>activity.log</code>.</li>
+</ol>
+<p>REST integrations should use the documented API routes rather than writing directly to data files.</p>
+<hr />
+<h2 id="11-workflow-automation">11. Workflow Automation<a class="headerlink" href="#11-workflow-automation" title="Permanent link">&para;</a></h2>
+<p>Open workflow automation at:</p>
+<pre><code class="language-text">http://localhost:5678
+</code></pre>
+<p>Use workflows when a process is repeatable:</p>
+<ul>
+<li>Lead intake.</li>
+<li>Consent checks.</li>
+<li>Outbound review.</li>
+<li>CRM enrichment.</li>
+<li>Document intake.</li>
+<li>Customer support routing.</li>
+<li>Agent handoff.</li>
+</ul>
+<p>Recommended workflow pattern:</p>
+<ol>
+<li>Trigger receives new data.</li>
+<li>Normalize data into an action record.</li>
+<li>Run Policy Check.</li>
+<li>If allowed, continue.</li>
+<li>If blocked, stop and log.</li>
+<li>If review is required, wait for approval.</li>
+<li>Write useful context to the vault.</li>
+<li>Dispatch to an agent only after policy passes.</li>
+</ol>
+<p>Keep workflow credentials in the workflow tool's credential store, not in the vault.</p>
+<hr />
+<h2 id="12-routine-maintenance">12. Routine Maintenance<a class="headerlink" href="#12-routine-maintenance" title="Permanent link">&para;</a></h2>
+<h3 id="daily">Daily<a class="headerlink" href="#daily" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Check Approvals.</li>
+<li>Check Triage Queue.</li>
+<li>Review critical scanner findings.</li>
+<li>Confirm Mission Control has no unexpected offline agents.</li>
+<li>Update active project vault pages after meaningful decisions.</li>
+</ul>
+<h3 id="weekly">Weekly<a class="headerlink" href="#weekly" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Review Process Health.</li>
+<li>Review blocked and stale issues.</li>
+<li>Check rule pack shadow decisions.</li>
+<li>Tune rules that over-fire.</li>
+<li>Confirm scanner watched paths are current.</li>
+<li>Review <code>hot.md</code>.</li>
+</ul>
+<h3 id="monthly">Monthly<a class="headerlink" href="#monthly" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Generate evidence report.</li>
+<li>Review Activity Log for unusual blocks and overrides.</li>
+<li>Update AgentWorks OS if needed.</li>
+<li>Archive completed vault project pages.</li>
+<li>Review approvers and fallback owners.</li>
+<li>Confirm backups are running.</li>
+</ul>
+<h3 id="quarterly">Quarterly<a class="headerlink" href="#quarterly" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Test restore from backup.</li>
+<li>Review vault structure and stale pages.</li>
+<li>Review agent roster and model assignments.</li>
+<li>Review rule pack source control history.</li>
+<li>Review scanner suppressions.</li>
+</ul>
+<hr />
+<h2 id="13-backup-and-restore">13. Backup and Restore<a class="headerlink" href="#13-backup-and-restore" title="Permanent link">&para;</a></h2>
+<p>Back up before:</p>
+<ul>
+<li>Updating AgentWorks OS.</li>
+<li>Changing rule pack configuration.</li>
+<li>Running onboarding again.</li>
+<li>Large vault imports.</li>
+<li>Major agent roster changes.</li>
+</ul>
+<p>Create a backup:</p>
+<pre><code class="language-bash">agentworks backup /path/to/backup.tar.gz
+</code></pre>
+<p>Restore from backup:</p>
+<pre><code class="language-bash">agentworks restore /path/to/backup.tar.gz
+</code></pre>
+<p>Restore replaces the current vault and database with the backup contents. Treat restore as a destructive operation and confirm you have the right archive.</p>
+<p>Store at least one recent backup off the AgentWorks OS host.</p>
+<p>Test restore quarterly. A backup you have never restored is only a hope.</p>
+<hr />
+<h2 id="14-updates">14. Updates<a class="headerlink" href="#14-updates" title="Permanent link">&para;</a></h2>
+<p>Check version:</p>
+<pre><code class="language-bash">agentworks --help | head -1   # the wrapper prints &quot;AgentWorks OS CLI — &lt;version&gt;&quot;
+</code></pre>
+<p>Check for updates:</p>
+<pre><code class="language-bash">agentworks update --check
+</code></pre>
+<p>Apply an update:</p>
+<pre><code class="language-bash">agentworks update
+</code></pre>
+<p>Pre-update checklist:</p>
+<ol>
+<li>Create a backup.</li>
+<li>Check available disk space.</li>
+<li>Read release notes.</li>
+<li>Confirm no critical approvals are waiting.</li>
+<li>Notify operators if there will be downtime.</li>
+</ol>
+<p>If an update fails, collect logs before making manual changes:</p>
+<pre><code class="language-bash">agentworks logs agentos-d
+</code></pre>
+<p>Do not manually edit the database to work around a failed migration.</p>
+<hr />
+<h2 id="15-storage-and-retention">15. Storage and Retention<a class="headerlink" href="#15-storage-and-retention" title="Permanent link">&para;</a></h2>
+<p>The main growing data stores are:</p>
+<ul>
+<li>Vault pages.</li>
+<li>Activity log.</li>
+<li>Policy decision history.</li>
+<li>Evidence reports.</li>
+<li>Scanner findings.</li>
+<li>Workflow execution history.</li>
+</ul>
+<p>Monitor disk usage:</p>
+<pre><code class="language-bash">df -h
+du -sh ~/.agentworks
+</code></pre>
+<p>Retention guidance:</p>
+<ul>
+<li>Keep activity records long enough to support your compliance and customer obligations.</li>
+<li>Archive vault pages rather than deleting current project history.</li>
+<li>Keep evidence reports outside the live host when they are part of official records.</li>
+<li>Prune workflow execution history according to business need.</li>
+</ul>
+<p>Never manually delete activity log rows to save space. Use supported retention features when available.</p>
+<hr />
+<h2 id="16-security-practices">16. Security Practices<a class="headerlink" href="#16-security-practices" title="Permanent link">&para;</a></h2>
+<h3 id="secrets">Secrets<a class="headerlink" href="#secrets" title="Permanent link">&para;</a></h3>
+<p>Do not put secrets in:</p>
+<ul>
+<li>Vault pages.</li>
+<li>Issue descriptions.</li>
+<li>Approval notes.</li>
+<li>Rule pack YAML.</li>
+<li>Agent instructions.</li>
+</ul>
+<p>Use secret storage for credentials and API tokens.</p>
+<h3 id="local-exposure">Local Exposure<a class="headerlink" href="#local-exposure" title="Permanent link">&para;</a></h3>
+<p>AgentWorks OS is designed for local or controlled-network deployment. Do not expose the daemon or workflow automation ports to the public internet without authentication, TLS, and a reviewed network configuration.</p>
+<h3 id="scanner-findings">Scanner Findings<a class="headerlink" href="#scanner-findings" title="Permanent link">&para;</a></h3>
+<p>Treat scanner findings as work, not noise.</p>
+<p>High and critical findings should either be fixed or have a documented suppression. Suppression without a reason is a future audit problem.</p>
+<h3 id="agent-permissions">Agent Permissions<a class="headerlink" href="#agent-permissions" title="Permanent link">&para;</a></h3>
+<p>Give agents only the access they need.</p>
+<p>Review:</p>
+<ul>
+<li>Filesystem access.</li>
+<li>Shell permissions.</li>
+<li>MCP servers.</li>
+<li>Workflow credentials.</li>
+<li>External API credentials.</li>
+<li>Write access to shared repositories.</li>
+</ul>
+<hr />
+<h2 id="17-troubleshooting">17. Troubleshooting<a class="headerlink" href="#17-troubleshooting" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>First check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Admin UI will not load</td>
+<td>Run <code>agentworks status</code>, then <code>agentworks logs admin-ui</code></td>
+</tr>
+<tr>
+<td>Daemon is down</td>
+<td><code>agentworks status</code></td>
+</tr>
+<tr>
+<td>Agent cannot read vault</td>
+<td>Confirm MCP config, restart agent client, test <code>memory.hot</code></td>
+</tr>
+<tr>
+<td>Policy checks all allow</td>
+<td>Confirm rule packs are assigned and enforcing</td>
+</tr>
+<tr>
+<td>Too many approvals</td>
+<td>Review shadow/enforcement mode and missing-data rules</td>
+</tr>
+<tr>
+<td>Approval item is stale</td>
+<td>Return to author or reject with note</td>
+</tr>
+<tr>
+<td>Triage queue grows</td>
+<td>Improve issue descriptions and lane hints</td>
+</tr>
+<tr>
+<td>Scanner has no findings</td>
+<td>Confirm watched paths and scanner health</td>
+</tr>
+<tr>
+<td>Evidence report missing entries</td>
+<td>Check date range and retention</td>
+</tr>
+<tr>
+<td>Vault edits are not visible</td>
+<td>Refresh agent memory or restart the client</td>
+</tr>
+<tr>
+<td>Disk filling up</td>
+<td>Check vault, activity, evidence reports, and workflow history</td>
+</tr>
+</tbody>
+</table>
+<p>Useful commands:</p>
+<pre><code class="language-bash">agentworks status
+agentworks logs
+agentworks logs agentos-d
+agentworks status
+agentworks logs scanner-worker
+curl http://localhost:7710/api/health
+</code></pre>
+<p>For support, generate a support bundle and include tenant ID, time window, and what you expected to happen.</p>
+<hr />
+<h2 id="18-operating-principles">18. Operating Principles<a class="headerlink" href="#18-operating-principles" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Keep the vault current and small enough to be useful.</li>
+<li>Put new rule packs in shadow before enforcement.</li>
+<li>Require evidence before closing work.</li>
+<li>Clear approvals and triage daily.</li>
+<li>Treat scanner findings as operational work.</li>
+<li>Back up before changes and test restore quarterly.</li>
+<li>Do not expose local services casually.</li>
+<li>Prefer narrow, well-described issues over broad requests.</li>
+<li>Use agent orchestration for bounded handoffs, not vague delegation.</li>
+<li>Generate evidence reports on a schedule, not only after a problem.</li>
+</ol>
+<hr />
+<h2 id="19-where-to-go-next">19. Where to Go Next<a class="headerlink" href="#19-where-to-go-next" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../quickstart/">Quickstart</a></li>
+<li><a href="../install-runbook/">Install Runbook</a></li>
+<li><a href="../mcp-integration/">MCP Integration</a></li>
+<li><a href="../rule-pack-authoring/">Rule Pack Authoring</a></li>
+<li><a href="../awcp/">AWCP</a></li>
+<li><a href="../backup-restore/">Backup and Restore</a></li>
+<li><a href="../update-procedure/">Update Procedure</a></li>
+<li><a href="../best-practices/">Best Practices</a></li>
+<li><a href="../error-messages/">Error Messages</a></li>
+<li><a href="../support-bundle/">Support Bundle</a></li>
+<li><a href="../disclaimer-text/">Disclaimer</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

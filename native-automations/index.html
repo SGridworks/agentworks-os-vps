@@ -1,0 +1,902 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/native-automations/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Native Automations - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#native-automations" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Native Automations
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-native-instead-of-n8n-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why native instead of n8n-only
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#admin-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Admin API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-managed-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create a managed workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-a-bundled-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install a bundled template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#n8n-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        n8n bridge
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experimental-step-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experimental step types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-limitations-in-this-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other limitations in this release
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="native-automations">Native Automations<a class="headerlink" href="#native-automations" title="Permanent link">&para;</a></h1>
+<p>AgentWorks OS ships with a native automation runtime inside <code>agentos-d</code>.
+Workflows live in the daemon's own SQLite database. n8n is supported as
+an optional bridge, not as the authority for automation state.</p>
+<p>This document covers the operator-facing surface: data model, supported
+step types, admin API, and the end-to-end create/run flow.</p>
+<h2 id="why-native-instead-of-n8n-only">Why native instead of n8n-only<a class="headerlink" href="#why-native-instead-of-n8n-only" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Self-contained</strong>: a fresh install runs and exercises automations
+  with no n8n container running. The n8n service is still bundled for
+  operators who want it.</li>
+<li><strong>Single source of truth</strong>: template, workflow, and run state live in
+  the same SQLite database as tenants, vault pages, and the dispatch
+  queue. Backup is one file.</li>
+<li><strong>Policy-aware</strong>: every step that touches outbound action passes
+  through the same policy engine and approval queue the rest of the
+  daemon uses.</li>
+<li><strong>MCP-reachable</strong>: the admin API surfaces every native automation
+  operation, so an LLM agent connected over MCP can list, create, run,
+  and inspect workflows the same way an operator can through the
+  admin UI.</li>
+</ul>
+<h2 id="data-model">Data model<a class="headerlink" href="#data-model" title="Permanent link">&para;</a></h2>
+<p>Migration <code>0035_native_automations</code> adds three tables:</p>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>native_automation_templates</code></td>
+<td>Reusable workflow definitions. Includes operator-created custom templates plus bundled templates the daemon ships with.</td>
+</tr>
+<tr>
+<td><code>native_automation_workflows</code></td>
+<td>Installed or directly-created managed workflows. Scoped to a tenant and a company.</td>
+</tr>
+<tr>
+<td><code>native_automation_runs</code></td>
+<td>Run history. Tracks status, per-step outputs, run input, and the policy decisions each step produced.</td>
+</tr>
+</tbody>
+</table>
+<p>Migration <code>0036_native_automation_n8n_ai</code> adds external-engine sync
+metadata so a native workflow can track its n8n counterpart without
+making n8n the source of truth.</p>
+<h2 id="step-types">Step types<a class="headerlink" href="#step-types" title="Permanent link">&para;</a></h2>
+<p>The public REST API accepts these nine step types in a workflow's
+<code>steps[].type</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Step type</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>policy.check</code></td>
+<td>Run a <code>policy.check</code> against the active rule pack. Returns the decision, used for downstream conditional execution.</td>
+</tr>
+<tr>
+<td><code>approval.enqueue</code></td>
+<td>Route an action to the approval queue. Used after a <code>policy.check</code> returns <code>route_to_review</code>.</td>
+</tr>
+<tr>
+<td><code>vault.read</code></td>
+<td>Read a vault page by <code>key</code>.</td>
+</tr>
+<tr>
+<td><code>vault.write</code></td>
+<td>Write or append to a vault page. Supports <code>mode: replace</code> and <code>mode: append</code>.</td>
+</tr>
+<tr>
+<td><code>issue.create</code></td>
+<td>Create an issue scoped to the run's company.</td>
+</tr>
+<tr>
+<td><code>issue.update</code></td>
+<td>Update an existing issue's status, description, or assignee.</td>
+</tr>
+<tr>
+<td><code>dispatch</code></td>
+<td>Enqueue a dispatch to an agent (by role or by <code>assigneeAgentId</code>).</td>
+</tr>
+<tr>
+<td><code>scanner.finding</code></td>
+<td>Surface or update an AgentGuard scanner finding.</td>
+</tr>
+<tr>
+<td><code>webhook.intake</code></td>
+<td>Accept the trigger payload as the run input (only meaningful for <code>trigger: "webhook"</code>).</td>
+</tr>
+</tbody>
+</table>
+<p>The runtime layer in <code>services/native-automations.ts</code> recognizes
+additional step types for internal use (flow control, AI steps, HTTP
+calls). These are not yet exposed through the public REST API and are
+subject to change before they become public surface.</p>
+<h2 id="admin-api">Admin API<a class="headerlink" href="#admin-api" title="Permanent link">&para;</a></h2>
+<p>All endpoints live under the existing admin router and require the same
+auth as the rest of the admin API.</p>
+<pre><code>GET    /api/admin/automations?companyId=&lt;uuid&gt;
+POST   /api/admin/automations/templates
+POST   /api/admin/automations/templates/:templateId/install
+POST   /api/admin/automations/workflows
+PATCH  /api/admin/automations/workflows/:workflowId
+POST   /api/admin/automations/workflows/:workflowId/run
+GET    /api/admin/automations/runs/:runId
+GET    /api/admin/automations/workflows/:workflowId/n8n-export
+</code></pre>
+<p><code>GET /api/admin/automations</code> returns engine state, n8n bridge health,
+warnings, bundled and custom templates, installed workflows, and the
+most recent runs in one payload. The admin UI uses this for the
+<code>/automations</code> page.</p>
+<h2 id="create-a-managed-workflow">Create a managed workflow<a class="headerlink" href="#create-a-managed-workflow" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">curl -sS -X POST http://127.0.0.1:7710/api/admin/automations/workflows \
+  -H 'Content-Type: application/json' \
+  -d '{
+    &quot;name&quot;: &quot;Manual vault capture&quot;,
+    &quot;trigger&quot;: &quot;manual&quot;,
+    &quot;status&quot;: &quot;paused&quot;,
+    &quot;definition&quot;: {
+      &quot;trigger&quot;: &quot;manual&quot;,
+      &quot;steps&quot;: [
+        {
+          &quot;id&quot;: &quot;write&quot;,
+          &quot;name&quot;: &quot;Write vault note&quot;,
+          &quot;type&quot;: &quot;vault.write&quot;,
+          &quot;params&quot;: {
+            &quot;key&quot;: &quot;automations/manual-capture&quot;,
+            &quot;body&quot;: &quot;# Manual vault capture\n\nCreated by native automation.&quot;,
+            &quot;mode&quot;: &quot;append&quot;
+          }
+        }
+      ]
+    }
+  }'
+</code></pre>
+<p>Activate it before running:</p>
+<pre><code class="language-bash">WORKFLOW_ID=...  # from the create response
+curl -sS -X PATCH http://127.0.0.1:7710/api/admin/automations/workflows/$WORKFLOW_ID \
+  -H 'Content-Type: application/json' \
+  -d '{&quot;status&quot;:&quot;active&quot;}'
+</code></pre>
+<p>Run it:</p>
+<pre><code class="language-bash">curl -sS -X POST http://127.0.0.1:7710/api/admin/automations/workflows/$WORKFLOW_ID/run \
+  -H 'Content-Type: application/json' \
+  -d '{&quot;input&quot;:{}}'
+</code></pre>
+<p>The response includes a <code>runId</code>. Inspect it:</p>
+<pre><code class="language-bash">curl -sS http://127.0.0.1:7710/api/admin/automations/runs/$RUN_ID
+</code></pre>
+<h2 id="install-a-bundled-template">Install a bundled template<a class="headerlink" href="#install-a-bundled-template" title="Permanent link">&para;</a></h2>
+<p>The daemon ships bundled templates that solve common operator workflows.
+List them:</p>
+<pre><code class="language-bash">curl -sS http://127.0.0.1:7710/api/admin/automations | jq '.templates[].id'
+</code></pre>
+<p>Install one as a managed workflow:</p>
+<pre><code class="language-bash">TEMPLATE_ID=...
+curl -sS -X POST http://127.0.0.1:7710/api/admin/automations/templates/$TEMPLATE_ID/install \
+  -H 'Content-Type: application/json' \
+  -d '{}'
+</code></pre>
+<p>The new workflow is created in <code>status: paused</code>. PATCH it to <code>active</code>
+before running.</p>
+<h2 id="n8n-bridge">n8n bridge<a class="headerlink" href="#n8n-bridge" title="Permanent link">&para;</a></h2>
+<p><code>GET /api/admin/automations</code> includes a <code>bridge</code> object reporting the
+local n8n service's health when present. The native engine does not
+depend on n8n being up. When you do want to run a native workflow on
+n8n, export it:</p>
+<pre><code class="language-bash">curl -sS http://127.0.0.1:7710/api/admin/automations/workflows/$WORKFLOW_ID/n8n-export
+</code></pre>
+<p>The response is JSON in n8n's import format. Drop it into the n8n UI's
+"Import from File" flow.</p>
+<h2 id="required-configuration">Required configuration<a class="headerlink" href="#required-configuration" title="Permanent link">&para;</a></h2>
+<p>Native automations work with no extra configuration for the nine step
+types listed above. No model API keys, no external services.</p>
+<p>Two optional environment variables come into play if you later enable
+the AI-assisted steps documented in the runtime layer:</p>
+<ul>
+<li><code>AWOS_AUTOMATION_AI_PROVIDER</code> — overrides which provider AI steps
+  route through (<code>kimi</code>, <code>openai</code>, <code>minimax</code>, <code>ollama_cloud</code>).</li>
+<li><code>AWOS_AUTOMATION_AI_MODEL</code> — overrides the model name passed to the
+  provider.</li>
+</ul>
+<p>When AI steps fire, the daemon reads the corresponding <code>&lt;PROVIDER&gt;_API_KEY</code>
+from <code>process.env</code> or from <code>~/.agentworks/secrets.env</code> (override path
+with <code>AWOS_SECRETS_PATH</code>). See <code>packages/agentos-d/src/adapters/awos-secrets.ts</code>
+for the resolution order.</p>
+<h2 id="experimental-step-types">Experimental step types<a class="headerlink" href="#experimental-step-types" title="Permanent link">&para;</a></h2>
+<p>The runtime layer defines additional step types beyond the nine listed
+above (flow control, AI, HTTP, file I/O, email/message send, evidence
+packing). They are not exposed through the public REST schema and are
+filtered out of the templates list response by default.</p>
+<p>Set <code>AWOS_AUTOMATION_EXPERIMENTAL_STEPS=1</code> in the daemon environment to
+opt in. With the flag on:</p>
+<ul>
+<li>Bundled templates that use experimental step types become visible in
+  the templates list response.</li>
+<li><code>POST /api/admin/automations/templates/:templateId/install</code> accepts
+  templates that use experimental step types.</li>
+<li><code>POST /api/admin/automations/workflows</code> and <code>PATCH .../workflows/:id</code>
+  still enforce the 9-type Zod schema for operator-authored definitions.
+  Experimental step types are only reachable through bundled templates
+  and direct service calls in this release.</li>
+</ul>
+<p>Treat the flag as an opt-in to functionality whose API surface may
+change without a major-version bump.</p>
+<h2 id="other-limitations-in-this-release">Other limitations in this release<a class="headerlink" href="#other-limitations-in-this-release" title="Permanent link">&para;</a></h2>
+<ul>
+<li>A workflow can declare at most 20 steps.</li>
+<li>Run history retention is not pruned automatically yet.</li>
+<li>Templates cannot reference other templates; nesting is a future
+  feature.</li>
+</ul>
+<p>Track open work and report issues on the
+<a href="https://github.com/SGridworks/agentworks-os-vps/issues"><code>agentworks-os-vps</code></a>
+repository.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1012 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/rfc/008-workflow-discipline-processwatcher-auto-assign/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>RFC 008 — Workflow Discipline: ProcessWatcher + Auto-Assign Router - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rfc-008-workflow-discipline-processwatcher-auto-assign-router" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RFC 008 — Workflow Discipline: ProcessWatcher + Auto-Assign Router
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-decisions-resolved" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Decisions (Resolved)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Decisions (Resolved)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-processwatcher-locus-agentos-d-internal-scheduled-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ProcessWatcher locus: agentos-d-internal scheduled service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-auto-assign-locus-server-side-hook-on-post-apiissues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Auto-Assign locus: server-side hook on POST /api/issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-critical-path-computation-live-on-every-inbox-lite-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Critical-path computation: live on every inbox-lite request
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#half-a-detection-processwatcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Half A — Detection: ProcessWatcher
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Half A — Detection: ProcessWatcher">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seven-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seven checks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output surface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-model-additions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data model additions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#half-b-prevention-auto-assign-router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Half B — Prevention: Auto-Assign Router
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Half B — Prevention: Auto-Assign Router">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lane-match-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lane-match algorithm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triage-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Triage queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#critical-path-sort-for-inbox-lite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critical-path sort for inbox-lite
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-contract-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Contract Changes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Contract Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#post-apiissues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST /api/issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-apiagentsmeinbox-lite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GET /api/agents/me/inbox-lite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-internal-routes-admin-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        New internal routes (admin UI)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependency-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency Graph
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#out-of-scope-deferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Out of Scope (Deferred)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="rfc-008-workflow-discipline-processwatcher-auto-assign-router">RFC 008 — Workflow Discipline: ProcessWatcher + Auto-Assign Router<a class="headerlink" href="#rfc-008-workflow-discipline-processwatcher-auto-assign-router" title="Permanent link">&para;</a></h1>
+<p><strong>Status</strong>: Ready for CEO Review<br />
+<strong>Author</strong>: TechLead<br />
+<strong>Created</strong>: 2026-04-28<br />
+<strong>Blocks</strong>: AWO-163, AWO-164, AWO-165, AWO-166, AWO-167, AWO-168<br />
+<strong>Supplemented by</strong>: <a href="../009-process-watcher-auto-assign-impl/">RFC 009</a> — implementation details (system user, worker registry, migrations, lane-match algorithm, crash-safe tick, 7-check SQL reference)<br />
+<strong>Review</strong>: CEO must sign off  </p>
+<hr />
+<h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">&para;</a></h2>
+<p>The substrate has two structural gaps in agent workflow:</p>
+<ol>
+<li><strong>No upfront prevention of misrouting.</strong> Tickets get assigned at creation by whoever opens them (Coordinator / operator). Quality depends on the human having lane context. On 2026-04-28 BackendEngineer's queue was at 14 todos while FrontendEngineer had 1 — load imbalance with no automatic correction.</li>
+<li><strong>No after-the-fact detection of agent hygiene failures.</strong> Coordinator-side bash daemons catch some failures (commit-scope, peer-review, stale-progress); manual review catches the rest (LEARNINGS §8, §19). This does not scale to a customer install where operator is not standing over the board.</li>
+</ol>
+<p>This RFC pairs prevention (Auto-Assign router) with detection (ProcessWatcher). Together they replace manual workflow management with substrate-native discipline.</p>
+<p><strong>Customer value</strong>: <em>"AgentWorks routes work to the right agent automatically and oversees every action — your team submits a task and the substrate handles assignment, dependency ordering, hygiene enforcement, and digest reporting."</em> That is pillar 2 (orchestration) + pillar 7 (audit) made visible.</p>
+<hr />
+<h2 id="design-decisions-resolved">Design Decisions (Resolved)<a class="headerlink" href="#design-decisions-resolved" title="Permanent link">&para;</a></h2>
+<h3 id="1-processwatcher-locus-agentos-d-internal-scheduled-service">1. ProcessWatcher locus: agentos-d-internal scheduled service<a class="headerlink" href="#1-processwatcher-locus-agentos-d-internal-scheduled-service" title="Permanent link">&para;</a></h3>
+<p><strong>Not a paperclip-shaped agent.</strong></p>
+<p>A paperclip-shaped agent would share the same heartbeat protocol it is meant to supervise. It could stall, burn budget, and create a "who watches the watcher" recursion. An internal service inside <code>agentos-d</code> has these properties:</p>
+<ul>
+<li>Runs on a server tick (cron / <code>setInterval</code>), independent of any agent lifecycle.</li>
+<li>Has direct DB access to issues, comments, commits, and run logs.</li>
+<li>Can read filesystem guard logs (<code>commit-scope</code>, <code>stale-progress</code>, <code>closure-gate</code>) without being a subject of them.</li>
+<li>Does not consume an agent slot or API budget.</li>
+</ul>
+<p><strong>Implementation</strong>: a lightweight background worker in <code>packages/agentos-d/src/workers/process-watcher.ts</code>, triggered every 5 minutes. It executes the seven checks sequentially and posts comments via the internal issue-service, bypassing the public API.</p>
+<h3 id="2-auto-assign-locus-server-side-hook-on-post-apiissues">2. Auto-Assign locus: server-side hook on <code>POST /api/issues</code><a class="headerlink" href="#2-auto-assign-locus-server-side-hook-on-post-apiissues" title="Permanent link">&para;</a></h3>
+<p><strong>Not an agent-driven LaborBroker.</strong></p>
+<p>Deterministic logic at creation time is faster, cheaper, and testable:</p>
+<ul>
+<li>Zero agent-budget consumption.</li>
+<li>Zero latency for the user — assignee is set before the ticket is persisted.</li>
+<li>Easy to override: if <code>assigneeAgentId</code> is present in the create payload, the hook skips.</li>
+<li>Unit-testable without spinning up an agent heartbeat.</li>
+</ul>
+<p><strong>Implementation</strong>: middleware in <code>packages/agentos-d/src/routes/issues.ts</code> that runs after validation and before persistence. It reads <code>agent-lanes.json</code> into memory at server start and caches it.</p>
+<h3 id="3-critical-path-computation-live-on-every-inbox-lite-request">3. Critical-path computation: live on every <code>inbox-lite</code> request<a class="headerlink" href="#3-critical-path-computation-live-on-every-inbox-lite-request" title="Permanent link">&para;</a></h3>
+<p><strong>Not precomputed / cached for v1.</strong></p>
+<p>Queue depth per agent in v1 is small (&lt; 100 tickets). Computing downstream unblock count per ticket via a SQL CTE or in-memory graph traversal is sub-millisecond at this scale. Live computation avoids cache invalidation bugs and stale sorts when dependencies change.</p>
+<p><strong>v2 optimization</strong>: if profiling shows <code>inbox-lite</code> &gt; 50 ms, precompute <code>criticalPathScore</code> on issue create / update and cache it in the <code>issues</code> table.</p>
+<hr />
+<h2 id="half-a-detection-processwatcher">Half A — Detection: ProcessWatcher<a class="headerlink" href="#half-a-detection-processwatcher" title="Permanent link">&para;</a></h2>
+<h3 id="seven-checks">Seven checks<a class="headerlink" href="#seven-checks" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Check</th>
+<th>Condition</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Stale <code>in_progress</code></td>
+<td><code>updatedAt</code> &gt; 45 min ago AND no comment from assignee AND no commit referencing identifier since <code>updatedAt</code></td>
+<td>Auto-park to <code>todo</code> with comment naming stall window.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Premature <code>done</code></td>
+<td>Status flipped to <code>done</code> AND (close-comment missing OR close-comment lacks file-path citations)</td>
+<td>Re-open to <code>todo</code>, comment cites CLOSE-COMMENT-HYGIENE.md.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Off-lane commits</td>
+<td><code>commit-scope</code> log flags a file outside the agent's <code>allow</code> patterns</td>
+<td>Comment on issue with diff snippet and lane violation.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Auto-commit + close mismatch</td>
+<td>Auto-commit captured WIP and agent flipped <code>done</code> within 60 s</td>
+<td>Re-open to <code>todo</code>, comment explains the trap (LEARNINGS §19).</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Queue depth</td>
+<td>Agent's <code>todo</code> count &gt; watermark (default 8)</td>
+<td>Comment on agent's most recent issue + digest flag.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Failed runs not retried</td>
+<td>Run status = <code>failed</code> and <code>updatedAt</code> &gt; 4 hours ago with no retry</td>
+<td>Comment on associated issue, flag for Coordinator.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Blocked tickets stuck</td>
+<td>Status = <code>blocked</code> and <code>updatedAt</code> &gt; 4 hours ago with no unblock comment from another agent</td>
+<td>Comment on issue, suggest escalation.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="output-surface">Output surface<a class="headerlink" href="#output-surface" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Per-ticket comments</strong>: immediate, actionable, posted by a system user (<code>ProcessWatcher</code>).</li>
+<li><strong>Admin UI digest</strong>: a single page (<code>/admin/process-health</code>) showing counts per check, per agent, last 24 h. Served by AWO-165.</li>
+</ul>
+<h3 id="data-model-additions">Data model additions<a class="headerlink" href="#data-model-additions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>process_watcher_runs</code> table: <code>id</code>, <code>runAt</code>, <code>checkType</code> (1-7), <code>issueId</code>, <code>verdict</code> (<code>pass</code> | <code>flag</code> | <code>auto-fix</code>), <code>commentId</code>, <code>createdAt</code>.</li>
+<li><code>issues</code> table: add <code>verificationCommand</code> text nullable (closure gate from LEARNINGS §8). ProcessWatcher check #2 consumes this.</li>
+</ul>
+<hr />
+<h2 id="half-b-prevention-auto-assign-router">Half B — Prevention: Auto-Assign Router<a class="headerlink" href="#half-b-prevention-auto-assign-router" title="Permanent link">&para;</a></h2>
+<h3 id="lane-match-algorithm">Lane-match algorithm<a class="headerlink" href="#lane-match-algorithm" title="Permanent link">&para;</a></h3>
+<pre><code>function autoAssign(issue):
+  if issue.assigneeAgentId is set: return
+
+  paths = extractFilePaths(issue.description)   // regex for `packages/...`, `docs/...`, etc.
+  candidates = empty map&lt;roleName, matchCount&gt;
+
+  for each path in paths:
+    for each role in agentLanes.roles:
+      if any(role.allow pattern matches path):
+        candidates[role] += 1
+
+  if candidates is empty:
+    issue.triage = true
+    return
+
+  if multiple candidates with equal top matchCount:
+    // ambiguous — e.g., a path matches both Backend and TechLead (shared/)
+    // Use longest-match tie-break: the role whose pattern is most specific
+    // Fallback: triage = true
+    issue.triage = true
+    return
+
+  winner = candidate with lowest todo count
+  if tie: winner = alphabetical role name
+
+  issue.assigneeAgentId = winner.agentId
+</code></pre>
+<h3 id="triage-queue">Triage queue<a class="headerlink" href="#triage-queue" title="Permanent link">&para;</a></h3>
+<p>Tickets with <code>triage = true</code> and <code>assigneeAgentId = null</code> surface in the admin UI as the <strong>Unassigned / Triage</strong> queue. A Coordinator (human or CEO agent) manually assigns them. AWO-168 owns the UI surface.</p>
+<h3 id="critical-path-sort-for-inbox-lite">Critical-path sort for <code>inbox-lite</code><a class="headerlink" href="#critical-path-sort-for-inbox-lite" title="Permanent link">&para;</a></h3>
+<p>After filtering to the agent's <code>in_progress</code> + <code>todo</code> issues, sort by:</p>
+<ol>
+<li><strong>Critical-path score desc</strong> — number of downstream tickets this ticket blocks (parent/dependency DAG depth).</li>
+<li><strong>Priority desc</strong> — <code>critical</code> &gt; <code>high</code> &gt; <code>medium</code> &gt; <code>low</code>.</li>
+<li><strong>CreatedAt asc</strong> — older first.</li>
+</ol>
+<p>Stale <code>in_progress</code> tickets (no comment or commit in 45 min) are treated as <code>todo</code> for sorting purposes. The agent still sees them, but they do not starve higher-priority fresh work (LEARNINGS §18).</p>
+<p><strong>Implementation</strong>: SQL CTE computing transitive dependency count, or in-memory graph traversal if dependency data is not yet in the DB. AWO-167 owns the implementation.</p>
+<hr />
+<h2 id="api-contract-changes">API Contract Changes<a class="headerlink" href="#api-contract-changes" title="Permanent link">&para;</a></h2>
+<h3 id="post-apiissues"><code>POST /api/issues</code><a class="headerlink" href="#post-apiissues" title="Permanent link">&para;</a></h3>
+<ul>
+<li>New behavior: if <code>assigneeAgentId</code> is absent, the hook runs lane-match and sets it (or sets <code>triage = true</code>).</li>
+<li>Response shape unchanged.</li>
+</ul>
+<h3 id="get-apiagentsmeinbox-lite"><code>GET /api/agents/me/inbox-lite</code><a class="headerlink" href="#get-apiagentsmeinbox-lite" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Response order changes: now sorted by critical-path score, priority, createdAt.</li>
+<li>Response shape unchanged.</li>
+</ul>
+<h3 id="new-internal-routes-admin-ui">New internal routes (admin UI)<a class="headerlink" href="#new-internal-routes-admin-ui" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>GET /api/admin/process-health</code> — digest of ProcessWatcher flags, last 24 h.</li>
+<li><code>GET /api/admin/triage-queue</code> — unassigned tickets awaiting manual assignment.</li>
+</ul>
+<hr />
+<h2 id="dependency-graph">Dependency Graph<a class="headerlink" href="#dependency-graph" title="Permanent link">&para;</a></h2>
+<pre><code>AWO-162 (this RFC)
+├── AWO-163 — Define ProcessWatcher worker registry + lane spec
+├── AWO-164 — Implement seven-check heartbeat in agentos-d
+├── AWO-165 — Admin UI: Process Health digest page
+├── AWO-166 — Auto-assign router middleware
+├── AWO-167 — Critical-path DAG sort for inbox-lite
+└── AWO-168 — Triage queue + admin UI surface
+</code></pre>
+<p>AWO-163 and AWO-166 can ship in parallel. AWO-164 depends on AWO-163. AWO-165 and AWO-168 depend on AWO-164 and AWO-166 respectively. AWO-167 is independent of ProcessWatcher and can ship in parallel with AWO-166.</p>
+<hr />
+<h2 id="out-of-scope-deferred">Out of Scope (Deferred)<a class="headerlink" href="#out-of-scope-deferred" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>LaborBroker LLM-driven planner.</strong> Open as follow-up only if Shape A's failure rate signals it's needed.</li>
+<li><strong>Auto-decomposition of parent tickets.</strong> Deferred to v2; manual decomposition stays human until we see how parents behave.</li>
+<li><strong>Replacing existing bash daemons.</strong> v1 = ProcessWatcher consumes their logs; v2 collapses them into the service.</li>
+<li><strong>@-mention routing beyond in-app comments.</strong> v1 = in-app only.</li>
+</ul>
+<hr />
+<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[ ] RFC committed to <code>docs/rfc/008-workflow-discipline-processwatcher-auto-assign.md</code></li>
+<li>[ ] AWO-163 — ProcessWatcher worker registered in <code>agentos-d</code> startup sequence</li>
+<li>[ ] AWO-164 — All seven checks execute on a 5-minute tick and post comments</li>
+<li>[ ] AWO-165 — <code>/admin/process-health</code> renders counts per check per agent</li>
+<li>[ ] AWO-166 — Creating an issue without assignee triggers lane-match and sets <code>assigneeAgentId</code> or <code>triage=true</code></li>
+<li>[ ] AWO-167 — <code>inbox-lite</code> returns tickets sorted by critical-path score</li>
+<li>[ ] AWO-168 — <code>/admin/triage-queue</code> lists unassigned tickets with manual-assign action</li>
+<li>[ ] Integration: create a ticket with ambiguous paths → lands in triage → manual assign → appears in correct agent's inbox in critical-path order</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1709 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/rule-pack-authoring/">
+      
+      
+        <link rel="prev" href="../e2e-verification/">
+      
+      
+        <link rel="next" href="../quickstart/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Rule Pack Authoring - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rule-pack-authoring-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Rule Pack Authoring
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pack-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pack Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fields-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fields Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pack_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pack_id
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pack_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pack_version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing_data_disposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        missing_data_disposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anatomy-of-a-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anatomy of a Rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        required_data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disposition_when_missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        disposition_when_missing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-kinds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Action Kinds
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-fixtures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Fixtures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validating-a-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validating a Pack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-and-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loading and Modes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Loading and Modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loading-a-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loading a Pack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shadow-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shadow Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-data-declarations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required-Data Declarations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wrong-field-name-in-required_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong field name in required_data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#condition-on-a-field-that-might-not-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Condition on a field that might not exist
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-disposition_when_missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing disposition_when_missing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority-collisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority collisions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-test-fixtures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No test fixtures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-data-declaration-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required-Data Declaration Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-not-in-this-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's Not in This Guide
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pack-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pack Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fields-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fields Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pack_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pack_id
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pack_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pack_version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing_data_disposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        missing_data_disposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#anatomy-of-a-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anatomy of a Rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        required_data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disposition_when_missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        disposition_when_missing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-kinds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Action Kinds
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-fixtures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Fixtures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validating-a-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validating a Pack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-and-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loading and Modes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Loading and Modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loading-a-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loading a Pack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shadow-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shadow Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-data-declarations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required-Data Declarations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wrong-field-name-in-required_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wrong field name in required_data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#condition-on-a-field-that-might-not-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Condition on a field that might not exist
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-disposition_when_missing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing disposition_when_missing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority-collisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority collisions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-test-fixtures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No test fixtures
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-data-declaration-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required-Data Declaration Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-not-in-this-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's Not in This Guide
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="rule-pack-authoring-guide">Rule Pack Authoring Guide<a class="headerlink" href="#rule-pack-authoring-guide" title="Permanent link">&para;</a></h1>
+<p>A rule pack is a YAML file that declares compliance rules the policy engine evaluates. Each pack is self-contained: rule definitions, metadata, required-data declarations, and test fixtures all live in one file.</p>
+<p>The policy engine evaluates every action against active rule packs and returns <code>allow</code>, <code>block</code>, or <code>route_to_review</code>.</p>
+<p>This guide covers the YAML schema, how to write rules, how to validate a pack, and the most common mistakes.</p>
+<p><strong>Reference implementation:</strong> <code>rule-packs/smb-starter/smb-starter-v0.1.yaml</code></p>
+<hr />
+<h2 id="pack-structure">Pack Structure<a class="headerlink" href="#pack-structure" title="Permanent link">&para;</a></h2>
+<pre><code class="language-yaml">schema_version: &quot;awcp/v0.1&quot;     # AWCP schema version — must match this exact string
+pack_id: &quot;my-pack&quot;              # unique identifier (kebab-case, stable across versions)
+pack_version: &quot;0.1.0&quot;          # semver
+pack_name: &quot;My Pack&quot;            # human-readable name
+pack_description: |             # longer description for the admin UI
+  One or more paragraphs.
+tier: free | paid | attorney-reviewed
+credentialed_by: &quot;SGridworks&quot;   # or attorney name for attorney-reviewed packs
+attorney_reviewed: false        # true only when engagement letter on file
+missing_data_disposition: allow | block | route_to_review  # default when required data absent
+
+rules:
+  - rule_id: MY-RULE-001
+    name: &quot;Human-readable rule name&quot;
+    description: |
+      What this rule does and why.
+    required_data:
+      - field_name              # fields this rule needs from the action record
+    disposition_when_missing: allow | block | route_to_review
+    conditions:
+      - when:                   # condition block — all keys must match for rule to fire
+          field_name: value     # value or list of values
+          another_field: [val1, val2]
+        then:
+          decision: allow | block | route_to_review
+          reason: &quot;Explanation shown to the actor or reviewer&quot;
+          citation: &quot;47 U.S.C. § 227&quot; | &quot;Internal policy&quot; | null
+</code></pre>
+<hr />
+<h2 id="fields-reference">Fields Reference<a class="headerlink" href="#fields-reference" title="Permanent link">&para;</a></h2>
+<h3 id="pack_id">pack_id<a class="headerlink" href="#pack_id" title="Permanent link">&para;</a></h3>
+<p>Stable unique identifier. Once published, never change this. The system uses it to track which packs are active in logs and reports. Use kebab-case.</p>
+<h3 id="pack_version">pack_version<a class="headerlink" href="#pack_version" title="Permanent link">&para;</a></h3>
+<p>Semver. Increment:
+- <strong>patch</strong> — rule logic unchanged, bug fix in description or test fixture
+- <strong>minor</strong> — new rules added, old rules removed, or rule logic changed
+- <strong>major</strong> — breaking structural change to the pack</p>
+<h3 id="tier">tier<a class="headerlink" href="#tier" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Credentialing</th>
+<th>Ships with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>free</code></td>
+<td>SGridworks</td>
+<td>AgentWorks OS free tier</td>
+</tr>
+<tr>
+<td><code>paid</code></td>
+<td>SGridworks</td>
+<td>Commercial rule pack library</td>
+</tr>
+<tr>
+<td><code>attorney-reviewed</code></td>
+<td>Named attorney + SGridworks</td>
+<td>Requires signed engagement letter</td>
+</tr>
+</tbody>
+</table>
+<p><code>attorney_reviewed: true</code> is only set when:
+1. A signed engagement letter is on file with the attorney's name
+2. The attorney has reviewed the rule definitions in writing
+3. Both are recorded in pack metadata</p>
+<h3 id="missing_data_disposition">missing_data_disposition<a class="headerlink" href="#missing_data_disposition" title="Permanent link">&para;</a></h3>
+<p>Default disposition when a rule's <code>required_data</code> fields are absent from the action record. Applied per-rule via <code>disposition_when_missing</code>, but can be overridden at pack level as a fallback.</p>
+<hr />
+<h2 id="writing-rules">Writing Rules<a class="headerlink" href="#writing-rules" title="Permanent link">&para;</a></h2>
+<h3 id="anatomy-of-a-rule">Anatomy of a Rule<a class="headerlink" href="#anatomy-of-a-rule" title="Permanent link">&para;</a></h3>
+<pre><code class="language-yaml">- rule_id: MY-001
+  name: &quot;Block SMS to DNC numbers&quot;
+  description: |
+    Blocks outbound SMS to numbers on the internal do-not-call list.
+    Does not replace external DNC registry checks.
+  required_data:
+    - contact_id
+    - dnc_status
+  disposition_when_missing: route_to_review
+  conditions:
+    - when:
+        dnc_status: true
+      then:
+        decision: block
+        reason: &quot;Contact is on internal do-not-call list&quot;
+        citation: &quot;Internal policy&quot;
+</code></pre>
+<h3 id="required_data">required_data<a class="headerlink" href="#required_data" title="Permanent link">&para;</a></h3>
+<p>Lists the fields this rule needs from the action record. If any listed field is <code>null</code> or absent, <code>disposition_when_missing</code> applies instead of evaluating conditions.</p>
+<p>Field names match keys in the action record's <code>payload</code> and top-level objects (<code>actor</code>, <code>contact</code>, <code>consent</code>). Use dot-notation for nested fields: <code>consent.source</code>.</p>
+<p>Common fields:
+- <code>action_kind</code> — the action type (e.g., <code>outbound.sms</code>, <code>lead.generation</code>)
+- <code>contact_id</code> — internal ID of the target contact
+- <code>dnc_status</code> — boolean, whether contact is on internal DNC list
+- <code>consent.status</code> — <code>verified</code>, <code>unverified</code>, or <code>none</code>
+- <code>consent.source</code> — where consent came from: <code>written</code>, <code>verbal</code>, <code>inferred</code>, <code>none</code>, <code>unknown</code>
+- <code>consent.captured_at</code> — ISO-8601 datetime when consent was captured
+- <code>subscription_status</code> — <code>subscribed</code>, <code>unsubscribed</code>, <code>none</code>
+- <code>target_jurisdiction</code> — US state code or <code>federal</code>
+- <code>payload.contact.address</code> — phone number or email address
+- <code>message_body</code> — SMS or email body text
+- <code>offer_type</code> — <code>financial</code>, <code>insurance</code>, <code>health</code>, <code>legal</code>, <code>housing</code>
+- <code>geographic_scope</code> — <code>census_tract</code>, <code>zip_code</code>, <code>city</code>, <code>county</code>, <code>state</code>
+- <code>targeting_criteria</code> — structured object describing who the action targets
+- <code>contact_age</code> — integer, if known
+- <code>contact_age_known</code> — boolean</p>
+<h3 id="conditions">conditions<a class="headerlink" href="#conditions" title="Permanent link">&para;</a></h3>
+<p>A list of condition blocks. All top-level keys in a <code>when</code> block must match the action record for the <code>then</code> block to fire.</p>
+<p><strong>Matching semantics:</strong>
+- Boolean: <code>true</code> or <code>false</code> literal
+- String: exact match, or use a list for "matches any of"
+- List: matches if the field value is in the list
+- <code>null</code>: matches if the field is absent or <code>null</code></p>
+<p><strong>Example: multiple values</strong></p>
+<pre><code class="language-yaml">conditions:
+  - when:
+      action_kind: [&quot;outbound.sms&quot;, &quot;outbound.email&quot;, &quot;outbound.call&quot;]
+    then:
+      decision: block
+      reason: &quot;No outreach without verified consent&quot;
+      citation: &quot;47 U.S.C. § 227&quot;
+</code></pre>
+<p><strong>Example: negation via non-match</strong></p>
+<pre><code class="language-yaml">conditions:
+  - when:
+      consent.verified: false
+    then:
+      decision: block
+      reason: &quot;Consent not verified&quot;
+      citation: &quot;TCPA, 47 U.S.C. § 227&quot;
+</code></pre>
+<h3 id="disposition_when_missing">disposition_when_missing<a class="headerlink" href="#disposition_when_missing" title="Permanent link">&para;</a></h3>
+<p>Applied when any <code>required_data</code> field is <code>null</code> or absent. Overrides condition evaluation entirely. The rule fires with this disposition and does not evaluate <code>conditions</code>.</p>
+<h3 id="priority">Priority<a class="headerlink" href="#priority" title="Permanent link">&para;</a></h3>
+<p>Rules are evaluated in priority order (lowest number first). The first rule that returns <code>block</code> or <code>route_to_review</code> terminates evaluation for that pack.</p>
+<p>Default priority is 100. Explicit priorities are recommended when rule order matters:</p>
+<pre><code class="language-yaml">- rule_id: MY-EARLY
+  priority: 1
+  ...
+- rule_id: MY-LATE
+  priority: 10
+  ...
+</code></pre>
+<hr />
+<h2 id="action-kinds">Action Kinds<a class="headerlink" href="#action-kinds" title="Permanent link">&para;</a></h2>
+<p>Every action has a <code>kind</code> field that identifies what type of action it is. Rule packs declare which action kinds they apply to via <code>target_action_kinds</code> in the manifest.</p>
+<p>Common action kinds:</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Triggers when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>outbound.sms</code></td>
+<td>SMS message sent to a contact</td>
+</tr>
+<tr>
+<td><code>outbound.email</code></td>
+<td>Email sent to a contact</td>
+</tr>
+<tr>
+<td><code>outbound.call</code></td>
+<td>Voice call initiated to a contact</td>
+</tr>
+<tr>
+<td><code>outbound.direct_message</code></td>
+<td>Direct message via messaging platform</td>
+</tr>
+<tr>
+<td><code>lead.generation</code></td>
+<td>Lead capture or enrichment operation</td>
+</tr>
+<tr>
+<td><code>lead.enrich</code></td>
+<td>Third-party data appended to a lead record</td>
+</tr>
+<tr>
+<td><code>crm.write</code></td>
+<td>Record written to CRM or contact database</td>
+</tr>
+<tr>
+<td><code>llm.completion</code></td>
+<td>LLM API call with prompt content</td>
+</tr>
+<tr>
+<td><code>data.export</code></td>
+<td>Bulk export of contact or transaction data</td>
+</tr>
+<tr>
+<td><code>data.delete</code></td>
+<td>Deletion request for contact PII</td>
+</tr>
+</tbody>
+</table>
+<p>New <code>action.kind</code> values must be registered in the AWCP spec before use.</p>
+<hr />
+<h2 id="test-fixtures">Test Fixtures<a class="headerlink" href="#test-fixtures" title="Permanent link">&para;</a></h2>
+<p>Every pack should include test fixtures: known-input and expected-output pairs that verify the pack behaves as intended.</p>
+<pre><code class="language-yaml">test_fixtures:
+  - name: &quot;DNC contact — should block&quot;
+    input:
+      action_kind: &quot;outbound.email&quot;
+      contact_id: &quot;contact-001&quot;
+      dnc_status: true
+      message_body: &quot;Hi, we noticed your property is listed...&quot;
+    expected:
+      decision: block
+      rule_id: &quot;SMB-001&quot;
+</code></pre>
+<p>Validate the YAML schema with the policy-engine package validator:</p>
+<pre><code class="language-bash"># From the repo checkout:
+pnpm --filter @agentworks/policy-engine validate:pack -- rule-packs/smb-starter/smb-starter-v0.1.yaml
+</code></pre>
+<p>Or hit the daemon directly with a <code>policy/check</code> call that uses the fixture's
+input — the substrate evaluates the live pack:</p>
+<pre><code class="language-bash">curl -s -X POST http://localhost:7710/api/policy/check \
+  -H 'content-type: application/json' \
+  -d @rule-packs/test-fixtures/SMB-007_consent_missing.json
+</code></pre>
+<p><strong>Fixture naming convention:</strong> <code>&lt;scenario&gt; — &lt;expected decision&gt;</code></p>
+<blockquote>
+<p>The standalone <code>agentworks pack</code> CLI subcommand referenced in earlier drafts
+is not shipped. Use the package-level test runner above for offline
+validation, or hit <code>/api/policy/check</code> for an end-to-end check against the
+running daemon.</p>
+</blockquote>
+<hr />
+<h2 id="validating-a-pack">Validating a Pack<a class="headerlink" href="#validating-a-pack" title="Permanent link">&para;</a></h2>
+<p>Before loading a pack, validate it via the policy-engine validator:</p>
+<pre><code class="language-bash"># From the repo checkout:
+pnpm --filter @agentworks/policy-engine validate:pack -- /path/to/pack.yaml
+</code></pre>
+<p>Validation checks:
+- YAML syntax
+- Required fields present (<code>pack_id</code>, <code>pack_version</code>, <code>rules</code>)
+- <code>tier</code> is a valid value
+- <code>attorney_reviewed</code> is boolean
+- Each rule has <code>rule_id</code>, <code>name</code>, <code>conditions</code>, and valid <code>disposition_when_missing</code>
+- Each condition's <code>when</code> block uses supported operators
+- Each <code>then</code> block has valid <code>decision</code> value
+- <code>test_fixtures</code> (if present) have valid <code>input</code> and <code>expected</code> shapes</p>
+<p>A pack that passes validation still might not do what you intended. Read the output.</p>
+<hr />
+<h2 id="loading-and-modes">Loading and Modes<a class="headerlink" href="#loading-and-modes" title="Permanent link">&para;</a></h2>
+<h3 id="loading-a-pack">Loading a Pack<a class="headerlink" href="#loading-a-pack" title="Permanent link">&para;</a></h3>
+<p>Loading and mode switching are done through the REST API. You can also use
+<strong>Policy &gt; Rule Packs &gt; Add Pack</strong> and the pack <strong>Mode</strong> control in the
+Admin UI.</p>
+<p><strong>REST API:</strong></p>
+<p>The substrate loads packs from disk under <code>RULE_PACKS_DIR</code>. In the default
+Docker install, <code>~/.agentworks/source/rule-packs</code> is mounted into the daemon at
+<code>/opt/agentworks/rule-packs</code>. To install a new pack, drop the YAML file into a
+subdirectory of the host tree and ask the daemon to reload its registry:</p>
+<pre><code class="language-bash"># Drop the pack into the rule-packs/ tree on the host:
+mkdir -p ~/.agentworks/source/rule-packs/my-pack
+cp /path/to/pack.yaml ~/.agentworks/source/rule-packs/my-pack/
+
+# Tell the daemon to rescan rule-packs/ and load the new pack
+curl -X POST http://localhost:7710/api/policy/packs/reload
+
+# List active packs
+curl http://localhost:7710/api/policy/packs
+
+# Switch a pack's mode (replace PACK_ID with the id from /api/policy/packs)
+curl -X PATCH http://localhost:7710/api/policy/packs/PACK_ID/mode \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;mode&quot;: &quot;enforce&quot;}'
+</code></pre>
+<p>Valid modes: <code>shadow</code> (advisory only) or <code>enforce</code> (blocking). Newly loaded packs start in <code>shadow</code>. Switching from shadow to enforce is logged in the audit trail with timestamp and actor.</p>
+<blockquote>
+<p>A first-class upload API (<code>POST /api/policy/packs</code> with the pack body, no
+filesystem step) is on the v0.2 roadmap. For 0.1.9, drop-into-dir + reload
+is the supported install path.</p>
+</blockquote>
+<h3 id="shadow-mode">Shadow Mode<a class="headerlink" href="#shadow-mode" title="Permanent link">&para;</a></h3>
+<p>In shadow mode, the policy engine evaluates rules and logs decisions but never blocks or routes. Use shadow when:
+- Testing a new pack before activation
+- Enabling a pack that might over-fire
+- Onboarding a new customer onto an existing pack</p>
+<hr />
+<h2 id="required-data-declarations">Required-Data Declarations<a class="headerlink" href="#required-data-declarations" title="Permanent link">&para;</a></h2>
+<p>Each rule must declare what data it needs to evaluate. This serves two purposes:
+1. The admin UI shows operators what data sources to configure
+2. The policy engine knows when it cannot fully evaluate a rule</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contact_id</code></td>
+<td>Internal ID of the target contact</td>
+</tr>
+<tr>
+<td><code>dnc_status</code></td>
+<td>Boolean — is contact on internal DNC list?</td>
+</tr>
+<tr>
+<td><code>consent.status</code></td>
+<td><code>verified</code>, <code>unverified</code>, or <code>none</code></td>
+</tr>
+<tr>
+<td><code>consent.source</code></td>
+<td>Where consent originated</td>
+</tr>
+<tr>
+<td><code>consent.captured_at</code></td>
+<td>When consent was captured</td>
+</tr>
+<tr>
+<td><code>subscription_status</code></td>
+<td><code>subscribed</code>, <code>unsubscribed</code>, or <code>none</code></td>
+</tr>
+<tr>
+<td><code>target_jurisdiction</code></td>
+<td>US state code or <code>federal</code></td>
+</tr>
+<tr>
+<td><code>contact_age_known</code></td>
+<td>Boolean — do we know the contact's age?</td>
+</tr>
+<tr>
+<td><code>contact_age</code></td>
+<td>Integer age if known</td>
+</tr>
+<tr>
+<td><code>message_body</code></td>
+<td>Content of the outbound message</td>
+</tr>
+<tr>
+<td><code>offer_type</code></td>
+<td>Category of the offer being made</td>
+</tr>
+<tr>
+<td><code>geographic_scope</code></td>
+<td>Granularity of geographic targeting</td>
+</tr>
+<tr>
+<td><code>payload.contact.address</code></td>
+<td>Phone number or email of the contact</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="common-mistakes">Common Mistakes<a class="headerlink" href="#common-mistakes" title="Permanent link">&para;</a></h2>
+<h3 id="wrong-field-name-in-required_data">Wrong field name in required_data<a class="headerlink" href="#wrong-field-name-in-required_data" title="Permanent link">&para;</a></h3>
+<pre><code class="language-yaml"># Wrong — field doesn't exist in the action record
+required_data:
+  - do_not_call_status
+
+# Right — must match the field name in the action schema
+required_data:
+  - dnc_status
+</code></pre>
+<h3 id="condition-on-a-field-that-might-not-exist">Condition on a field that might not exist<a class="headerlink" href="#condition-on-a-field-that-might-not-exist" title="Permanent link">&para;</a></h3>
+<pre><code class="language-yaml"># Wrong — if contact_age is absent, the rule never fires as intended
+conditions:
+  - when:
+      contact_age: &quot;&lt; 18&quot;
+
+# Right — use contact_age_known as a guard
+conditions:
+  - when:
+      contact_age_known: true
+      contact_age: &quot;&lt; 18&quot;
+    then:
+      decision: block
+</code></pre>
+<h3 id="missing-disposition_when_missing">Missing disposition_when_missing<a class="headerlink" href="#missing-disposition_when_missing" title="Permanent link">&para;</a></h3>
+<p>Every rule needs an explicit disposition for when <code>required_data</code> is absent. Without it, the policy engine cannot decide.</p>
+<h3 id="priority-collisions">Priority collisions<a class="headerlink" href="#priority-collisions" title="Permanent link">&para;</a></h3>
+<p>Rules with the same priority evaluate in undefined order. Use explicit priorities to control sequence:</p>
+<pre><code class="language-yaml">- rule_id: CHECK-DNC-FIRST
+  priority: 1
+  ...
+- rule_id: CHECK-CONSENT-SECOND
+  priority: 2
+  ...
+</code></pre>
+<h3 id="no-test-fixtures">No test fixtures<a class="headerlink" href="#no-test-fixtures" title="Permanent link">&para;</a></h3>
+<p>A pack without test fixtures cannot be verified. At minimum, cover:
+- One <code>allow</code> case
+- One <code>block</code> case
+- One <code>route_to_review</code> case
+- One case where required data is missing</p>
+<hr />
+<h2 id="required-data-declaration-table">Required-Data Declaration Table<a class="headerlink" href="#required-data-declaration-table" title="Permanent link">&para;</a></h2>
+<p>For each rule in a pack, document:</p>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Data Field</th>
+<th>Provided By</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SMB-001</td>
+<td><code>contact_id</code></td>
+<td>Substrate</td>
+<td>Internal contact record</td>
+</tr>
+<tr>
+<td>SMB-001</td>
+<td><code>dnc_status</code></td>
+<td>Customer integration</td>
+<td>Internal DNC list, not RNDB</td>
+</tr>
+<tr>
+<td>SMB-007</td>
+<td><code>consent.verified</code></td>
+<td>Customer integration</td>
+<td>Written consent record</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data provider types:</strong>
+- <code>substrate</code> — the substrate provides this automatically (for example: <code>action_kind</code>, <code>actor.type</code>)
+- <code>customer_integration</code> — customer must configure their own data source via the adapter pattern
+- <code>external_api</code> — Twilio, RealPhoneValidation, etc. must be integrated</p>
+<hr />
+<h2 id="whats-not-in-this-guide">What's Not in This Guide<a class="headerlink" href="#whats-not-in-this-guide" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Authoring credentialed rule pack content (TCPA, fair-housing, HIPAA) — those packs ship reviewed and signed. This guide covers writing your own.</li>
+<li>Policy engine internals — see the AWCP specification.</li>
+<li>Action envelope schema details — see <code>docs/awcp.md</code> (Wire format section).</li>
+<li>Hash-chained audit log internals — see <code>docs/awcp.md</code> (Audit log section).</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,869 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/CODEX-PRE-RELEASE-AUDIT/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Codex Pre-Release Adversarial Audit - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#codex-pre-release-adversarial-audit" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Codex Pre-Release Adversarial Audit
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-run-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to run it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-prompt-copy-below-into-codex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The prompt (copy below into Codex)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-expect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What to expect
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#after-codex-finishes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        After Codex finishes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="codex-pre-release-adversarial-audit">Codex Pre-Release Adversarial Audit<a class="headerlink" href="#codex-pre-release-adversarial-audit" title="Permanent link">&para;</a></h1>
+<p><strong>When to use:</strong> before tagging any AgentWorks OS release. Paste the prompt below into Codex (or any other independent LLM agent — Cursor, Claude, Gemini), point it at the candidate commit, and treat it like a hostile reviewer who gets paid only when they find a release-blocker that would embarrass you in front of a customer.</p>
+<p><strong>Why this exists:</strong> v0.1.0 → v0.1.8 had three releases in a row where a fresh customer install hit a bug we did not catch in our own dev loop. The recurring pattern: developers run inside an environment where build artifacts already exist on disk, the right ports are free, the daemon is already trained, model weights are cached, the right env vars are exported in their shell. Customers don't have any of that. An adversarial third-party agent simulating the customer surface catches what dogfooding cannot.</p>
+<hr />
+<h2 id="how-to-run-it">How to run it<a class="headerlink" href="#how-to-run-it" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Push the candidate commit to a branch (do not tag yet).</li>
+<li>Hand the prompt below to Codex with the commit SHA filled in.</li>
+<li>Codex returns a numbered finding list with severity, file:line, and proposed fix.</li>
+<li>You triage: BLOCKERs must be fixed before tag; HIGH/MEDIUM should be fixed unless deferred with a written reason in the CHANGELOG <code>Known limitations</code> section; LOW can ship.</li>
+<li>Re-run the prompt after fixes. Stop when the only findings left are LOW or already-deferred.</li>
+<li>Then tag.</li>
+</ol>
+<hr />
+<h2 id="the-prompt-copy-below-into-codex">The prompt (copy below into Codex)<a class="headerlink" href="#the-prompt-copy-below-into-codex" title="Permanent link">&para;</a></h2>
+<pre><code>You are an adversarial pre-release reviewer for AgentWorks OS, an
+open-source Docker-based local install. Your job is to find every bug,
+documentation gap, and cross-platform portability hole that would surface
+on a fresh-machine install, BEFORE the release ships. You do NOT fix
+anything. You produce a numbered finding list.
+
+Context you must have before reviewing:
+- The repo at https://github.com/SGridworks/agentworks-os-vps checked out at
+  commit &lt;FILL IN COMMIT SHA OR TAG&gt;.
+- The recent CHANGELOG entries (read at least the last 3 versions) — they
+  enumerate the bug archetypes that have already shipped to customers.
+- The customer install path is documented in docs/AI-AGENT-INSTALL-GUIDE.md
+  and exercised by apps/installer/src/install.sh. The install must succeed
+  on macOS (Apple Silicon AND Intel), Ubuntu 22.04+, and Windows 11 + WSL2
+  Ubuntu, with no manual host-side build steps.
+
+What to audit (each section is a separate pass; do all of them):
+
+============================================================
+PASS 1 — Dockerfile gitignore traps
+============================================================
+
+For every Dockerfile in the repo (find with `git ls-files '**/Dockerfile'`):
+  a) For every COPY src in the Dockerfile, does that path exist in a
+     fresh `git clone --depth=1 --branch &lt;tag&gt;`? Cross-check against
+     .gitignore at the repo root and any package-level .gitignore.
+     This is the v0.1.5 → v0.1.6 bug: n8n-nodes/Dockerfile COPYed
+     ./packages/n8n-nodes/dist, but dist/ was gitignored, so on a clean
+     clone the COPY produced &quot;failed to compute cache key: ... not found&quot;
+     and the entire docker compose up aborted.
+  b) Are EXPOSE and HEALTHCHECK port numbers consistent with the port the
+     application actually binds to AND with what docker-compose.yml maps?
+     The v0.1.6 → v0.1.8 bug: scanner-worker EXPOSE 8001 + healthcheck on
+     :8001, but compose set SCANNER_WORKER_PORT=3101 and overrode the
+     healthcheck — masked in compose, broken when run standalone.
+  c) Are the runtime entrypoint's expected env vars all set somewhere
+     reachable in a fresh install? (Either docker-compose.yml env, the
+     installer's generated .env, or a sane default in code.) Walk the
+     entrypoint script / module and grep every os.environ.get / process.env.
+
+============================================================
+PASS 2 — Cross-platform shell portability
+============================================================
+
+For apps/installer/src/install.sh, apps/installer/src/agentworks.sh,
+apps/installer/scripts/smoke-test.sh, and any other .sh file in apps/:
+
+  a) Find every grep -P / grep -oP / grep --perl-regexp. BSD grep on
+     macOS does not have -P. Replace candidates with sed -nE patterns or
+     awk.
+  b) Find every sed -i without an empty-string argument. GNU sed accepts
+     `sed -i` (no arg); BSD sed requires `sed -i ''`. Either pattern
+     breaks on the other platform — only `sed -i.bak ... &amp;&amp; rm *.bak`
+     is portable.
+  c) Find every readlink -f / realpath. macOS readlink does not have -f
+     by default; coreutils greadlink works but is not always installed.
+  d) Find every `stat -c` (GNU) or `stat -f` (BSD).
+  e) Find every `mktemp` without `-d` or without a template arg — BSD
+     mktemp differs.
+  f) Find every `[[ -w ... ]]` against /usr/local/bin specifically — on
+     Apple Silicon Macs without Homebrew, /usr/local/bin does not exist.
+     Verify the fallback path works.
+  g) Find every `lsof -i :&lt;port&gt;` — verify the fallback chain (ss,
+     /dev/tcp) actually triggers on hosts without lsof.
+
+============================================================
+PASS 3 — Env-var name consistency
+============================================================
+
+For every env var the codebase reads (grep `os.environ.get` in Python,
+`process.env.` in TS, `${VAR}` in bash):
+  - Is the name spelled identically everywhere it is set, read, and
+    documented?
+  - This is the v0.1.6 → v0.1.8 bug #2: docker-compose.yml set
+    SCANNER_WATCH_DIRS but the Python parser read WATCH_DIRS. Silent
+    feature break for two releases.
+  - Cross-check against packages/agentos-d/CLAUDE.md (which documents
+    every env var the daemon reads), the installer's generated .env
+    template, and docker-compose.yml.
+
+============================================================
+PASS 4 — Time-to-ready blockers
+============================================================
+
+The smoke test allows the daemon ~120s and the scanner-worker ~3s to
+respond on /health. Any service whose startup blocks on a network
+download (HuggingFace, npm, Docker Hub) longer than the smoke-test
+timeout will produce a false WARN or FAIL.
+
+  a) For every Python `lifespan` / `@app.on_event(&quot;startup&quot;)` and every
+     Node `app.listen` / preflight task, identify any synchronous I/O
+     against an external hostname.
+  b) For each: how long does it take on a fresh install with cold caches?
+  c) Propose either: (1) move to background task, (2) skip by default and
+     require opt-in, or (3) bundle the asset into the image.
+  d) The v0.1.8 fix was option (2) for embed/rerank — don't accept option
+     (1) without verifying the model code handles a &quot;not preloaded&quot; state
+     gracefully.
+
+============================================================
+PASS 5 — Documentation cross-references
+============================================================
+
+For every relative link in README.md and every file under docs/:
+  a) Resolve the link target. Does the file exist in this commit?
+  b) If the link includes a section anchor (#section-name or §Section),
+     does that section exist?
+  c) Does every `git clone --branch v0.1.X` example point at the version
+     this release actually ships?
+  d) The v0.1.6 → v0.1.8 bug: docs/AI-AGENT-INSTALL-GUIDE.md §2.2(B)
+     pointed at docs/install-runbook.md §Vault, which never existed.
+
+============================================================
+PASS 6 — Smoke-test rigor
+============================================================
+
+apps/installer/scripts/smoke-test.sh is the install gate. Adversarially
+attack it:
+
+  a) Could any assertion give a false PASS? (e.g. `curl ... | grep -q
+     &quot;decision&quot;` would pass on a 500 error response that happens to
+     contain &quot;decision&quot; in the error body.)
+  b) Are the timeouts realistic for a slow Docker host (WSL2 on a
+     5-year-old laptop)?
+  c) If a service is in `Up (unhealthy)` state per docker compose ps,
+     does the smoke test catch it, or does it only assume &quot;Up&quot; means
+     working?
+  d) Does the script clean up after itself (delete the test tenant /
+     test artifacts)? If not, the second run hits stale state.
+
+============================================================
+PASS 7 — Wrapper / CLI hygiene
+============================================================
+
+For apps/installer/src/agentworks.sh:
+  a) Every command listed in `agentworks --help` should actually work.
+     Try each one mentally end-to-end.
+  b) Default values (AGENTWORKS_VERSION, etc.) should be bumped on every
+     release — check whether the wrapper's defaults match the current
+     CHANGELOG version.
+  c) `agentworks update --check` should not lie. Run through the version
+     comparison logic.
+  d) `agentworks status`, `agentworks logs`, etc. should honor any custom
+     port the user set at install time — not hardcode 7710 / 5678.
+
+============================================================
+PASS 8 — Compose internal consistency
+============================================================
+
+For docker-compose.yml:
+  a) Every service's image: tag should equal the AGENTWORKS_VERSION
+     default at the top of the file (which should equal the release
+     version).
+  b) Every depends_on target service should exist (and the condition
+     should make sense — service_started for a non-healthcheck service
+     means depends_on is essentially a no-op).
+  c) Every bind-mount path on the host side should be writable by the
+     container's uid (the v0.1.3 fix was chmod 777 on data/n8n and
+     data/scanner; verify still in place).
+  d) Every env var referenced as ${X} should either have a default
+     (${X:-fallback}) or be guaranteed present in the installer's
+     generated .env. List anything missing.
+
+============================================================
+PASS 9 — Release workflow vs install path
+============================================================
+
+For .github/workflows/release.yml:
+  a) Does the workflow build every image referenced in docker-compose.yml
+     as `image: ghcr.io/.../X:VERSION`? (admin-ui was published but never
+     started in v0.1.6, that is OK; n8n is built locally per install,
+     that is also OK — but flag any ghcr-referenced image with no build
+     step.)
+  b) Does the install.sh release-asset URL match what
+     softprops/action-gh-release@v2 actually publishes?
+  c) On `make GHCR packages public`, does the package list match what
+     was just pushed?
+
+============================================================
+PASS 10 — Re-run / idempotency
+============================================================
+
+  a) If install.sh fails halfway and the user re-runs, does it pick up
+     where it left off without losing the saved admin password?
+  b) If `agentworks update` runs on a healthy stack, does it preserve
+     ~/.agentworks/data and ~/.agentworks/config?
+  c) If two installs collide on the same host (different AGENTWORKS_DIR
+     overrides), do they share the agentos-postgres container name?
+     Container names in compose are global; flag any collision risk.
+
+============================================================
+OUTPUT FORMAT
+============================================================
+
+Produce a numbered list. Each finding has exactly these fields, in this
+order, no extras:
+
+  N. file:line — SEVERITY (BLOCKER | HIGH | MEDIUM | LOW)
+     Problem: &lt;one sentence describing what is wrong&gt;
+     Repro: &lt;the minimum command sequence a fresh-machine user would
+              run that surfaces this bug — actually paste it, do not
+              describe it&gt;
+     Fix: &lt;one sentence describing the proposed fix; do not write the
+           code, just say what to change and where&gt;
+
+Severity rubric:
+  BLOCKER: a fresh-machine install on at least one supported platform
+           cannot reach Smoke test PASSED, OR a feature documented
+           as working in the README does not work after a clean install.
+  HIGH:    a fresh-machine install reaches PASSED but a customer-visible
+           feature is broken (silent feature gap, wrong default,
+           misleading error message).
+  MEDIUM:  works correctly on supported platforms but fragile (BSD vs
+           GNU utility differences that haven't surfaced YET, race
+           conditions, polish).
+  LOW:     code smell with no user-visible impact.
+
+If you find no findings in a pass, write &quot;PASS N: clean.&quot;
+
+Be ruthless about distinguishing &quot;would actually break for a fresh
+user&quot; from &quot;code I would refactor.&quot; We are shipping a product; we want
+to know what breaks, not what is ugly. Skip nitpicks.
+
+Cap output at 2000 words. If you have more than 30 findings, keep the
+30 highest-severity and note &quot;+N additional LOW findings dropped.&quot;
+</code></pre>
+<hr />
+<h2 id="what-to-expect">What to expect<a class="headerlink" href="#what-to-expect" title="Permanent link">&para;</a></h2>
+<p>A good Codex pass returns 5-15 findings on a candidate that has had a few releases. v0.1.8's pre-release audit caught 16 items across 10 passes (3 BLOCKERS, 5 HIGH, 4 MEDIUM, 4 LOW). If Codex returns zero findings on the first run, the prompt is broken or Codex is hallucinating compliance — re-run with a different model.</p>
+<p>A bad Codex pass returns vague "consider improving error handling" type comments. If you see those, push back: "you found nothing actionable; re-read the prompt's Severity rubric and try again, focusing on Pass N specifically."</p>
+<hr />
+<h2 id="after-codex-finishes">After Codex finishes<a class="headerlink" href="#after-codex-finishes" title="Permanent link">&para;</a></h2>
+<p>Triage the list yourself. Don't blindly fix everything Codex proposes — some "BLOCKER" findings will be false positives (it doesn't always understand the runtime context). For each finding:</p>
+<ul>
+<li>Confirm the bug exists by running the Repro yourself.</li>
+<li>If real and BLOCKER/HIGH: fix before tag.</li>
+<li>If real and MEDIUM/LOW: fix or write a one-line entry in the next CHANGELOG's <code>Known limitations</code> section deferring it.</li>
+<li>If false positive: ignore.</li>
+</ul>
+<p>Then re-run the prompt against the post-fix commit. Iterate until the list is empty or only deferred items remain.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

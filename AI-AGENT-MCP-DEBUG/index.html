@@ -1,0 +1,1338 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AgentWorks Compliance Protocol v0.1 documentation">
+      
+      
+      
+        <link rel="canonical" href="https://sgridworks.github.io/agentworks-os/AI-AGENT-MCP-DEBUG/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>AI Agent MCP Debug Guide - AgentWorks AWCP Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ai-agent-mcp-debug-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-header__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AgentWorks AWCP Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AI Agent MCP Debug Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="AgentWorks AWCP Documentation" class="md-nav__button md-logo" aria-label="AgentWorks AWCP Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    AgentWorks AWCP Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SGridworks/agentworks-os-vps" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../awcp/SPEC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AWCP Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vps-blank-slate-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VPS Blank-Slate Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e2e-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E2E Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rule-pack-authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rule Pack Authoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disclaimer-text/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disclaimer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-read-this-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to read this guide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-layer-1-daemon-reachable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §1 — Layer 1: daemon reachable
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-layer-2-bridge-file-present" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §2 — Layer 2: bridge file present
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-layer-3-client-config-valid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §3 — Layer 3: client config valid
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="§3 — Layer 3: client config valid">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-find-the-right-config-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §3.1 Find the right config file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-validate-the-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §3.2 Validate the config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-other-servers-in-the-same-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §3.3 Other servers in the same file
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-layer-4-client-launched-the-bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §4 — Layer 4: client launched the bridge
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="§4 — Layer 4: client launched the bridge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-bridge-crashed-at-startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §4.1 Bridge crashed at startup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-layer-5-tools-round-trip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §5 — Layer 5: tools round-trip
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="§5 — Layer 5: tools round-trip">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-get-a-tenant-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §5.1 Get a tenant ID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-memoryread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §5.2 memory.read
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-memorywrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §5.3 memory.write
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-policycheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §5.4 policy.check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-activitylog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §5.5 activity.log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-specific-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §6 — Specific failure modes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="§6 — Specific failure modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-server-connecting-disconnected-loop-in-claude-desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §6.1 "Server connecting / disconnected" loop in Claude Desktop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-tools-listed-but-every-call-returns-internal-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §6.2 Tools listed but every call returns "internal error"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-tool-not-found-for-a-tool-that-should-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §6.3 "Tool not found" for a tool that should exist
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-memory-writes-succeed-but-graph-doesnt-show-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §6.4 Memory writes succeed but graph doesn't show them
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-different-tenant-ids-on-different-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §6.5 Different tenant IDs on different machines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-final-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        §7 — Final report
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick-reference checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ai-agent-mcp-debug-guide">AI Agent MCP Debug Guide<a class="headerlink" href="#ai-agent-mcp-debug-guide" title="Permanent link">&para;</a></h1>
+<p><strong>Audience:</strong> an AI coding agent the operator has tasked with diagnosing why an MCP client (Claude Desktop, Cursor, Codex, etc.) is not connecting to AgentWorks OS, or is connected but tools fail.</p>
+<p><strong>Operator hand-off:</strong> <em>"Claude Desktop says agentworks isn't connecting"</em>, or <em>"the memory.write tool errors out"</em>, or <em>"my agent can't see the vault."</em></p>
+<p><strong>Companion doc:</strong> <a href="../mcp-integration/">docs/mcp-integration.md</a> — canonical MCP wiring instructions. This guide is diagnostic — what to check when wiring is supposedly done but doesn't work.</p>
+<p><strong>Target version:</strong> v0.1.9.</p>
+<hr />
+<h2 id="how-to-read-this-guide">How to read this guide<a class="headerlink" href="#how-to-read-this-guide" title="Permanent link">&para;</a></h2>
+<p>MCP failures cluster into five layers. Diagnose top-to-bottom — if a lower layer is broken, higher-layer tests will mislead you.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>What it is</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Daemon reachable</td>
+<td>The substrate is up and listening</td>
+<td>§1</td>
+</tr>
+<tr>
+<td>2. Bridge file present</td>
+<td><code>mcp-stdio-bridge.js</code> exists where the client expects it</td>
+<td>§2</td>
+</tr>
+<tr>
+<td>3. Client config valid</td>
+<td>JSON parses; absolute paths; envs set</td>
+<td>§3</td>
+</tr>
+<tr>
+<td>4. Client launched bridge</td>
+<td>Bridge process is actually running</td>
+<td>§4</td>
+</tr>
+<tr>
+<td>5. Tool calls round-trip</td>
+<td><code>memory.read</code> etc. work end-to-end</td>
+<td>§5</td>
+</tr>
+</tbody>
+</table>
+<p>Always start at §1. A "Claude can't see vault" report often turns out to be the daemon being down, not an MCP problem.</p>
+<p>Rules:</p>
+<ol>
+<li><strong>Don't edit the operator's MCP config without showing them the diff first.</strong> Their config may have other servers.</li>
+<li><strong>Don't print bearer tokens or admin passwords into chat</strong> during diagnosis. Refer to file paths.</li>
+<li><strong>Don't restart the daemon</strong> to "see if that fixes it" — see <a href="../AI-AGENT-OPERATOR-RUNBOOK/">AI-AGENT-OPERATOR-RUNBOOK.md §0.2</a> for why. Backup first if you genuinely need to restart.</li>
+</ol>
+<hr />
+<h2 id="1-layer-1-daemon-reachable">§1 — Layer 1: daemon reachable<a class="headerlink" href="#1-layer-1-daemon-reachable" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">curl -sS --max-time 5 http://127.0.0.1:7710/api/health | head -c 300
+</code></pre>
+<p><strong>Expected:</strong> JSON with <code>"status":"ok"</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection refused</td>
+<td>Daemon not running</td>
+<td>See <a href="../AI-AGENT-OPERATOR-RUNBOOK/">operator runbook §2.2</a></td>
+</tr>
+<tr>
+<td>Timeout</td>
+<td>Firewall, or daemon not listening on the expected port</td>
+<td>v0.1.9 binds the daemon to <code>127.0.0.1:7710</code> (loopback only); custom ports aren't supported. Run <code>lsof -i :7710</code> to confirm what's listening.</td>
+</tr>
+<tr>
+<td><code>{"status":"degraded"}</code></td>
+<td>Daemon is up but a dependency (DB, scanner) is down</td>
+<td>Operator runbook §2.4 / §1.1</td>
+</tr>
+<tr>
+<td>HTML/login page</td>
+<td>Wrong port — talking to something else</td>
+<td><code>lsof -i :7710</code> to confirm what's listening</td>
+</tr>
+</tbody>
+</table>
+<p>If §1 fails, <strong>stop</strong>. Higher layers cannot work. Hand off to operator runbook.</p>
+<hr />
+<h2 id="2-layer-2-bridge-file-present">§2 — Layer 2: bridge file present<a class="headerlink" href="#2-layer-2-bridge-file-present" title="Permanent link">&para;</a></h2>
+<p>The MCP stdio bridge is the program the host MCP client spawns. By install convention it's at <code>~/.agentworks/config/mcp-stdio-bridge.js</code>.</p>
+<pre><code class="language-bash">ls -l $HOME/.agentworks/config/mcp-stdio-bridge.js
+file $HOME/.agentworks/config/mcp-stdio-bridge.js
+</code></pre>
+<p><strong>Expected:</strong> file exists, &gt; 1 KB, identified as a Node script (or "ASCII text").</p>
+<p><strong>Fix:</strong> if missing, copy from the running container:</p>
+<pre><code class="language-bash"># Container names are compose-project-prefixed in v0.1.9. Locate the
+# agentos-d container by service label rather than guessing the name.
+AGENTOS_D_CTNR=&quot;$(docker ps --filter 'label=com.docker.compose.service=agentos-d' --format '{{.ID}}' | head -1)&quot;
+docker cp &quot;${AGENTOS_D_CTNR}:/app/dist/bin/mcp-stdio-bridge.js&quot; \
+  $HOME/.agentworks/config/mcp-stdio-bridge.js
+chmod +x $HOME/.agentworks/config/mcp-stdio-bridge.js
+</code></pre>
+<p>Also confirm Node is on the host's PATH (the MCP client uses the host's <code>node</code> binary, not a containerized one):</p>
+<pre><code class="language-bash">which node
+node --version
+</code></pre>
+<p><strong>Expected:</strong> Node 18+ (LTS).</p>
+<hr />
+<h2 id="3-layer-3-client-config-valid">§3 — Layer 3: client config valid<a class="headerlink" href="#3-layer-3-client-config-valid" title="Permanent link">&para;</a></h2>
+<p>Each client has its own config file. Read them — don't write them blindly.</p>
+<h3 id="31-find-the-right-config-file">§3.1 Find the right config file<a class="headerlink" href="#31-find-the-right-config-file" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Client</th>
+<th>macOS path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Desktop</td>
+<td><code>~/Library/Application Support/Claude/claude_desktop_config.json</code></td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td><code>~/.cursor/mcp.json</code></td>
+</tr>
+<tr>
+<td>Codex CLI</td>
+<td><code>~/.codex/config.toml</code> via <code>codex mcp list/get/add/remove</code></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-bash"># For Claude Desktop or Cursor, pick the JSON file the operator named:
+CLIENT_CFG=&quot;$HOME/Library/Application Support/Claude/claude_desktop_config.json&quot;
+test -f &quot;$CLIENT_CFG&quot; &amp;&amp; echo &quot;exists&quot; || echo &quot;missing&quot;
+cat &quot;$CLIENT_CFG&quot; | head -40
+
+# Codex CLI is managed by command, not by hand-editing JSON:
+codex mcp list
+</code></pre>
+<h3 id="32-validate-the-config">§3.2 Validate the config<a class="headerlink" href="#32-validate-the-config" title="Permanent link">&para;</a></h3>
+<p>The <code>agentworks</code> server entry should look like this. The four common errors:</p>
+<pre><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;agentworks&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;/Users/&lt;NAME&gt;/.agentworks/config/mcp-stdio-bridge.js&quot;],
+      &quot;env&quot;: {
+        &quot;AGENTOS_URL&quot;: &quot;http://127.0.0.1:7710&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<p>Diagnostic checks:</p>
+<pre><code class="language-bash"># JSON parses?
+python3 -c &quot;import json,sys; json.load(open('$CLIENT_CFG'))&quot; &amp;&amp; echo &quot;json ok&quot;
+
+# Path is absolute (no ~ or $HOME)?
+python3 -c &quot;
+import json
+c = json.load(open('$CLIENT_CFG'))
+args = c['mcpServers']['agentworks']['args']
+for a in args:
+    if a.startswith('~') or a.startswith('\$') or not a.startswith('/'):
+        print(f'BAD PATH: {a}')
+        break
+else:
+    print('paths ok')
+&quot;
+
+# Bridge path actually exists?
+python3 -c &quot;
+import json, os
+c = json.load(open('$CLIENT_CFG'))
+p = c['mcpServers']['agentworks']['args'][0]
+print('bridge file exists' if os.path.isfile(p) else f'MISSING: {p}')
+&quot;
+
+# AGENTOS_URL set?
+python3 -c &quot;
+import json
+c = json.load(open('$CLIENT_CFG'))
+env = c['mcpServers']['agentworks'].get('env', {})
+print('AGENTOS_URL=' + (env.get('AGENTOS_URL') or 'NOT SET (will default to http://127.0.0.1:7710)'))
+&quot;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Check fails</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>json ok</code> fails</td>
+<td>The config is malformed JSON. Common cause: trailing commas. Show the operator the parse error and which line.</td>
+</tr>
+<tr>
+<td><code>BAD PATH</code></td>
+<td>Claude Desktop in particular does NOT expand <code>~</code> or <code>$HOME</code>. Replace with the absolute path from <code>echo $HOME</code>.</td>
+</tr>
+<tr>
+<td><code>MISSING:</code></td>
+<td>The bridge file moved or was never copied. See §2.</td>
+</tr>
+<tr>
+<td><code>TENANT MISSING</code></td>
+<td>The bridge can't address a tenant. Get the UUID from <code>GET http://127.0.0.1:7710/api/tenants</code> and add it.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-other-servers-in-the-same-file">§3.3 Other servers in the same file<a class="headerlink" href="#33-other-servers-in-the-same-file" title="Permanent link">&para;</a></h3>
+<p>Operators commonly have multiple MCP servers configured (memory, filesystem, etc.). Don't blow them away.</p>
+<pre><code class="language-bash">python3 -c &quot;
+import json
+c = json.load(open('$CLIENT_CFG'))
+print('servers configured:', list(c.get('mcpServers', {}).keys()))
+&quot;
+</code></pre>
+<p>If you need to write a new entry, <strong>read the file, modify in memory, write back</strong> — never overwrite with a single-server config.</p>
+<hr />
+<h2 id="4-layer-4-client-launched-the-bridge">§4 — Layer 4: client launched the bridge<a class="headerlink" href="#4-layer-4-client-launched-the-bridge" title="Permanent link">&para;</a></h2>
+<p>After config changes, the MCP client must be <strong>fully quit and relaunched</strong>. Closing the window does not relaunch the MCP child processes.</p>
+<pre><code class="language-bash"># Tell the operator: Cmd+Q the MCP client app, then reopen it.
+</code></pre>
+<p>After they relaunch, check whether the bridge process is actually running:</p>
+<pre><code class="language-bash">ps aux | grep -E &quot;mcp-stdio-bridge|agentworks&quot; | grep -v grep
+</code></pre>
+<p><strong>Expected:</strong> at least one <code>node /Users/.../mcp-stdio-bridge.js</code> process whose parent is the MCP client (Claude, Cursor, etc.). The PPID matters — if the parent is <code>1</code> or your shell, it's an old run.</p>
+<p><strong>Fix:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No bridge process</td>
+<td>Client did not launch it</td>
+<td>Confirm config file path is the right one for that client; full quit and relaunch.</td>
+</tr>
+<tr>
+<td>Bridge process exists but client says "disconnected"</td>
+<td>Bridge crashed at startup</td>
+<td>See §4.1</td>
+</tr>
+<tr>
+<td>Multiple bridge processes</td>
+<td>Old runs not cleaned up</td>
+<td><code>pkill -f mcp-stdio-bridge.js</code> then relaunch the client.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="41-bridge-crashed-at-startup">§4.1 Bridge crashed at startup<a class="headerlink" href="#41-bridge-crashed-at-startup" title="Permanent link">&para;</a></h3>
+<p>The bridge logs to stderr, which the MCP client may not surface. Run the bridge directly to see what it prints:</p>
+<pre><code class="language-bash">AGENTOS_URL=http://127.0.0.1:7710 \
+AGENTOS_TENANT_ID=&lt;UUID&gt; \
+node $HOME/.agentworks/config/mcp-stdio-bridge.js &lt; /dev/null
+</code></pre>
+<p>The bridge expects MCP-protocol input on stdin; with <code>/dev/null</code> it will hand-shake then exit. What you're looking for is <em>whether it crashes during startup</em> and what the error says. Common errors:</p>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ECONNREFUSED 127.0.0.1:7710</code></td>
+<td>Daemon down — go back to §1</td>
+</tr>
+<tr>
+<td><code>Invalid tenantId</code></td>
+<td>UUID format wrong; copy it from <code>GET http://127.0.0.1:7710/api/tenants</code></td>
+</tr>
+<tr>
+<td><code>Cannot find module</code></td>
+<td>Node version too old, or bridge file was truncated during <code>docker cp</code> — re-copy</td>
+</tr>
+<tr>
+<td><code>EACCES</code> on a path</td>
+<td>Bridge has no permission for a tmp/log path</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-layer-5-tools-round-trip">§5 — Layer 5: tools round-trip<a class="headerlink" href="#5-layer-5-tools-round-trip" title="Permanent link">&para;</a></h2>
+<p>If §1–§4 are clean and the client still says tools fail, the daemon is reachable but per-tool semantics are off. Test each one directly via REST first:</p>
+<h3 id="51-get-a-tenant-id">§5.1 Get a tenant ID<a class="headerlink" href="#51-get-a-tenant-id" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">TENANT_ID=&quot;$(curl -fsS http://127.0.0.1:7710/api/tenants \
+  | python3 -c 'import json,sys; data=json.load(sys.stdin); items=data.get(&quot;items&quot;, data) if isinstance(data, dict) else data; print(items[0][&quot;id&quot;])')&quot;
+echo &quot;$TENANT_ID&quot;
+</code></pre>
+<h3 id="52-memoryread">§5.2 memory.read<a class="headerlink" href="#52-memoryread" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">curl -sS -X POST http://127.0.0.1:7710/api/memory/read \
+  -H &quot;content-type: application/json&quot; \
+  -d '{&quot;tenantId&quot;:&quot;'&quot;$TENANT_ID&quot;'&quot;,&quot;key&quot;:&quot;hot&quot;}' | head -c 500
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>404</code> for an existing key</td>
+<td>Tenant ID mismatch — the agent is calling with a different tenant than the one that has the key.</td>
+</tr>
+<tr>
+<td><code>200</code> with empty body</td>
+<td>Key doesn't exist. Not an error.</td>
+</tr>
+<tr>
+<td><code>403</code></td>
+<td>Auth not forwarding (current v0.1.x: MCP route is open on localhost only; if you're getting 403, something else is in front of the daemon).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53-memorywrite">§5.3 memory.write<a class="headerlink" href="#53-memorywrite" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">curl -sS -X POST http://127.0.0.1:7710/api/memory/write \
+  -H &quot;content-type: application/json&quot; \
+  -d '{
+    &quot;tenantId&quot;: &quot;'&quot;$TENANT_ID&quot;'&quot;,
+    &quot;key&quot;: &quot;scratch/mcp-debug-test&quot;,
+    &quot;body&quot;: &quot;# test\n\nwritten by MCP debug at '&quot;$(date)&quot;'&quot;
+  }' | head -c 500
+</code></pre>
+<p>Then confirm it lands:</p>
+<pre><code class="language-bash">curl -sS -X POST http://127.0.0.1:7710/api/memory/read \
+  -H &quot;content-type: application/json&quot; \
+  -d '{&quot;tenantId&quot;:&quot;'&quot;$TENANT_ID&quot;'&quot;,&quot;key&quot;:&quot;scratch/mcp-debug-test&quot;}' | head -c 300
+ls -lt &quot;${AGENTWORKS_DIR:-$HOME/.agentworks}/data/vault/$TENANT_ID/scratch/mcp-debug-test.md&quot; 2&gt;/dev/null
+</code></pre>
+<p><strong>Verify:</strong> body matches what you just wrote, and the file exists on disk.</p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key escapes tenant subtree</code></td>
+<td>Key has <code>..</code> or starts with <code>/</code> — sanitize.</td>
+</tr>
+<tr>
+<td>Disk write fails</td>
+<td><code>VAULT_ROOT</code> mounted read-only or wrong path. Check <code>docker compose exec agentos-d env \| grep VAULT_ROOT</code> and <code>ls -ld &lt;path&gt;</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Clean up after the test by replacing the scratch page with an empty body, or remove the file from the tenant vault path above if the operator permits direct filesystem cleanup:</p>
+<pre><code class="language-bash">curl -sS -X POST http://127.0.0.1:7710/api/memory/write \
+  -H &quot;content-type: application/json&quot; \
+  -d '{&quot;tenantId&quot;:&quot;'&quot;$TENANT_ID&quot;'&quot;,&quot;key&quot;:&quot;scratch/mcp-debug-test&quot;,&quot;body&quot;:&quot;&quot;,&quot;mode&quot;:&quot;replace&quot;}'
+</code></pre>
+<h3 id="54-policycheck">§5.4 policy.check<a class="headerlink" href="#54-policycheck" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">curl -sS -X POST http://127.0.0.1:7710/api/policy/check \
+  -H &quot;content-type: application/json&quot; \
+  -d '{
+    &quot;tenantId&quot;: &quot;'&quot;$TENANT_ID&quot;'&quot;,
+    &quot;actorId&quot;: &quot;mcp-debug-agent&quot;,
+    &quot;actorType&quot;: &quot;agent&quot;,
+    &quot;actionKind&quot;: &quot;email.send&quot;,
+    &quot;payload&quot;: {&quot;to&quot;:&quot;x@example.com&quot;,&quot;subject&quot;:&quot;t&quot;,&quot;body&quot;:&quot;t&quot;}
+  }' \
+  | head -c 500
+</code></pre>
+<p>Expect a <code>decision</code> field. If you get <code>route_to_review</code> and the operator expected <code>allow</code>, the rule packs are doing their job — that's not a bug.</p>
+<h3 id="55-activitylog">§5.5 activity.log<a class="headerlink" href="#55-activitylog" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">curl -sS -X POST http://127.0.0.1:7710/api/action \
+  -H &quot;content-type: application/json&quot; \
+  -d '{
+    &quot;tenantId&quot;: &quot;'&quot;$TENANT_ID&quot;'&quot;,
+    &quot;actor&quot;: {&quot;id&quot;:&quot;mcp-debug&quot;,&quot;type&quot;:&quot;agent&quot;,&quot;label&quot;:&quot;MCP Debug&quot;},
+    &quot;actionKind&quot;:&quot;diagnostic.ping&quot;,
+    &quot;payloadSnapshot&quot;:{&quot;note&quot;:&quot;debug&quot;}
+  }'
+</code></pre>
+<p>Then read it back:</p>
+<pre><code class="language-bash">curl -sS &quot;http://127.0.0.1:7710/api/action?tenantId=$TENANT_ID&amp;limit=1&quot; | head -c 500
+</code></pre>
+<p>The entry you just wrote should be at the top.</p>
+<hr />
+<h2 id="6-specific-failure-modes">§6 — Specific failure modes<a class="headerlink" href="#6-specific-failure-modes" title="Permanent link">&para;</a></h2>
+<h3 id="61-server-connecting-disconnected-loop-in-claude-desktop">§6.1 "Server connecting / disconnected" loop in Claude Desktop<a class="headerlink" href="#61-server-connecting-disconnected-loop-in-claude-desktop" title="Permanent link">&para;</a></h3>
+<p>The MCP client tries to connect, the bridge starts, then the bridge exits, then the client retries. Causes:</p>
+<ol>
+<li>Daemon is up but <code>/api/health</code> returns &gt;5xx — bridge gives up on first health check.</li>
+<li>Bridge can't reach the daemon — <code>AGENTOS_URL</code> is unset or points at the wrong host/port (the bridge defaults to <code>http://127.0.0.1:7710</code>). Tenant IDs are passed per-call as MCP tool arguments, not via an env var.</li>
+<li>Node version on the host is too old (&lt;18). Claude Desktop uses the user's <code>PATH</code> <code>node</code>, which on some machines is an ancient global install.</li>
+</ol>
+<p>Fix in order: §1 → §3 → <code>node --version</code>.</p>
+<h3 id="62-tools-listed-but-every-call-returns-internal-error">§6.2 Tools listed but every call returns "internal error"<a class="headerlink" href="#62-tools-listed-but-every-call-returns-internal-error" title="Permanent link">&para;</a></h3>
+<p>The daemon is up and the bridge is up, but every tool errors. Likely a daemon-side problem:</p>
+<pre><code class="language-bash">agentworks logs agentos-d | \
+  grep -iE &quot;error|exception|trace&quot;
+</code></pre>
+<p>Read for stack traces. Common: a recent rule pack with a malformed <code>when:</code> block crashing the engine on every check. Fix: disable that pack via shadow mode.</p>
+<h3 id="63-tool-not-found-for-a-tool-that-should-exist">§6.3 "Tool not found" for a tool that should exist<a class="headerlink" href="#63-tool-not-found-for-a-tool-that-should-exist" title="Permanent link">&para;</a></h3>
+<p>Bridge version mismatch. The bridge file you copied may be from an older <code>agentos-d</code> image. Re-run §2's <code>docker cp</code>.</p>
+<h3 id="64-memory-writes-succeed-but-graph-doesnt-show-them">§6.4 Memory writes succeed but graph doesn't show them<a class="headerlink" href="#64-memory-writes-succeed-but-graph-doesnt-show-them" title="Permanent link">&para;</a></h3>
+<p>Most likely cause: stale Admin UI cache or the vault graph has not been re-indexed. Force a refresh:</p>
+<pre><code class="language-bash">curl -sS -X POST http://127.0.0.1:7710/api/memory/graph/rebuild?tenantId=$TENANT_ID
+</code></pre>
+<p>If the writes are landing on disk but graph is empty even after rebuild, check that <code>VAULT_ROOT</code> and the tenant subtree match what the daemon thinks it should:</p>
+<pre><code class="language-bash">docker compose exec agentos-d env | grep -E &quot;VAULT_ROOT|AGENTOS_DATA_DIR&quot;
+ls -la &quot;${AGENTWORKS_DIR:-$HOME/.agentworks}/data/vault/$TENANT_ID/&quot; | head
+</code></pre>
+<p>The v0.1.1 fix to <code>FileVaultStore.list()</code> follows symlinks — if you're on v0.1.0, upgrade.</p>
+<h3 id="65-different-tenant-ids-on-different-machines">§6.5 Different tenant IDs on different machines<a class="headerlink" href="#65-different-tenant-ids-on-different-machines" title="Permanent link">&para;</a></h3>
+<p>The operator's laptop and desktop both have AgentWorks installed — and each has its own auto-generated tenant ID. Symptoms: agent on laptop writes a page, agent on desktop can't find it.</p>
+<p>This is a feature (tenants are isolated by design), but it surprises operators. Two valid fixes:</p>
+<ol>
+<li>Use one machine's daemon. Wire all MCP clients to that one URL.</li>
+<li>Pick one tenant ID, configure all daemons to use the same <code>AGENTOS_TENANT_ID</code>, sync the vault directory between machines.</li>
+</ol>
+<p>This is a configuration call — surface it, don't decide it for them.</p>
+<hr />
+<h2 id="7-final-report">§7 — Final report<a class="headerlink" href="#7-final-report" title="Permanent link">&para;</a></h2>
+<pre><code>MCP debug — &lt;time&gt;
+
+Layer-by-layer status:
+  1. Daemon reachable:   &lt;ok / fail — details&gt;
+  2. Bridge file:        &lt;ok / missing / wrong location&gt;
+  3. Client config:      &lt;ok / errors found&gt;
+  4. Bridge process:     &lt;running / not running / multiple&gt;
+  5. Tool round-trips:   &lt;memory.read OK, memory.write OK, policy.check OK, activity.log OK&gt;
+
+Root cause:
+  &lt;one-sentence statement of what was actually wrong&gt;
+
+Fix applied:
+  &lt;what you changed, or &quot;none — diagnosis only&quot;&gt;
+
+Operator must do:
+  1. Cmd+Q and relaunch &lt;client&gt; so the new config takes effect
+  2. &lt;anything else&gt;
+
+Open questions:
+  &lt;if any&gt;
+</code></pre>
+<hr />
+<h2 id="quick-reference-checklist">Quick-reference checklist<a class="headerlink" href="#quick-reference-checklist" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash"># 1. Daemon
+curl -sS http://127.0.0.1:7710/api/health
+
+# 2. Bridge
+ls $HOME/.agentworks/config/mcp-stdio-bridge.js
+node --version
+
+# 3. Config
+python3 -c &quot;import json; print(list(json.load(open('&lt;config-path&gt;'))['mcpServers']))&quot;
+
+# 4. Process
+ps aux | grep mcp-stdio-bridge | grep -v grep
+
+# 5. Tool calls
+curl -sS -X POST http://127.0.0.1:7710/api/memory/read -H &quot;content-type: application/json&quot; -d '{&quot;tenantId&quot;:&quot;'&quot;$TENANT_ID&quot;'&quot;,&quot;key&quot;:&quot;hot&quot;}'
+curl -sS -X POST http://127.0.0.1:7710/api/policy/check -H &quot;content-type: application/json&quot; -d '...'
+</code></pre>
+<hr />
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../mcp-integration/">docs/mcp-integration.md</a> — canonical MCP wiring</li>
+<li><a href="../AI-AGENT-INSTALL-GUIDE/">docs/AI-AGENT-INSTALL-GUIDE.md</a> §2 — post-install MCP client setup</li>
+<li><a href="../AI-AGENT-OPERATOR-RUNBOOK/">docs/AI-AGENT-OPERATOR-RUNBOOK.md</a> — daemon and service health</li>
+<li><a href="../users-guide/">docs/users-guide.md</a> — MCP and API Tools</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
