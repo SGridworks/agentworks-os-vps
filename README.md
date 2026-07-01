@@ -1,3 +1,11 @@
+> **DEPRECATED — this repository is no longer maintained.**
+>
+> AgentWorks OS development has consolidated into **[SGridworks/agentworks-os](https://github.com/SGridworks/agentworks-os)** (v0.3 and later), which is a content superset of this repository. This repo is frozen at `v0.2.0` and archived read-only.
+>
+> Existing container images under `ghcr.io/sgridworks/awos/*` remain pullable; new releases ship under the consolidated repo.
+
+---
+
 # AgentWorks OS
 
 The AI compliance firewall for regulated small businesses.
